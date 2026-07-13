@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RATI — 연애 애착 유형 검사</title>
+<meta name="description" content="애착이론 기반 22문항. 새벽 2시의 '자?'부터 잠수이별까지 — 네가 연애에서 실제로 뭘 하는 사람인지 측정한다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RATI — 연애 애착 유형 검사">
+<meta property="og:description" content="너는 에로스형일까, 이카로스형일까. 애착이론 기반 16유형 · 2분 컷.">
+<meta property="og:image" content="https://YOUR-DOMAIN/og.png">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg:#f8f3f5; --card:#ffffff; --ink:#211a1e; --body:#5a4e54; --muted:#9a8b92;
+    --line:#eee2e7; --blue:#e85d8a; --blue-soft:#fdecf3; --red:#e0435c; --gold:#c9973f;
+    --r:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+    color:var(--ink);display:flex;justify-content:center;min-height:100vh}
+  .app{width:100%;max-width:480px;min-height:100vh;padding:20px 20px 48px;position:relative}
+  .screen{display:none;animation:fade .3s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border-radius:var(--r);padding:24px 22px;margin-bottom:14px;
+    box-shadow:0 1px 4px rgba(25,31,40,.04)}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.4px;line-height:1.35}
+  h2{font-size:15px;font-weight:700;color:var(--muted);margin-bottom:14px;letter-spacing:-.2px}
+  .brand{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:1px;margin:8px 0 18px}
+  .brand small{color:var(--muted);font-weight:500;letter-spacing:0;margin-left:6px}
+  .lead{font-size:15px;color:var(--body);line-height:1.7;letter-spacing:-.2px;margin-top:12px}
+  .lead b{color:var(--ink)}
+  .pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+  .pill{background:var(--bg);color:var(--body);font-size:12.5px;font-weight:600;
+    padding:7px 12px;border-radius:999px}
+  .btn{display:flex;align-items:center;justify-content:center;width:100%;background:var(--blue);
+    color:#fff;border:none;font-family:inherit;font-size:16px;font-weight:700;padding:16px;
+    border-radius:14px;cursor:pointer;letter-spacing:-.2px;transition:transform .08s,opacity .15s}
+  .btn:active{transform:scale(.97);opacity:.9}
+  .btn.sub{background:#efe6ea;color:var(--body);margin-top:8px}
+  .btn.warm{background:var(--ink)}
+  .notice{font-size:11px;color:var(--muted);line-height:1.65;margin-top:14px;text-align:center}
+  label{font-size:13px;font-weight:700;color:var(--body);display:block;margin:18px 0 8px}
+  input[type=text],input[type=email]{width:100%;border:1.5px solid var(--line);background:var(--card);
+    font-size:16px;font-family:inherit;padding:14px;border-radius:12px;outline:none;color:var(--ink)}
+  input:focus{border-color:var(--blue)}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1.5px solid var(--line);background:var(--card);padding:10px 16px;font-size:14px;
+    font-weight:600;border-radius:999px;cursor:pointer;user-select:none;color:var(--body)}
+  .chip.sel{border-color:var(--blue);background:var(--blue-soft);color:var(--blue)}
+  select{width:100%;padding:14px;font-size:15px;border:1.5px solid var(--line);background:var(--card);
+    font-family:inherit;border-radius:12px;color:var(--ink)}
+  .q-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+  .q-domain{font-size:12.5px;font-weight:700;color:var(--blue);background:var(--blue-soft);
+    padding:5px 10px;border-radius:8px}
+  .q-meta{text-align:right}
+  .q-count{font-size:12.5px;font-weight:700;color:var(--body)}
+  .acc-chip{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px}
+  .acc-chip b{color:var(--gold)}
+  .prog{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin:10px 0 6px}
+  .prog i{display:block;height:100%;background:var(--blue);width:0;transition:width .3s;border-radius:2px}
+  .exit-row{font-size:12px;color:var(--muted);text-align:right;margin-bottom:14px;cursor:pointer;
+    text-decoration:underline;text-underline-offset:3px}
+  .q-text{font-size:20px;font-weight:800;line-height:1.5;letter-spacing:-.3px;
+    min-height:92px;margin:10px 2px 20px}
+  .opt{background:var(--card);border:1.5px solid var(--line);padding:16px;font-size:14.5px;
+    font-weight:500;color:var(--body);line-height:1.55;margin-bottom:10px;cursor:pointer;
+    border-radius:14px;letter-spacing:-.2px;transition:border .1s,background .1s}
+  .opt:active{border-color:var(--blue);background:var(--blue-soft)}
+  .r-head{text-align:center;padding:34px 22px 30px;background:linear-gradient(150deg,#ee6f97,#d34878 55%,#b93a67);color:#fff}
+  .code-pill{display:inline-block;background:#fff;color:#c2436f;font-size:22px;font-weight:900;
+    letter-spacing:10px;padding:12px 22px 12px 30px;border-radius:16px;margin-bottom:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,.15)}
+  .r-type{font-size:38px;font-weight:900;letter-spacing:-.5px;text-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .r-sub{font-size:15px;color:rgba(255,255,255,.92);font-weight:600;margin-top:8px}
+  .r-family{font-size:12.5px;color:#ffe3a8;font-weight:700;margin-top:12px;letter-spacing:.5px}
+  .r-meta{font-size:12px;color:rgba(255,255,255,.75);margin-top:12px}
+  .ax{margin-bottom:18px}
+  .ax .lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:7px}
+  .ax .lbl .win{color:var(--blue)} .ax .lbl .lose{color:#d5c8cd}
+  .ax .tr{height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .ax .fl{height:100%;background:var(--blue);border-radius:5px;transition:width .8s}
+  .ax .desc{font-size:11px;color:var(--muted);margin-top:5px}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cell{background:var(--bg);border-radius:14px;padding:14px;text-align:center}
+  .cell .d{font-size:11.5px;font-weight:600;color:var(--muted)}
+  .cell .t{font-size:16px;font-weight:800;margin-top:4px;color:var(--ink)}
+  .fact{font-size:14.5px;line-height:1.8;color:var(--body);letter-spacing:-.2px}
+  .gauge{height:14px;background:linear-gradient(90deg,#7cc47e,#f2c94c,var(--red));border-radius:7px;position:relative;margin-top:10px}
+  .gauge .pin{position:absolute;top:-6px;width:4px;height:26px;background:var(--ink);border-radius:2px}
+  .gauge-label{text-align:center;font-size:26px;font-weight:900;margin-top:14px;color:var(--red)}
+  .gauge-label small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:4px}
+  .mismatch{background:var(--bg);border-radius:14px;padding:16px;font-size:13.5px;line-height:1.75;
+    color:var(--body);margin-top:14px}
+  .mismatch b{color:var(--ink)}
+  .preorder{background:linear-gradient(135deg,#211a1e,#3a2d34);border-radius:var(--r);padding:24px 22px;
+    color:#fff;margin-bottom:14px}
+  .preorder .tag{display:inline-block;font-size:11px;font-weight:700;background:rgba(255,255,255,.14);
+    padding:4px 10px;border-radius:999px;margin-bottom:12px;color:#e9cfa0}
+  .preorder h3{font-size:18px;font-weight:800;letter-spacing:-.3px}
+  .preorder p{font-size:13px;color:#c5b8be;line-height:1.7;margin:8px 0 14px}
+  .preorder input{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:#fff;margin-bottom:10px}
+  .preorder input::placeholder{color:#8d8188}
+  .preorder .btn{background:#fff;color:var(--ink)}
+  .preorder .done{font-size:14px;font-weight:700;color:#8fd694;text-align:center;padding:10px 0}
+  .footer-note{font-size:10.5px;color:var(--muted);text-align:center;margin-top:22px;line-height:1.7}
+  .stat-hook{font-size:12px;color:var(--muted);text-align:center;margin:4px 0 14px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <section class="screen on" id="s-intro">
+    <div class="brand">RATI<small>Romantic Attachment Type Indicator · BETA</small></div>
+    <div class="card">
+      <h1>"왜 나는 연애가<br>항상 이 모양이지"</h1>
+      <p class="lead">
+        성격유형이 당신이 <b>어떤 사람인지</b> 말해준다면,<br>
+        이 검사는 당신이 연애에서 <b>실제로 무엇을 하는 사람인지</b> 측정합니다.<br><br>
+        새벽 2시의 "자?"부터 잠수이별까지,<br>전부 겪어본 상황으로만 묻습니다.
+      </p>
+      <div class="pill-row">
+        <span class="pill">애착이론 기반</span><span class="pill">4축 · 16유형</span>
+        <span class="pill">기본 2분</span><span class="pill">정밀 5분</span>
+      </div>
+    </div>
+    <div class="card" style="padding:18px 22px">
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.7">
+        <b style="color:var(--body)">이론적 배경</b> — 성인 애착이론(Bowlby·Ainsworth; Hazan &amp; Shaver, 1987)의
+        불안·회피 2차원 모형에 표현·갈등 대응 축을 더한 4축 모델. 결과 유형명은 그리스 신화의 사랑 원형에서 가져왔습니다.
+      </p>
+    </div>
+    <button class="btn" onclick="go('s-form')">검사 시작하기</button>
+    <p class="notice">본 검사는 애착이론을 참고한 콘텐츠이며 임상 진단 도구가 아닙니다.<br>응답은 익명 통계로만 활용됩니다.</p>
+  </section>
+
+  <section class="screen" id="s-form">
+    <div class="brand">RATI</div>
+    <div class="card">
+      <h1 style="font-size:22px">시작 전에,<br>결과지에 들어갈 정보만</h1>
+      <label>닉네임</label>
+      <input type="text" id="f-nick" maxlength="8" placeholder="결과지에 표기됩니다">
+      <label>성별</label>
+      <div class="chip-row" id="f-gender">
+        <div class="chip" data-v="여">여</div><div class="chip" data-v="남">남</div><div class="chip" data-v="선택 안 함">선택 안 함</div>
+      </div>
+      <label>나이 (만)</label>
+      <input type="text" id="f-age" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="예: 23">
+      <label>MBTI <span style="font-weight:500;color:var(--muted)">— 교차 통계용 · 선택</span></label>
+      <select id="f-mbti">
+        <option value="모름">모름 / 비공개</option>
+        <option>INFP</option><option>INFJ</option><option>INTP</option><option>INTJ</option>
+        <option>ISFP</option><option>ISFJ</option><option>ISTP</option><option>ISTJ</option>
+        <option>ENFP</option><option>ENFJ</option><option>ENTP</option><option>ENTJ</option>
+        <option>ESFP</option><option>ESFJ</option><option>ESTP</option><option>ESTJ</option>
+      </select>
+    </div>
+    <p id="f-err" style="display:none;font-size:12.5px;color:var(--red);font-weight:600;text-align:center;margin-bottom:8px"></p>
+    <button class="btn" onclick="startQuiz()">문항 시작</button>
+    <p class="notice">응답은 익명 통계로만 활용됩니다.</p>
+  </section>
+
+  <section class="screen" id="s-quiz">
+    <div class="q-top">
+      <span class="q-domain" id="q-domain"></span>
+      <span class="q-meta"><span class="q-count" id="q-count"></span><span class="acc-chip" id="q-acc"></span></span>
+    </div>
+    <div class="prog"><i id="q-prog"></i></div>
+    <div class="exit-row" id="q-exit" style="display:none" onclick="exitNow()"><u>지금 종료하고 결과 보기</u></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-opts"></div>
+  </section>
+
+  <section class="screen" id="s-result">
+    <div id="report">
+      <div class="card r-head" style="padding:34px 22px 30px">
+        <div class="code-pill" id="r-code"></div>
+        <div class="r-type" id="r-type"></div>
+        <div class="r-sub" id="r-subtitle"></div>
+        <div class="r-family" id="r-family"></div>
+        <div class="r-meta" id="r-name"></div>
+        <div class="r-meta" id="r-acc-line" style="margin-top:4px"></div>
+      </div>
+      <div class="card" id="r-ax-card"><h2>4축 분석</h2><div id="r-axes"></div></div>
+      <div class="card" id="r-domain-card"><h2>영역별 판정</h2><div class="grid4" id="r-grid"></div></div>
+      <div class="card"><h2>소견</h2><p class="fact" id="r-fact"></p></div>
+      <div class="card" id="r-deep-card" style="display:none">
+        <h2>정밀 지표</h2>
+        <div style="font-size:13px;font-weight:700;color:var(--body)">정서 과열 지수 (멘헤라 지수)</div>
+        <div class="gauge"><div class="pin" id="r-pin"></div></div>
+        <div class="gauge-label"><span id="r-menhera"></span><small id="r-menhera-note"></small></div>
+        <div class="mismatch" id="r-mismatch"></div>
+      </div>
+      <div class="card" id="r-report-card" style="display:none">
+        <h2>심층 리포트 맛보기 <span style="font-weight:500">· 베타 무료</span></h2>
+        <div id="r-report"></div>
+        <div style="background:var(--blue-soft);border-radius:14px;padding:14px 16px;margin-top:18px;font-size:12.5px;line-height:1.7;color:var(--body)">
+          <b style="color:var(--ink)">여기까지는 요약본입니다.</b> 정식 심층 리포트(₩4,900)에는
+          상황별 행동 시나리오, 재회·이별 가이드, 유형별 대화 스크립트, MBTI 조합 해설이 담깁니다.
+          베타 참여자는 출시 시 50% 할인이 적용됩니다.
+        </div>
+      </div>
+      <p class="stat-hook" id="r-stat"></p>
+    </div>
+
+    <div id="r-deep-cta">
+      <button class="btn warm" onclick="resumeQuiz()">이어서 응시 — 정밀도 97% · 심층 리포트까지 무료</button>
+      <div style="height:8px"></div>
+    </div>
+
+    <div class="preorder" id="preorder-card">
+      <span class="tag">준비 중 · 사전예약 50% 할인</span>
+      <h3>커플 리포트</h3>
+      <p>두 사람의 코드를 조합해 궁합, 예상 갈등 시나리오, 대화 가이드를 분석합니다.
+      아직 준비 중입니다 — 이메일을 남기면 출시 때 반값으로 먼저 알려드립니다.</p>
+      <div id="preorder-form">
+        <input type="email" id="p-email" placeholder="이메일 주소">
+        <button class="btn" onclick="submitPreorder()">출시 알림 받기</button>
+      </div>
+      <div class="done" id="preorder-done" style="display:none">등록 완료 — 출시 때 가장 먼저 알려드릴게요</div>
+    </div>
+
+    <button class="btn" onclick="saveImage()">결과 이미지 저장</button>
+    <button class="btn sub" onclick="location.reload()">다시 검사하기</button>
+    <p class="footer-note">
+      본 검사는 성인 애착이론을 참고한 콘텐츠이며, 임상 진단·치료 도구가 아닙니다.<br>
+      응답은 익명 통계로만 활용됩니다 · 참여자 통계는 정식 오픈 시 공개됩니다.
+    </p>
+  </section>
+</div>
+
+<script>
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec';
+
+const CORE = [
+ ['썸','썸 타는 사람이 새벽 2시에 "자?" 하고 연락왔다.',
+  {S:'무슨 일 있나 싶어 물어본다',A:'드디어 나한테 마음 있는 건가, 심장부터 뛴다',V:'아침에 "잤음ㅋ" 하고 보낸다',F:'목적부터 의심하면서, 결국 새벽 3시까지 대화하고 있다'}],
+ ['썸','3주째 썸인데 상대가 관계 정리를 안 해준다.',
+  {S:'내가 먼저 물어본다. 어차피 알아야 할 일이다',A:'물어봤다가 끝날까 봐, 애매한 채로 그냥 버틴다',V:'나도 다른 사람 만나본다. 보험은 필수다',F:'확답을 조르다가, 막상 확신을 주면 갑자기 식는다'}],
+ ['연락','연인이 읽씹 6시간째. 근데 인스타 스토리는 올라온다.',
+  {S:'나중에 얘기하겠지, 일단 내 일 한다',A:'스토리 뜬 순간부터 전화할까 말까 백 번 고민한다',V:'연락 오면 나도 정확히 6시간 뒤에 답한다',F:'아무렇지 않은 척 스토리에 이모지 반응만 남긴다'}],
+ ['연락','연인이 "너 요즘 좀 변한 것 같아"라고 한다.',
+  {S:'어떤 부분이 그렇게 느껴졌는지 물어본다',A:'마음이 식었다는 신호인가 싶어, 그날부터 티 나게 잘해준다',V:'"네 기분 탓이야"로 대화를 끝낸다',F:'"그럼 헤어질까?"가 먼저 튀어나온다'}],
+ ['갈등','연인 폰에 모르는 이성 이름이 뜬 걸 봤다.',
+  {S:'누구냐고 그냥 물어본다',A:'못 물어보고 3일 동안 혼자 소설을 쓴다',V:'안 물어본다. 대신 내 폰도 잠근다',F:'물어보는 대신 그 사람 SNS를 파서 신상을 알아낸다'}],
+ ['갈등','대판 싸운 날 밤.',
+  {S:'오늘은 그만하고 내일 다시 얘기하자고 한다',A:'지금 안 풀면 끝날 것 같아서, 상대가 잘 때까지 못 잔다',V:'폰 끄고 잔다. 세상 편하게',F:'"우리 그만하자" 쳐놓고 전송을 못 누른다'}],
+ ['이별','전 애인이 헤어진 지 한 달 만에 새 연애를 시작했다.',
+  {S:'솔직히 잠깐 아프고, 만다',A:'나는 대체 뭐였지. 사진첩을 처음부터 다시 본다',V:'그럴 줄 알았다. 역시 사람은 다 똑같다',F:'새 애인 SNS까지 찾아내서 나와 비교한다'}],
+ ['이별','헤어지자는 말을 들었을 때 나의 첫 반응.',
+  {S:'이유를 듣고, 받아들일 건 받아들인다',A:'울면서 매달린다. 자존심은 나중 문제다',V:'"그래" 한 마디. 안 운다. 근데 석 달 뒤에 온다',F:'"나도 그러려고 했어"라고 거짓말한다'}]
+];
+const EXT = [
+ ['썸','썸 상대가 내 친구들한테 나에 대해 물어보고 다닌다.',
+  {S:'관심이겠지, 귀엽네',A:'뭐라고 답했는지 친구를 취조한다',V:'부담스럽다. 왜 나를 조사하지',F:'좋으면서도, 갑자기 도망갈 준비를 한다'}],
+ ['연락','연인이 내 앞에서 폰을 뒤집어 놓는다.',
+  {S:'습관이겠지 하고 만다',A:'그날부터 모든 행동이 단서로 보인다',V:'나도 뒤집는다. 서로 프라이버시다',F:'아무렇지 않은 척하다가, 새벽에 결국 물어본다'}],
+ ['갈등','연인이 친구들 앞에서 나를 은근히 깎아내렸다.',
+  {S:'집 가는 길에 정색하고 말한다',A:'그 자리에선 같이 웃어놓고, 집에서 혼자 운다',V:'그 모임에 다시는 안 나간다',F:'그 자리에서 더 세게 받아친다. 전쟁이다'}],
+ ['이별','3년 차, 권태기가 왔다.',
+  {S:'여행이든 대화든 뭐라도 시도한다',A:'권태기는 끝의 시작 같아서 혼자 초조해진다',V:'각자의 시간을 늘린다 — 늘리다 보니 남이 된다',F:'헤어지자고 했다가 잡았다가를 반복한다'}],
+ ['성향','연애 중의 나를 한 문장으로 줄이면.',
+  {S:'좋아하는 만큼 표현하고, 아니면 아니라고 말한다',A:'상대의 온도가 0.5도만 떨어져도 알아챈다',V:'사랑하는데도 혼자 있는 시간이 더 급하다',F:'어제는 걔가 전부였다가, 오늘은 다 귀찮다'}],
+ ['성향','주변에서 말하는 내 연애의 단점.',
+  {S:'딱히 못 들어봤다. 너무 무던하다는 정도',A:'서운한 게 많다, 확인을 자꾸 받으려 한다',V:'벽이 있다, 속을 모르겠다',F:'종잡을 수 없다, 밀당하는 것 같다'}],
+ ['성향','연인에게 서운할 때 나의 기본값.',
+  {S:'그날 안에 말로 푼다',A:'말해도 쌓인다. 지난 서운함까지 소환된다',V:'말 안 한다. 대신 마음속 점수를 깎는다',F:'괜찮다고 해놓고, 나중에 다른 일로 터뜨린다'}],
+ ['성향','혼자 있을 때 문득 드는 생각.',
+  {S:'다음에 뭐 하고 놀지',A:'걔는 지금 내 생각 할까',V:'아, 편하다',F:'이 연애 언제 끝나지 — 근데 끝나면 어떡하지'}]
+];
+const DEEP = [
+ ['정밀','잠수이별 당했다. 2주째 연락 두절.',
+  {S:'장례 치르듯 정리한다. 저건 이별이 아니라 사고였다',A:'마지막 카톡을 백 번 읽으며 내 잘못을 찾는다',V:'오히려 깔끔하다고 생각해버린다 — 그 생각을 3년 뒤에 후회한다',F:'번호를 차단했다 풀었다를 반복한다'}],
+ ['정밀','전 애인에게서 "우리 다시 만나면 다를까?" 카톡이 왔다.',
+  {S:'달라질 게 없으면 안 만난다. 있으면 생각해본다',A:'답장 쓰는 데 2시간, 보내고 후회 이틀',V:'"글쎄"라고 보낸다. 근데 만나자면 나간다',F:'"아니"라고 보내놓고 프로필 사진을 바꾼다'}],
+ ['정밀','애인이 "너랑 있으면 외로워"라고 했다.',
+  {S:'제일 아픈 말이지만, 뭘 바꿔야 할지 같이 찾는다',A:'그 말이 몇 년이 지나도 잊히지 않는다',V:'나는 원래 이런 사람인데, 라고 생각한다. 미안하지만 안 바뀐다',F:'"나도 외로워"라고 받아친다. 사실이니까'}],
+ ['정밀','친구가 내 애인 험담을 한다. 근데 맞는 말이다.',
+  {S:'인정할 건 인정하고, 선은 긋는다',A:'그날부터 애인보다 친구 눈치를 본다',V:'내 연애 얘기를 아예 안 하게 된다',F:'같이 욕해놓고, 다음 날 애인한테 더 잘해준다'}],
+ ['정밀','결혼 얘기가 나왔다.',
+  {S:'시기와 조건을 현실적으로 얘기한다',A:'드디어 확신을 받았다는 생각에 안심부터 된다',V:'화제를 돌린다. 이번이 세 번째다',F:'이 사람이다 싶다가도, 밤에 혼자 도망 시뮬레이션을 돌린다'}],
+ ['정밀','연애를 쉬는 지금의 나.',
+  {S:'혼자도 괜찮고, 좋은 사람이 오면 또 한다',A:'소개팅 앱을 깔았다 지웠다, 주 3회',V:'이게 디폴트다. 연애가 이벤트였다',F:'외로워서 미치겠는데, 누가 다가오면 숨는다'}]
+];
+const AXES = [
+ {hiK:'다가감 R',loK:'B 선긋기',desc:'관계에 다가가는가, 거리를 확보하는가'},
+ {hiK:'확신 A',loK:'U 흔들림',desc:'관계 안에서 흔들리지 않는가, 확인이 필요한가'},
+ {hiK:'말함 T',loK:'K 담아둠',desc:'감정을 말로 꺼내는가, 안에 쌓아두는가'},
+ {hiK:'직면 I',loK:'O 이탈',desc:'갈등에 들어가는가, 갈등에서 나가는가'}
+];
+const FAMILY = {RA:'올림포스 계열 · 안정',RU:'에로스 계열 · 열정',BA:'아르테미스 계열 · 독립',BU:'디오니소스 계열 · 격정'};
+const MYTH = {
+ RATI:['아폴론형','균형의 연인','다가가고, 흔들리지 않고, 말하고, 직면한다. 연애의 교과서인데, 교과서라서 상대가 가끔 숨이 막힌다. 당신의 숙제는 상대의 서툰 감정을 "비효율"로 읽지 않는 것.'],
+ RATO:['헤스티아형','화로의 연인','관계를 데우는 데는 최고인데, 갈등은 식을 때까지 기다린다. 평화주의가 문제를 해결한 적은 없다 — 묵혀둔 것뿐이다.'],
+ RAKI:['아테나형','전략가 연인','감정 표현은 아끼지만 문제는 정면으로 푼다. 상대는 사랑받는 건 아는데, 가끔 결재받는 기분이라고 한다.'],
+ RAKO:['페넬로페형','기다리는 연인','말없이 오래 견디는 단단함이 있다. 그 인내를 상대가 모르면, 소진되는 건 당신 혼자다.'],
+ RUTI:['에로스형','과몰입 연인','사랑이 시작되면 세계가 그 사람 중심으로 재편된다. 뜨거움이 죄는 아니다 — 다만 유지비가 아주 비싸다. 정서 과열 지수 최상위 단골.'],
+ RUTO:['에코형','메아리 연인','표현은 많은데 부딪히는 게 무서워 상대의 말만 되울린다. 그렇게 목소리를 잃어간 요정의 이름을 당신이 갖고 있다.'],
+ RUKI:['헤라형','확인하는 연인','서운함을 차곡차곡 적립했다가 만기일에 정면 추궁한다. 적립 전에 말했으면 반은 해결됐을 일들이다.'],
+ RUKO:['오르페우스형','뒤돌아보는 연인','불안을 삼키고 참고 또 참다가, 결정적인 순간에 뒤돌아본다. 그리고 그 한 번으로 잃는다. 신화가 당신 얘기다.'],
+ BATI:['아르테미스형','독립 연인','혼자가 기본값이지만 할 말은 한다. 문제는 상대가 "우리"를 원하는 순간마다 당신이 "나"를 지킨다는 것.'],
+ BATO:['다프네형','도망치는 연인','다가오는 속도만큼 뒷걸음질친다. 월계수가 되기 전에, 무엇으로부터 도망치는지 한 번은 봐야 한다.'],
+ BAKI:['하데스형','지하의 연인','무뚝뚝하고 문은 좁다. 대신 들어온 한 사람에게는 왕국을 준다. 문제는 대부분 문 앞에서 얼어 죽는다는 것.'],
+ BAKO:['나르키소스형','자기만의 연인','담아두고, 피하고, 결국 자기 세계로 돌아간다. 외로움을 고독이라고 번역하며 사는 중이다.'],
+ BUTI:['디오니소스형','축제의 연인','뜨거웠다 차가웠다 — 관계가 축제 아니면 폐허다. 상대는 지금 안전바 없이 탑승 중이다.'],
+ BUTO:['카산드라형','예언하는 연인','끝을 먼저 보고 말해버린다. "우리 이러다 헤어져" — 그 말이 이별을 앞당기는 걸 알면서도 멈추지 못한다.'],
+ BUKI:['페르세포네형','두 세계의 연인','반년은 지상, 반년은 지하. 상대는 어느 계절의 당신을 사랑해야 할지 모른다. 본인도 모른다는 게 진짜 문제다.'],
+ BUKO:['이카로스형','추락하는 연인','제일 뜨겁게 날다가 예고 없이 사라진다. 잠수이별 통계의 주 공급원. 당신에게 필요한 건 날개가 아니라 착륙이다.']
+};
+const REPORT = {
+ RATI:{str:'감정과 문제를 분리할 줄 알고, 흔들리는 상대에게 기준점이 되어준다. 관계에 확신을 주는 능력은 16유형 중 최상급.',
+  risk:'너무 멀쩡한 게 문제다. 상대의 비합리적인 감정을 "왜?"로 받는 순간, 상대는 위로가 아니라 심판을 받는 기분이 든다. 갈등이 없는 게 아니라 상대가 포기했을 가능성을 점검해라.',
+  match:['RUTI 에로스형','네 확신이 상대의 불안을 실제로 줄여준다. 네 안정은 여기서 가장 값지다.'],
+  avoid:['BAKO 나르키소스형','둘 다 "문제없다"고 믿는 사이에 관계가 조용히 식는다.'],
+  rx:['일주일에 한 번은 네가 먼저 물어라 — "요즘 서운한 거 없어?"','상대의 감정에는 해결책보다 공감을 먼저 내놓아라.']},
+ RATO:{str:'관계의 온도를 일정하게 유지하는 능력. 함께 있으면 편안해지는 사람이라는 평을 듣는다.',
+  risk:'갈등 회피가 쌓이면 "좋은 사람인데 벽이 있다"가 된다. 문제를 덮은 채 웃는 게 습관이 되면, 상대는 네 진짜 마음을 영영 못 본다.',
+  match:['RATI 아폴론형','네가 미루는 대화를 대신 열어준다. 직면형 파트너가 네 평화를 진짜 평화로 만든다.'],
+  avoid:['BUKO 이카로스형','예고 없는 냉온탕에 네 평화주의가 갈려나간다.'],
+  rx:['서운한 건 3일 안에 말한다 — 규칙으로 박아라.','"괜찮아"를 하루에 한 번씩 줄여봐라. 대부분 안 괜찮았을 거다.']},
+ RAKI:{str:'위기에서 가장 침착한 파트너. 감정에 휩쓸리지 않고 문제를 실제로 해결한다.',
+  risk:'상대는 사랑이 아니라 프로젝트 관리를 받는 기분이 들 수 있다. 표현 빈도가 낮으면 "나 좋아하는 거 맞아?"라는 의심이 자란다.',
+  match:['RUTO 에코형','네게 부족한 표현을 상대가 채우고, 상대에게 부족한 중심을 네가 채운다.'],
+  avoid:['BAKI 하데스형','둘 다 말을 안 해서 침묵의 냉전으로 끝난다.'],
+  rx:['좋아하는 마음을 주 1회는 말로 보고해라. 어색해도 효과는 확실하다.','논리로 이긴 싸움은 관계에서는 진 싸움이다.']},
+ RAKO:{str:'인내와 헌신. 오래 가는 관계를 만드는 뚝심은 아무나 못 가진다.',
+  risk:'참는 걸 사랑이라고 착각하다 소진돼서, 어느 날 한 번에 떠난다. 상대는 네가 괜찮은 줄로만 알았을 거다.',
+  match:['RUKI 헤라형','물어봐주는 사람 옆에서 네 침묵이 풀린다.'],
+  avoid:['BUTI 디오니소스형','축제-폐허 사이클에 네 인내가 연료로 쓰인다.'],
+  rx:['참기 전에 한 번은 말해라. 한 번이면 된다.','"이번만 넘어가자"의 횟수를 세어봐라. 세 번째부터는 패턴이다.']},
+ RUTI:{str:'사랑의 몰입도와 표현력이 최상급. 사랑받는 느낌을 세상에서 제일 잘 주는 유형이다.',
+  risk:'관계가 자존감의 유일한 공급원이 되는 순간, 상대의 평범한 하루가 너한테는 위기가 된다. 상대는 연애를 하고 싶지, 산소호흡기가 되고 싶지 않다.',
+  match:['RATI 아폴론형','흔들리지 않는 상대가 네 불을 화재가 아니라 난로로 만든다.'],
+  avoid:['BATO 다프네형','쫓을수록 도망가는 무한 루프. 시작도 하지 마라.'],
+  rx:['연애 밖 세계(친구·운동·일)의 지분 30%를 사수해라.','확인 카톡은 쓰고 나서 10분 뒤에 보내라. 대부분 안 보내게 된다.']},
+ RUTO:{str:'공감과 맞춤의 달인. 상대가 원하는 걸 말하기 전에 캐치한다.',
+  risk:'맞추다 보면 네 취향과 의견이 증발한다. 상대는 어느 순간 "네가 없는 것 같다"고 느끼고, 그 말에 너는 또 맞춰준다.',
+  match:['BATI 아르테미스형','솔직하게 물어봐주는 상대 옆에서 네 목소리가 돌아온다.'],
+  avoid:['BUTI 디오니소스형','상대의 파도에 네가 통째로 흡수된다.'],
+  rx:['하루에 하나는 네 의견을 먼저 말해라. 메뉴 고르기부터.','싫은 건 싫다고, 주 1회 이상. 관계는 안 무너진다.']},
+ RUKI:{str:'관계에 진심이고 관찰력이 좋다. 문제를 제일 먼저 감지하는 레이더를 갖고 있다.',
+  risk:'감지한 걸 쌓았다가 만기일에 폭발시키니, 상대 입장에선 늘 "갑자기 왜 그래?"가 된다. 네겐 서사가 있지만 상대에겐 기습이다.',
+  match:['RATI 아폴론형','네 추궁을 대화로 바꿔주는 침착함. 네 레이더가 비로소 쓸모를 얻는다.'],
+  avoid:['BAKO 나르키소스형','질문에 침묵으로 답하는 상대는 네 최악의 연료다.'],
+  rx:['서운함 적립 금지 — 48시간 안에 1건씩 처리해라.','"너 왜 그랬어" 대신 "나 이래서 서운했어"로 문장을 바꿔라.']},
+ RUKO:{str:'깊이 사랑하고 오래 기억한다. 헌신의 밀도로는 최상위권.',
+  risk:'말 못 한 불안이 쌓이다가 결정적인 순간에 터진다 — 확인, 의심, 뒤돌아봄. 오르페우스는 딱 한 번 뒤돌아봤다는 걸 기억해라.',
+  match:['RUTI 에로스형','묻기 전에 답을 주는 상대. 네 불안이 일할 필요가 없어진다.'],
+  avoid:['BATO 다프네형','침묵과 도망의 조합은 네 불안의 증폭기다.'],
+  rx:['불안은 쌓이기 전에 말로 꺼내라. 유통기한이 지나면 폭발물이 된다.','"물어봐도 되는 것"의 목록을 상대와 미리 합의해둬라.']},
+ BATI:{str:'자립적이고 솔직하다. 의존 없는 건강한 거리를 아는 몇 안 되는 유형.',
+  risk:'"우리"가 필요한 순간에도 "나"를 지킨다. 네 독립이 상대에겐 외로움의 다른 이름일 수 있다.',
+  match:['BAKI 하데스형','서로의 거리를 존중하면서도 신뢰가 쌓이는 조합.'],
+  avoid:['RUTI 에로스형','상대의 몰입이 너에겐 침공으로 느껴지고, 네 거리두기는 상대에게 형벌이다.'],
+  rx:['혼자 시간은 통보 말고 예고로 — "주말에 나 혼자 충전할게, 일요일 저녁에 보자."','주 1회는 네가 먼저 만나자고 해라.']},
+ BATO:{str:'신중함. 아무나 들이지 않아서 관계 사고가 적고, 들어온 사람에겐 진심이다.',
+  risk:'호감이 커질수록 도망치고 싶어지는 역설. 상대는 잘 되어가는 줄 알았다가 영문도 모른 채 차인다.',
+  match:['RAKO 페넬로페형','속도를 존중하고 기다려주는 사람. 네 도주 본능이 작동할 이유가 없어진다.'],
+  avoid:['RUKI 헤라형','확인 요구가 네 도주 본능을 격발시킨다.'],
+  rx:['도망치고 싶어지면 24시간만 유예해라. 하루 지나면 대부분 가짜 경보다.','"부담스러워" 대신 "속도를 조금 줄이자"라고 말해라. 뜻은 같은데 결과가 다르다.']},
+ BAKI:{str:'신뢰가 쌓인 상대에게 주는 의리와 안정감은 최고 수준. 한 번 들인 사람은 안 버린다.',
+  risk:'문이 너무 좁다. 상대가 지쳐 떠난 뒤에야 문을 여는 게 이 유형의 클리셰다. 표현 부재는 무관심으로 오역된다.',
+  match:['RATO 헤스티아형','네 왕국까지 걸어와서 온기를 공급해주는 사람.'],
+  avoid:['BATO 다프네형','서로 문 앞에서 대기만 하다 끝난다.'],
+  rx:['애정 표현 최소 할당량을 정해라 — 주 3회, 문자도 인정.','네 침묵은 배려가 아니라 정보 부족이다. 상대는 독심술사가 아니다.']},
+ BAKO:{str:'자기 세계가 단단해서 연애에 휘둘리지 않는다. 혼자서도 완결된 사람.',
+  risk:'상대가 네 세계의 관람객으로만 존재하게 된다. 외로움을 먼저 느끼는 건 언제나 상대 쪽이고, 통보를 먼저 받는 건 언제나 너다.',
+  match:['BATI 아르테미스형','각자의 세계를 존중하면서 교집합을 만드는 조합.'],
+  avoid:['RUTI 에로스형','네 거리두기가 상대에겐 형벌이고, 상대의 몰입이 너에겐 소음이다.'],
+  rx:['상대의 세계에 주 1회 입장해라 — 관심사 질문 하나면 된다.','혼자 정리한 결론을 통보하지 말고, 정리 중인 생각을 상의해라.']},
+ BUTI:{str:'관계에 생기와 강렬함을 주는 사람. 너와의 연애는 적어도 지루하지 않다.',
+  risk:'감정의 낙차가 상대의 안정감을 갉아먹는다. 문제는 축제가 아니라 축제 다음 날의 냉담이다.',
+  match:['RAKO 페넬로페형','네 진폭을 받아내는 안정감. 단, 상대의 인내를 연료로 쓰지 마라.'],
+  avoid:['RUKI 헤라형','네 파도마다 추궁이 따라붙어 서로를 소모한다.'],
+  rx:['식은 날에도 최소한의 신호를 보내라 — "오늘 나 방전, 너 때문 아님."','큰 결정은 감정의 고점에서도 저점에서도 내리지 마라.']},
+ BUTO:{str:'관계의 문제를 제일 빨리, 제일 정확하게 본다. 그 통찰은 진짜다.',
+  risk:'예언을 무기로 쓰는 게 문제다. "거봐 내 말이 맞지"는 논쟁에서 이기고 관계에서 진다. 말한 예언은 자기실현된다.',
+  match:['RATI 아폴론형','네 예언을 공포가 아니라 정보로 받아주는 사람.'],
+  avoid:['BUKO 이카로스형','네 불길한 예언을 현실로 만들어주는 상대.'],
+  rx:['불길한 예감은 선언 말고 질문으로 — "요즘 우리 어때?"','맞춘 예언을 승리로 집계하지 마라. 그건 패배 기록이다.']},
+ BUKI:{str:'지상과 지하를 모두 아는 사람만의 깊은 감수성과 이해력. 상대의 어둠을 겁내지 않는다.',
+  risk:'계절이 바뀔 때 상대에게 예보를 안 준다. 상대는 어제의 너와 오늘의 너 사이에서 길을 잃는다.',
+  match:['RAKO 페넬로페형','네 계절을 기다려주는 사람. 겨울에도 안 떠난다.'],
+  avoid:['BUTI 디오니소스형','두 개의 날씨가 충돌하면 관계는 재해가 된다.'],
+  rx:['지하 시즌에 들어갈 땐 통보라도 해라 — "나 요즘 가라앉는 중, 기다려줘."','돌아왔을 때 기다려준 것에 대한 고마움을 반드시 말로 해라.']},
+ BUKO:{str:'사랑에 빠지는 재능은 16유형 중 최고. 시작의 에너지로는 아무도 못 이긴다.',
+  risk:'착륙을 못 해서 모든 비행이 추락으로 끝난다. 네 잠수는 상대의 다음 연애까지 망가뜨린다는 걸 알아야 한다.',
+  match:['RATO 헤스티아형','서서히 착륙시켜주는 활주로 같은 사람.'],
+  avoid:['RUKO 오르페우스형','네 잠수가 상대의 평생 상처가 된다. 서로를 위해 피해라.'],
+  rx:['식는 신호가 오면 잠수 말고 통보해라. 비겁한 통보가 친절한 잠수보다 낫다.','3개월 차를 달력에 표시해두고, 그 주에는 어떤 결정도 내리지 마라.']}
+};
+const TYPES={S:'안정',A:'불안',V:'회피',F:'혼란'};
+const DOMAINS=['썸','연락','갈등','이별'];
+
+const QLIST=CORE.concat(EXT).concat(DEEP);
+let answers=[],idx=0;
+const SID=Math.random().toString(36).slice(2,10);
+const UTM=new URLSearchParams(location.search).get('utm_source')||'';
+const $=id=>document.getElementById(id);
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0)}
+document.querySelectorAll('.chip-row').forEach(row=>{row.addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  row.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));e.target.classList.add('sel');});});
+
+function phaseOf(i){return i<8?'core':(i<16?'ext':'deep')}
+function accAt(n){if(n<8)return null;
+  if(n<=16)return Math.round(62+(n-8)*3.25);
+  return Math.min(97,Math.round(88+(n-16)*1.5))}
+
+function startQuiz(){
+  const nick=$('f-nick').value.trim();
+  const gender=document.querySelector('#f-gender .sel');
+  const age=parseInt($('f-age').value,10);
+  let err='';
+  if(!nick)err='닉네임을 입력해주세요';
+  else if(!gender)err='성별을 선택해주세요';
+  else if(!age||age<14||age>99)err='나이를 입력해주세요';
+  if(err){
+    $('f-err').textContent=err;$('f-err').style.display='block';
+    if(!nick)$('f-nick').style.borderColor='var(--red)';
+    if(!age||age<14||age>99)$('f-age').style.borderColor='var(--red)';
+    return;
+  }
+  $('f-err').style.display='none';
+  idx=0;answers=[];go('s-quiz');renderQ()
+}
+function resumeQuiz(){go('s-quiz');renderQ()}
+function exitNow(){showResult()}
+function renderQ(){
+  const q=QLIST[idx];
+  const dom=q[0],txt=q[1],opts=q[2];
+  const num=idx+1;
+  $('q-domain').textContent=dom+' 영역';$('q-count').textContent='문항 '+num+' / 22';
+  const a=accAt(answers.length);
+  $('q-acc').innerHTML=a?('지금 종료 시 정밀도 <b>'+a+'%</b>'):'8문항부터 판정 가능';
+  $('q-exit').style.display=answers.length>=8?'block':'none';
+  $('q-prog').style.width=(num/22*100)+'%';
+  $('q-text').textContent='Q'+num+'. '+txt;
+  const keys=Object.keys(opts).sort(()=>Math.random()-.5);
+  $('q-opts').innerHTML='';
+  keys.forEach(k=>{const d=document.createElement('div');d.className='opt';d.textContent=opts[k];
+    d.onclick=()=>{answers.push({phase:phaseOf(idx),domain:dom,type:k});idx++;
+      if(idx<QLIST.length)renderQ();else showResult()};$('q-opts').appendChild(d)});
+}
+
+function counts(f){const c={S:0,A:0,V:0,F:0};
+  answers.filter(f||(()=>true)).forEach(a=>c[a.type]+=(a.phase==='deep'?1.5:1));return c}
+function axScores(){
+  const c=counts(),tot=Object.values(c).reduce((a,b)=>a+b,0)||1;
+  const r=(c.S+c.A)/tot, a=(c.S+c.V)/tot;
+  let t=0,tn=0;answers.forEach(x=>{const w=(x.domain==='성향'||x.domain==='연락')?1.5:1;
+    tn+=w;if(x.type==='S'||x.type==='A')t+=w});
+  let i=0,inn=0;answers.forEach(x=>{const w=(x.domain==='갈등'||x.domain==='이별'||x.domain==='정밀')?1.5:1;
+    inn+=w;if(x.type==='S'||x.type==='A')i+=w});
+  return [r,a,t/(tn||1),i/(inn||1)];
+}
+function codeFrom(sc){return (sc[0]>=.5?'R':'B')+(sc[1]>=.5?'A':'U')+(sc[2]>=.5?'T':'K')+(sc[3]>=.5?'I':'O')}
+function domainType(d){const c=counts(a=>a.domain===d);const pri={A:3,V:2,F:1,S:0};
+  return Object.keys(c).sort((x,y)=>c[y]-c[x]||pri[y]-pri[x])[0]}
+
+function showResult(){
+  const n=answers.length,full=n>=16,deep=n>=22;
+  const nick=$('f-nick').value||'익명',mbti=$('f-mbti').value;
+  const sc=axScores(),code=codeFrom(sc),m=MYTH[code];
+  const acc=accAt(n)||62;
+  const ageV=$('f-age').value?$('f-age').value+'세':'-';
+  $('r-code').textContent=code.split('').join(' ');
+  $('r-type').textContent=m[0];$('r-subtitle').textContent=m[1];
+  $('r-family').textContent=FAMILY[code[0]+code[1]];
+  $('r-name').textContent=nick+' · '+(document.querySelector('#f-gender .sel')?.dataset.v||'-')+' · '+ageV+(mbti!=='모름'?' · '+mbti:'');
+  $('r-acc-line').textContent='판정 정밀도 '+acc+'% · '+n+'문항 기준';
+  $('r-fact').textContent=full?m[2]:(n+'문항 기준 잠정 판정입니다. 16문항 이상 응시하면 4축 분석과 영역별 분해가 생성됩니다. '+m[2]);
+  if(full){
+    $('r-axes').innerHTML=AXES.map((ax,i)=>{
+      const p=Math.round(sc[i]*100),hiWin=p>=50;
+      return '<div class="ax"><div class="lbl">'
+        +'<span class="'+(hiWin?'win':'lose')+'">'+ax.hiK+' · '+p+'%</span>'
+        +'<span class="'+(!hiWin?'win':'lose')+'">'+(100-p)+'% · '+ax.loK+'</span></div>'
+        +'<div class="tr"><div class="fl" style="width:'+p+'%"></div></div>'
+        +'<div class="desc">'+ax.desc+'</div></div>';
+    }).join('');
+    $('r-grid').innerHTML=DOMAINS.map(d=>
+      '<div class="cell"><div class="d">'+d+' 영역</div><div class="t">'+TYPES[domainType(d)]+' 우세</div></div>').join('');
+    $('r-ax-card').style.display='block';$('r-domain-card').style.display='block';
+  }else{$('r-ax-card').style.display='none';$('r-domain-card').style.display='none'}
+  if(deep){
+    const c=counts(),tot=Object.values(c).reduce((a,b)=>a+b,0);
+    const mh=Math.round((c.A+c.F)/tot*100);
+    $('r-pin').style.left='calc('+mh+'% - 2px)';
+    $('r-menhera').textContent=mh+'%';
+    $('r-menhera-note').textContent=mh<=30?'안정권 — 남 얘기하듯 살면 됩니다':(mh<=60?'잠복기 — 사람을 잘못 만나면 발현됩니다':(mh<=85?'발현 — 본인도 이미 알고 있을 겁니다':'자타공인 — 상대에게 사전 안내가 필요한 수준'));
+    const selfC=counts(a=>a.domain==='성향'),actC=counts(a=>a.domain!=='성향');
+    const pri={A:3,V:2,F:1,S:0};
+    const sMain=Object.keys(selfC).sort((x,y)=>selfC[y]-selfC[x]||pri[y]-pri[x])[0];
+    const aMain=Object.keys(actC).sort((x,y)=>actC[y]-actC[x]||pri[y]-pri[x])[0];
+    $('r-mismatch').innerHTML=sMain===aMain
+      ?'<b>자기인식 일치.</b> 스스로 보는 나('+TYPES[sMain]+' 우세)와 상황에서의 행동('+TYPES[aMain]+' 우세)이 일치합니다. 드문 결과입니다 — 최소한 자신에게는 정직한 사람입니다.'
+      :'<b>자기인식-행동 불일치.</b> 스스로는 <b>'+TYPES[sMain]+' 우세</b>라고 인식하지만, 상황 응답에서는 <b>'+TYPES[aMain]+' 우세</b>가 관찰됩니다. 연애가 같은 지점에서 반복적으로 어긋난다면, 원인은 대개 이 간극에 있습니다.';
+    const rep=REPORT[code];
+    if(rep){
+      $('r-report').innerHTML=
+        '<div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:6px">강점</div>'
+        +'<p class="fact" style="margin-bottom:16px">'+rep.str+'</p>'
+        +'<div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px">위험 패턴</div>'
+        +'<p class="fact" style="margin-bottom:16px">'+rep.risk+'</p>'
+        +'<div class="grid4" style="margin-bottom:16px">'
+        +'<div class="cell" style="text-align:left"><div class="d">잘 맞는 상대</div><div class="t" style="font-size:14px">'+rep.match[0]+'</div><div style="font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.5">'+rep.match[1]+'</div></div>'
+        +'<div class="cell" style="text-align:left"><div class="d">경계 조합</div><div class="t" style="font-size:14px">'+rep.avoid[0]+'</div><div style="font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.5">'+rep.avoid[1]+'</div></div>'
+        +'</div>'
+        +'<div style="font-size:13px;font-weight:700;color:var(--body);margin-bottom:6px">처방</div>'
+        +'<p class="fact">1. '+rep.rx[0]+'<br>2. '+rep.rx[1]+'</p>';
+      $('r-report-card').style.display='block';
+    }
+    $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
+  }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
+  $('r-stat').textContent='같은 코드('+code+') 참여자 비율 — 베타 기간 통계 수집 중';
+  go('s-result');
+  sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
+    gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
+    code,n,acc,answers:answers.map(a=>a.type).join('')});
+}
+
+function submitPreorder(){
+  const em=$('p-email').value.trim();
+  if(!em||em.indexOf('@')<0){$('p-email').style.borderColor='var(--red)';return}
+  sendLog({kind:'preorder',sid:SID,utm:UTM,email:em,
+    code:$('r-code').textContent.replace(/ /g,''),mbti:$('f-mbti').value});
+  $('preorder-form').style.display='none';$('preorder-done').style.display='block';
+}
+
+function sendLog(payload){
+  if(!ENDPOINT)return console.log('LOG',JSON.stringify(payload));
+  try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})}catch(e){}
+}
+
+function saveImage(){
+  html2canvas($('report'),{backgroundColor:'#f8f3f5',scale:2}).then(cv=>{
+    const a=document.createElement('a');a.download='RATI_'+($('f-nick').value||'결과')+'.png';
+    a.href=cv.toDataURL('image/png');a.click()});
+}
+</script>
+</body>
+</html>
