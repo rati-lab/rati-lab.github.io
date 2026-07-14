@@ -187,6 +187,12 @@
         <div class="r-meta" id="r-name"></div>
         <div class="r-meta" id="r-acc-line" style="margin-top:4px"></div>
       </div>
+      <div class="card" id="stat-card" style="display:none;padding:20px 22px;text-align:center">
+        <div id="st-total" style="font-size:13px;color:var(--muted);font-weight:600"></div>
+        <div id="st-main" style="font-size:15.5px;margin:7px 0 12px;line-height:1.5"></div>
+        <div style="background:#f0e9ec;border-radius:99px;height:12px;overflow:hidden"><i id="st-bar" style="display:block;height:100%;width:0;border-radius:99px;transition:width .9s ease"></i></div>
+        <div id="st-badge" style="display:none;margin-top:12px;font-size:13.5px;font-weight:800;padding:7px 16px;border-radius:99px"></div>
+      </div>
       <div class="card" id="r-ax-card"><h2>4축 분석</h2><div id="r-axes"></div></div>
       <div class="card" id="r-domain-card"><h2>영역별 판정</h2><div class="grid4" id="r-grid"></div></div>
       <div class="card"><h2>소견</h2><p class="fact" id="r-fact"></p><p id="r-chars" style="margin-top:14px;font-size:13.5px;font-weight:700;color:var(--blue)"></p></div>
@@ -207,7 +213,7 @@
         </div>
       </div>
       <div class="card" id="r-all-card" style="display:none"><h2>16유형 비교 — 너는 어디쯤이야?</h2><div id="r-all"></div></div>
-      <p class="stat-hook" id="r-stat"></p>
+      
     </div>
 
     <div id="r-deep-cta">
@@ -562,7 +568,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  $('r-stat').textContent='참여자 통계 불러오는 중…';loadStat(code);
+  loadStat(code,fc);
   go('s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -583,16 +589,20 @@ function sendLog(payload){
     headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})}catch(e){}
 }
 
-function loadStat(code){
+function loadStat(code,fc){
   fetch('https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){
     var total=j.total||0, mine=(j.counts&&j.counts[code])||0;
-    if(total<20){$('r-stat').textContent='아직 표본이 모이는 중이에요 (현재 '+total+'명)';return}
+    if(total<20)return;
     var pct=Math.round(mine/total*1000)/10;
     var ranked=Object.keys(j.counts).sort(function(a,b){return j.counts[b]-j.counts[a]});
     var rank=ranked.indexOf(code)+1;
-    var rare=pct<=6;
-    $('r-stat').innerHTML='지금까지 <b>'+total+'명</b> 중 나와 같은 <b>'+code+'</b>형은 <b>'+pct+'%</b>'+(rare?' — 희귀 유형이에요 🦄':'')+' · 16유형 중 '+rank+'번째로 흔한 유형';
-  }).catch(function(){$('r-stat').textContent=''});
+    $('st-total').innerHTML='지금까지 <b>'+total+'명</b>이 검사했어요';
+    $('st-main').innerHTML='나와 같은 <b>'+code+'</b>형은 <b style="font-size:24px;color:'+fc[1]+'">'+pct+'%</b><span style="color:var(--muted)"> · 16유형 중 '+rank+'번째</span>';
+    var bar=$('st-bar');bar.style.background='linear-gradient(90deg,'+fc[0]+','+fc[1]+')';
+    if(pct<=6){var b=$('st-badge');b.style.display='inline-block';b.style.background=fc[1];b.style.color='#fff';b.textContent='🦄 상위 '+pct+'% 희귀 유형'}
+    $('stat-card').style.display='block';
+    setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
+  }).catch(function(){});
 }
 function sendSuggest(){
   var el=$('sug-text'),t=el.value.trim();
