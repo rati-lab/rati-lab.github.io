@@ -177,6 +177,22 @@
     <div id="q-opts"></div><div style="text-align:center;margin-top:12px;font-size:12px;color:#c4b6bb">완벽히 일치하는 답은 없어요 — 제일 가까운 걸 고르세요</div><div id="q-back" style="display:none;text-align:center;margin-top:14px;font-size:13.5px;color:#9a8b92;cursor:pointer;padding:6px">← 이전 문항으로 (답 수정)</div>
   </section>
 
+  <section class="screen" id="s-story">
+    <div class="card" style="padding:30px 22px;text-align:center">
+      <div style="font-size:42px;margin-bottom:4px">🎉</div>
+      <h2 style="margin:0 0 4px">검사 끝!</h2>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 16px">결과가 준비됐어요</p>
+      <button class="btn" onclick="go('s-result')">결과 보러 가기 →</button>
+    </div>
+    <div class="card" style="padding:22px;text-align:left">
+      <b style="font-size:14.5px">연인과의 문제, 썸, 짝사랑… 지금 하고 있는 이야기가 있다면 들려주세요 💌</b>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.65;margin:8px 0 4px">완전 익명이에요. 흥미로운 이야기로 선별되면 <b style="color:var(--body)">다른 유형들의 의견</b>을 들어볼 수 있어요.</p>
+      <p style="font-size:11px;color:#b9a8ae;line-height:1.6;margin:0 0 10px">채택 시 익명 보장을 위해 내용을 각색해 인스타그램 만화 등으로 공개될 수 있어요.</p>
+      <textarea id="story-text" maxlength="1000" rows="4" placeholder="예) 3일째 답장이 건조한데 물어봐도 '아니 그냥'이라고만 해요…" style="width:100%;box-sizing:border-box;border:1.5px solid #e5d9dd;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;resize:vertical;background:#fffdfe;color:var(--body);outline:none"></textarea>
+      <button class="btn sub" style="margin-top:10px" onclick="sendStory()">이야기 남기고 결과 보기</button>
+    </div>
+  </section>
+
   <section class="screen" id="s-result">
     <div id="report">
       <div class="card r-head" style="padding:34px 22px 30px">
@@ -237,16 +253,6 @@
         <button class="btn" onclick="submitPreorder()">출시 알림 받기</button>
       </div>
       <p style="font-size:10.5px;color:#8d8188;line-height:1.6;margin-top:10px">이메일은 커플 리포트 출시 알림 발송 목적으로만 사용되며, 발송 후 파기됩니다. 등록 시 수집·이용에 동의한 것으로 봅니다.</p><div class="done" id="preorder-done" style="display:none">등록 완료 — 출시 때 가장 먼저 알려드릴게요</div>
-    </div>
-
-    <div class="card" style="padding:20px 22px;text-align:left">
-      <b style="font-size:14px">이런 상황도 물어봐줬으면 💌</b>
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:6px 0 10px">연애하다 겪은 애매한 상황을 던져주세요. 다음 버전 문항 만들 때 참고합니다.</p>
-      <div id="sug-box">
-        <textarea id="sug-text" maxlength="500" rows="3" placeholder="예) 애인이 내 스토리는 안 보는데 게임은 접속 중일 때…" style="width:100%;box-sizing:border-box;border:1.5px solid #e5d9dd;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;resize:vertical;background:#fffdfe;color:var(--body);outline:none"></textarea>
-        <button class="btn" style="margin-top:10px" onclick="sendSuggest()">보내기</button>
-      </div>
-      <div class="done" id="sug-done" style="display:none">접수 완료! 좋은 상황이면 다음 버전에 들어갑니다 🙏</div>
     </div>
 
     <button class="btn" onclick="saveImage()">결과 이미지 저장</button>
@@ -575,7 +581,7 @@ function showResult(){
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
   loadStat(code,fc);
-  go('s-result');
+  go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
     code,n,acc,answers:answers.map(a=>a.type).join('')});
@@ -617,11 +623,11 @@ function loadStat(code,fc){
     setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
   }).catch(function(){});
 }
-function sendSuggest(){
-  var el=$('sug-text'),t=el.value.trim();
+function sendStory(){
+  var el=$('story-text'),t=el.value.trim();
   if(t.length<5){el.style.borderColor='#e85d8a';el.focus();return}
-  sendLog({kind:'suggest',sid:SID,utm:UTM,code:($('r-code').textContent||'').replace(/ /g,''),text:t.slice(0,500)});
-  $('sug-box').style.display='none';$('sug-done').style.display='block';
+  sendLog({kind:'suggest',sid:SID,utm:UTM,code:($('r-code').textContent||'').replace(/ /g,''),text:'[사연] '+t.slice(0,1000)});
+  go('s-result');
 }
 function saveImage(){
   html2canvas($('report'),{backgroundColor:'#f8f3f5',scale:2}).then(cv=>{
