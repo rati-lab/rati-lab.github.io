@@ -213,6 +213,7 @@
       <div class="card" id="r-ax-card"><h2>4축 분석</h2><p style="font-size:11.5px;color:var(--muted);margin:2px 0 10px">막대는 참여자 평균(50%) 대비 나의 상대 위치예요</p><div id="r-axes"></div></div>
       <div class="card" id="r-domain-card"><h2>영역별 판정</h2><div class="grid4" id="r-grid"></div></div>
       <div class="card" id="sw-card" style="text-align:left"><h2>강점 & 주의할 점</h2><div id="sw-body" style="font-size:13px;line-height:1.85"></div></div>
+      <div class="card" id="mx-card" style="text-align:left;display:none"><h2>🧬 성격유형 × RATI 조합</h2><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px"><div id="mx-combo" style="font-size:18px;font-weight:900;letter-spacing:-.3px"></div><div id="mx-badge"></div></div><div id="mx-head" style="font-size:15px;font-weight:800;margin:10px 0 8px;letter-spacing:-.3px"></div><div id="mx-body" style="font-size:13px;line-height:1.85;color:#5a4e54"></div><div id="mx-rare" style="margin-top:12px;padding-top:10px;border-top:1px dashed #eee2e7;font-size:12px;color:#9a8b92;font-weight:600"></div></div>
       <div class="card"><h2>소견</h2><p class="fact" id="r-fact"></p><p id="r-chars" style="margin-top:14px;font-size:13.5px;font-weight:700;color:var(--blue)"></p></div>
       <div class="card" id="r-deep-card" style="display:none">
         <h2>정밀 지표</h2>
@@ -274,7 +275,7 @@
     <button class="btn sub" onclick="location.reload()">다시 검사하기</button>
     <p class="footer-note">
       본 검사는 성인 애착이론을 참고한 콘텐츠이며, 임상 진단·치료 도구가 아닙니다.<br>
-      응답은 익명 통계로만 활용됩니다 · 참여자 통계는 정식 오픈 시 공개됩니다.
+      응답은 익명 통계로만 활용됩니다 · 참여자 통계는 정식 오픈 시 공개됩니다.<br>MBTI®는 The Myers-Briggs Company의 등록상표이며, 본 테스트는 해당 기관 및 어세스타와 무관한 독립 콘텐츠입니다.
     </p>
   </section>
 </div>
@@ -595,7 +596,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  renderNr(code,sc);renderSW(code);renderPv(code);loadStat(code,fc);
+  renderNr(code,sc);renderSW(code);renderMx(code);renderPv(code);loadStat(code,fc);
   go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -637,6 +638,75 @@ function loadStat(code,fc){
     $('stat-card').style.display='block';
     setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
   }).catch(function(){});
+}
+var MXN=461;
+var MXC={ISTP_BUKO:17,ISTJ_RATI:16,ISTP_BAKO:14,INTP_BAKO:13,ISTP_RATI:12,ESTJ_RATI:11,INFP_RATI:9,ISTP_RUTI:9,ISFP_RUKI:9,ESTP_RATI:8,INFP_RUKI:8,ISTJ_BAKO:8,INFP_BUKO:8,ISFP_BUKO:8,ENTP_RATI:7,INFJ_RATI:6,ISFP_RATI:6,ESFJ_RUTI:6,INFJ_BUKO:6,ISFP_BAKO:6,ENTJ_RATI:5,ISTP_RAKO:5,ENFP_RUTI:5,ISTP_BUKI:5,INTP_BUKI:5,INFP_BAKO:5,INFP_RUTI:5,ENTJ_BUKI:5,ENFP_RUKI:5,ISTJ_BUKO:5,ENTJ_BAKO:4,INFP_RUKO:4,INTP_RUKO:4,INTP_RATI:4,ESFJ_RATI:4,ENTP_BUTI:4,ISTJ_RUKI:4,INFP_BUTI:4,ISTJ_RUTI:4,INFJ_RAKI:4,ISTP_BAKI:4,ISFJ_BUKO:4,INTP_RUTI:4,INTP_BUKO:3,ENFP_RATI:3,ISFJ_RAKO:3,ENTJ_RUTI:3,INTJ_RATI:3,ENFJ_BUKO:3,ENTP_RUTI:3,ISFP_RATO:3,ISTP_BUTI:3,INTJ_BAKO:3,ENTP_RUKI:3,ENFJ_RATI:3,ISFP_BUTI:3,ENFP_RUKO:3,ENTP_BAKO:3,INTJ_BUKO:3,ISTP_RUKI:3,ESTJ_BATI:3,ISFP_RUKO:3,ISFP_RUTI:2,ISTP_RAKI:2,INTP_RAKI:2,ESFP_RUTI:2,ESFP_BUKO:2,ESFP_BUTI:2,INFJ_BAKO:2,ENFP_BUKO:2,INTJ_BATI:2,INTJ_BUTI:2,ESTP_BAKO:2,ISFJ_RUTI:2,ESFJ_BUTI:2,ENFP_BAKO:2,ENFJ_RUTI:2,ISFP_RAKI:2,ISTP_BATI:2,ESFP_RUKI:2,INFP_BAKI:2,ESTJ_RUTI:2,INTJ_RUTI:2,ENTJ_RAKI:2,ISFJ_RUKI:2,ENFP_BUKI:2,INFJ_RUKI:2,ISFJ_BUTI:2,INFP_RAKO:2,ISFP_BUKI:2,ESTJ_BUTI:2,ISFJ_BUKI:2,ISFJ_RAKI:1,ISTP_RATO:1,ESTP_RATO:1,ISTP_BATO:1,INFJ_RUTI:1,ISTJ_BUKI:1,INTJ_BUKI:1,ENTJ_BATI:1,ISTJ_BAKI:1,ISTJ_RUKO:1,ENTP_BUKI:1,ENTP_BUKO:1,INTJ_RUKI:1,ENFP_BAKI:1,ENTP_RATO:1,INFJ_BATO:1,ENTP_BATO:1,ESTP_BUKO:1,INFP_RATO:1,ESTP_RUKI:1,ISFJ_RUKO:1,ISFJ_RATI:1,INFJ_BATI:1,ENTP_BATI:1,INFJ_BUTI:1,ISTJ_BUTI:1,ENFP_BUTO:1,INFJ_RUKO:1,ESFJ_BATO:1,ESFP_RAKO:1,ENTJ_RUKI:1,INTP_RAKO:1,INFP_BATI:1,ISTJ_RAKI:1,INTP_BAKI:1,INFP_BUKI:1,ENTJ_BUTI:1,ESFJ_BAKO:1,ENFP_RAKI:1,ENTP_RAKO:1,ENTP_RAKI:1,ESTJ_BUKO:1,INTP_BUTI:1,INFJ_RAKO:1,INTJ_RAKO:1,ESTJ_RATO:1,ENFJ_RUKI:1,ISTJ_RATO:1,ISFJ_BAKI:1,ESTP_BATI:1,INFJ_BUKI:1,INTP_BATO:1,ESFJ_RAKI:1,INTP_RUKI:1,ISFP_BATI:1};
+var MXP={
+ISTJ:'감정보다 절차가 먼저인 원칙주의자',ISFJ:'말없이 챙기는 조용한 수호자',
+INFJ:'속은 깊은데 문은 좁은 통찰가',INTJ:'거리를 기본값으로 두는 전략가',
+ISTP:'감정 표현에 인색한 쿨한 실용주의자',ISFP:'표현은 아끼지만 속은 말랑한 감성파',
+INFP:'마음속에 소설 한 권씩 쓰는 몽상가',INTP:'사랑도 머리로 먼저 해부하는 분석가',
+ESTP:'일단 부딪히고 보는 행동파',ESFP:'감정이 얼굴에 다 드러나는 무대 체질',
+ENFP:'어디서든 에너지가 넘치는 인간 폭죽',ENTP:'밀당도 게임처럼 즐기는 토론가',
+ESTJ:'연애도 프로젝트처럼 굴리는 계획형',ESFJ:'모두의 안부를 챙기는 분위기 관리자',
+ENFJ:'상대 마음을 먼저 읽어버리는 지휘자',ENTJ:'목표 앞에서 망설임 없는 통솔가'
+};
+var MXH={ISTP_BUKO:'무심한 줄 알았는데, 불이었다',ESTJ_RATI:'연애마저 모범생',ENFP_BAKO:'인싸의 밀실',INTP_BAKO:'사랑도 논문처럼',ISFP_RATO:'말없이 데우는 화로'};
+var MXMIS={
+'0R':['조용한 직진러','평소엔 혼자가 편한 사람인데, 마음이 생기면 먼저 다가가는 쪽으로 바뀐다'],
+'0B':['모두의 친구, 좁은 문','어디서든 사람들과 잘 어울리지만 정작 연애에서는 문을 천천히 여는 쪽이다'],
+'1A':['감성파의 단단한 중심','감성이 풍부한 유형인데 연애에서는 의외로 중심이 잘 흔들리지 않는다'],
+'1U':['이성파의 시끄러운 심장','평소엔 이성적인 편인데 연애 앞에서는 마음의 날씨가 자주 바뀐다'],
+'2T':['조용한 사람의 뜨거운 표현','말수가 적은 편인데 연애 감정만큼은 밖으로 꺼내는 쪽이다'],
+'2K':['수다쟁이의 비밀 금고','말은 많은 편인데 정작 자기 마음은 안에서 세 번 굴리고 꺼낸다']
+};
+var MXMAT={
+'0R':['보이는 그대로, 직진','사람을 향하는 에너지가 연애에서도 그대로 직진이 된다'],
+'0B':['혼자만의 방이 있는 사랑','혼자의 시간이 필요한 성향이 연애에서도 그대로 이어진다'],
+'1A':['연애에도 흔들림이 없다','이성적인 균형감이 연애의 안정감으로 그대로 이어진다'],
+'1U':['온몸이 레이더','풍부한 감수성이 연애에서는 민감한 레이더로 작동한다'],
+'2T':['표현이 곧 무기','넘치는 표현력이 연애에서도 그대로 무기가 된다'],
+'2K':['신중함도 재능','아끼는 말수가 연애에서도 신중함으로 이어진다']
+};
+function renderMx(code){
+  var el=$('mx-card');if(!el)return;
+  var sel=$('f-mbti');var mb=((sel&&sel.value)||'').toUpperCase();
+  if(!/^[EI][SN][TF][JP]$/.test(mb)){el.style.display='none';return}
+  var my=MYTH[code];if(!my){el.style.display='none';return}
+  el.style.display='block';
+  var exp=[mb.charAt(0)==='E'?'R':'B',mb.charAt(2)==='T'?'A':'U',mb.charAt(0)==='E'?'T':'K'];
+  var act=[code.charAt(0),code.charAt(1),code.charAt(2)];
+  var mis=[];var i;
+  var pr=[0,2,1];
+  for(i=0;i<3;i++){var a=pr[i];if(exp[a]!==act[a])mis.push(a)}
+  var cnt=MXC[mb+'_'+code]||0;
+  var badge,bs,head,body;
+  if(mis.length===0){
+    badge='🎯 일치 조합';bs='background:#faf3e3;color:#a87c2a';
+    var m1=MXMAT['0'+act[0]],m2=MXMAT['1'+act[1]];
+    head=MXH[mb+'_'+code]||m1[0];
+    body=MXP[mb]+'인 당신 — 연애 패턴도 정확히 같은 방향이다. '+m1[1]+'. '+m2[1]+'. 겉과 속이 일치해서 상대가 예측하기 쉬운 타입이다. 단 “'+SW[code][1][0]+'” — 이건 겉모습만 봐서는 아무도 모른다.';
+  }else{
+    badge='🔀 반전 조합';bs='background:#fdecf3;color:#c2436f';
+    var t1=MXMIS[''+mis[0]+act[mis[0]]];
+    head=MXH[mb+'_'+code]||t1[0];
+    body=MXP[mb]+'인 당신 — 그런데 연애 패턴은 '+my[0]+'이다. '+t1[1]+'.';
+    if(mis.length>=2){var t2=MXMIS[''+mis[1]+act[mis[1]]];body+=' 게다가 '+t2[1]+'.';}
+    body+=' 이 낙차가 당신의 반전 매력이자, 상대가 가장 늦게 알아채는 부분이다.';
+  }
+  var rare;
+  if(cnt===0){
+    badge='📦 미개봉 조합';bs='background:#f1eef3;color:#7d6f88;border:1px dashed #c9bcd4';
+    rare='📊 256개 조합 중 아직 비어 있던 칸 — <b style="color:#c2436f">당신이 1호</b>';
+    body+=' 그리고 이 조합은 '+MXN+'명 중 당신이 처음이다. 지금은 당신이 이 조합의 기준점이고, 데이터가 쌓이면 해석도 함께 자란다.';
+  }else{
+    rare='📊 이 조합, 지금까지 <b style="color:#c2436f">'+MXN+'명 중 '+cnt+'명</b>'+(cnt<=3?' — 희귀 조합 🦄':(cnt>=15?' — 최다급 조합':''));
+  }
+  $('mx-combo').textContent=mb+' × '+my[0];
+  var bd=$('mx-badge');bd.textContent=badge;bd.setAttribute('style','font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;white-space:nowrap;'+bs);
+  $('mx-head').textContent='“'+head+'”';
+  $('mx-body').innerHTML=body;
+  $('mx-rare').innerHTML=rare;
 }
 const NRC={
 RATI:'종합하면 당신은 연애의 균형 감각을 타고난 쪽이다. 다가가되 매달리지 않고, 말하되 퍼붓지 않는다. 다만 그 안정감이 상대에게는 가끔 “너무 완성돼 있어서 내가 들어갈 틈이 없다”로 읽힐 수 있다 — 당신의 숙제는 잘하는 연애가 아니라 함께 서투르는 연애다.',
