@@ -211,6 +211,7 @@
       </div>
       <div class="card" id="r-ax-card"><h2>4축 분석</h2><p style="font-size:11.5px;color:var(--muted);margin:2px 0 10px">막대는 참여자 평균(50%) 대비 나의 상대 위치예요</p><div id="r-axes"></div></div>
       <div class="card" id="r-domain-card"><h2>영역별 판정</h2><div class="grid4" id="r-grid"></div></div>
+      <div class="card" id="sw-card" style="text-align:left"><h2>강점 & 주의할 점</h2><div id="sw-body" style="font-size:13px;line-height:1.85"></div></div>
       <div class="card"><h2>소견</h2><p class="fact" id="r-fact"></p><p id="r-chars" style="margin-top:14px;font-size:13.5px;font-weight:700;color:var(--blue)"></p></div>
       <div class="card" id="r-deep-card" style="display:none">
         <h2>정밀 지표</h2>
@@ -593,7 +594,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  renderPv(code);loadStat(code,fc);
+  renderSW(code);renderPv(code);loadStat(code,fc);
   go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -636,6 +637,25 @@ function loadStat(code,fc){
     setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
   }).catch(function(){});
 }
+const SW={
+RATI:[['안정적이고 예측 가능한 애정 표현','갈등을 대화로 푸는 능력','상대를 불안하게 만들지 않는 신뢰감'],['상대의 서툰 감정 표현을 답답해할 수 있음','관계가 너무 올바르기만 해서 설렘이 줄 수 있음']],
+RATO:[['관계를 데우는 다정함과 표현력','흔들리지 않는 꾸준함','함께 있으면 편안한 분위기'],['갈등을 미루다 묵은 문제로 키움','서운함을 말하지 못하고 혼자 삭임']],
+RAKI:[['문제 해결형 — 위기에 강함','감정 기복 없이 주는 신뢰','직면을 두려워하지 않는 단단함'],['애정 표현이 적어 오해받기 쉬움','공감보다 해결이 앞서 상대가 외로울 수 있음']],
+RAKO:[['묵묵한 헌신과 인내','기댈 수 있는 안정감','쉽게 흔들리지 않는 중심'],['참다가 한계점에서 조용히 떠나는 패턴','속마음이 안 보여 상대가 답답해함']],
+RUTI:[['뜨겁고 풍부한 애정 표현','관계에 진심으로 올인하는 몰입','갈등을 회피하지 않는 용기'],['상대 반응에 따라 감정이 크게 출렁임','과몰입으로 내 생활이 무너질 수 있음']],
+RUTO:[['다정하게 맞춰주는 배려','풍부한 감성과 공감 능력','상대를 편하게 해주는 온도'],['갈등이 무서워 할 말을 삼킴','맞추다 보면 내 욕구를 잃어버림']],
+RUKI:[['관계에 헌신적이고 책임감이 강함','문제를 끝까지 직면하는 끈기','상대를 세심하게 관찰하는 눈'],['서운함을 적립했다가 폭발하는 패턴','확인하고 싶은 마음이 상대를 지치게 함']],
+RUKO:[['깊은 정과 오래 견디는 마음','상대를 잘 배려하는 섬세함','쉽게 포기하지 않는 진심'],['불안을 숨기다 결정적 순간에 무너짐','끝난 관계를 오래 돌아봄']],
+BATI:[['솔직하고 명확한 의사표현','집착 없는 독립적인 태도','갈등에서 도망가지 않는 정면 승부'],['거리 유지가 차갑게 읽힐 수 있음','상대의 친밀 욕구를 과소평가함']],
+BATO:[['자유롭고 부담 주지 않는 연애','꾸밈없이 솔직한 표현','뚜렷한 자기 세계'],['가까워지면 멀어지는 패턴','설명 없는 거리두기가 상대에게 상처']],
+BAKI:[['진중하고 신뢰감 있는 태도','위기에 침착하고 문제는 직면함','뒷말 없는 깔끔한 처신'],['감정을 안 보여줘 상대가 벽을 느낌','표현 부족이 무관심으로 오해됨']],
+BAKO:[['단단한 자존감과 자기 확신','매달리지 않는 여유','혼자서도 무너지지 않는 자립심'],['상대가 관람객처럼 느낄 수 있음','서운함 호소를 가볍게 넘기기 쉬움']],
+BUTI:[['뜨거운 열정과 순간의 진심','표현이 풍부해 지루할 틈이 없음','갈등도 정면 돌파하는 에너지'],['감정 온도차가 커서 상대가 혼란스러움','충동적인 말과 행동을 후회하곤 함']],
+BUTO:[['감정에 솔직한 예민한 직관','관계의 문제를 빨리 감지함','표현을 아끼지 않는 진심'],['비관적 예언이 관계를 갉아먹음','불안이 커지면 먼저 밀어냄']],
+BUKI:[['함께일 때의 깊은 몰입','신비로운 매력과 자기 세계','부담 주지 않는 담백한 거리감'],['주기적 잠수가 상대를 불안하게 함','에너지가 방전되면 연락이 끊김']],
+BUKO:[['시작을 뜨겁게 만드는 추진력','솔직하고 즉각적인 감정 표현','사랑에 겁 없이 뛰어드는 용기'],['초반 과열 후 급냉각되는 패턴','권태를 관계의 끝으로 착각하기 쉬움']]
+};
+function renderSW(code){var s=SW[code];if(!s){$('sw-card').style.display='none';return}$('sw-body').innerHTML='<b style="color:#2e9e5b">💪 강점</b><br>'+s[0].map(function(x){return '&nbsp;· '+x}).join('<br>')+'<br><b style="color:#c9973f">⚠️ 주의할 점</b><br>'+s[1].map(function(x){return '&nbsp;· '+x}).join('<br>')}
 const PV={
 RATI:['정답 채점하기','아폴론형의 연애는 대체로 모범적이라 문제가 잘 안 생긴다. 진짜 위험은 상대가 서툴 때 시작된다 — 상대의 감정 호소를 문제 제기로 접수하고 해결책부터 제시하는 것. 신호는 두 가지다. ① “그게 왜 서운해?”가 먼저 나온다 ② 상대가 울고 난 뒤 대화가 회의록처럼 정리된다. 상대는 정답이 아니라 편을 원했다는 걸, 당신은 늘 한 박자 늦게 안다.'],
 RATO:['따뜻한 잠수','헤스티아형의 붕괴는 시끄럽게 오지 않는다. 서운한 일이 생겨도 분위기가 깨질까 봐 넘기고, 표면은 여전히 따뜻하다. 문제는 당신이 평소 표현을 잘하기 때문에, 말하지 않는 서운함이 상대에게 완벽하게 안 보인다는 것. 신호: “괜찮아”의 빈도가 늘고, 혼자 정리하는 시간이 길어진다. 그러다 어느 날 “사실 오래전부터 힘들었어”가 통보로 나간다.'],
