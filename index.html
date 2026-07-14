@@ -22,7 +22,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--bg);font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
-    color:var(--ink);display:flex;justify-content:center;min-height:100vh}
+    color:var(--ink);display:flex;justify-content:center;flex-wrap:wrap;min-height:100vh}
   .app{width:100%;max-width:480px;min-height:100vh;padding:20px 20px 48px;position:relative}
   .screen{display:none;animation:fade .3s ease}
   .screen.on{display:block}
@@ -576,6 +576,6 @@ function saveImage(){
     a.href=cv.toDataURL('image/png');a.click()});
 }
 </script>
-<div style="text-align:center;padding:16px 0 28px;font-size:11.5px;color:#b9a8ae"><a href="privacy.html" style="color:#b9a8ae">개인정보처리방침</a> · © 2026 RATI Lab</div>
+<div style="width:100%;text-align:center;padding:16px 0 28px;font-size:11.5px;color:#b9a8ae"><a href="privacy.html" style="color:#b9a8ae">개인정보처리방침</a> · © 2026 RATI Lab</div>
 </body>
 </html>
