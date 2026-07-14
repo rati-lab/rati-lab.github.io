@@ -237,6 +237,19 @@
       <div style="height:8px"></div>
     </div>
 
+    <div class="card" id="pv-card" style="text-align:left;padding:20px 22px">
+      <div onclick="togglePv()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+        <b style="font-size:14.5px">🔒 <span id="pv-title"></span> 심층 리포트 미리보기</b><span id="pv-arrow" style="font-size:12.5px;color:var(--muted);white-space:nowrap">▾ 펼치기</span>
+      </div>
+      <div id="pv-body" style="display:none;margin-top:12px">
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.95">① 나의 4축 정밀 해부 — 참여자 대비 좌표 <b style="color:#2e9e5b">✅ 공개</b><br>② 위험 패턴 시그니처 3가지 <b style="color:#2e9e5b">✅ 1개 공개</b><br>③ 🔒 연애 단계별 행동 예보 (썸→초반→권태기→이별)<br>④ 🔒 멘헤라 지수 정밀 분석<br>⑤ 🔒 궁합 매트릭스 — 추천 3유형 · 경계 3유형<br>⑥ 🔒 자꾸 반복되는 연애 패턴 루프<br>⑦ 🔒 실전 스크립트 — 그대로 쓰는 대사 12문장</div>
+        <div id="pv-peek" style="background:#faf3f6;border-radius:12px;padding:14px;margin:12px 0;font-size:13px;line-height:1.75"></div>
+        <div style="font-size:12px;color:#b9a8ae;text-align:center;margin-bottom:12px">나머지 패턴과 6개 챕터는 정식 리포트에서 이어집니다 🔒</div>
+        <div style="font-size:13px;line-height:1.7;background:#fff7ec;border-radius:12px;padding:12px 14px;margin-bottom:12px"><b>💑 커플 리포트</b>도 준비 중 — 두 사람의 코드를 조합해 예상 갈등 시나리오, 싸움의 각본, 대화 번역 가이드까지. <span style="color:var(--muted)">(예: 이카로스×헤라 조합의 "추궁과 추락" 시나리오…)</span></div>
+        <div style="text-align:center;font-size:13.5px;font-weight:700;line-height:1.8">🎟️ 정식 오픈 전 사전예약 시 50%<br>심층 ₩4,900→<span style="color:#b93a67">₩2,450</span> · 완전판(커플+심층 2인) ₩9,900→<span style="color:#b93a67">₩4,950</span><br><span style="font-size:12px;color:var(--muted);font-weight:400">↓ 아래에서 이메일만 남기면 끝</span></div>
+      </div>
+    </div>
+
     <div class="preorder" id="preorder-card">
       <span class="tag">준비 중 · 사전예약 50% 할인</span>
       <h3>심층 리포트 & 커플 리포트</h3>
@@ -580,7 +593,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  loadStat(code,fc);
+  renderPv(code);loadStat(code,fc);
   go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -623,6 +636,26 @@ function loadStat(code,fc){
     setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
   }).catch(function(){});
 }
+const PV={
+RATI:['정답 채점하기','아폴론형의 연애는 대체로 모범적이라 문제가 잘 안 생긴다. 진짜 위험은 상대가 서툴 때 시작된다 — 상대의 감정 호소를 문제 제기로 접수하고 해결책부터 제시하는 것. 신호는 두 가지다. ① “그게 왜 서운해?”가 먼저 나온다 ② 상대가 울고 난 뒤 대화가 회의록처럼 정리된다. 상대는 정답이 아니라 편을 원했다는 걸, 당신은 늘 한 박자 늦게 안다.'],
+RATO:['따뜻한 잠수','헤스티아형의 붕괴는 시끄럽게 오지 않는다. 서운한 일이 생겨도 분위기가 깨질까 봐 넘기고, 표면은 여전히 따뜻하다. 문제는 당신이 평소 표현을 잘하기 때문에, 말하지 않는 서운함이 상대에게 완벽하게 안 보인다는 것. 신호: “괜찮아”의 빈도가 늘고, 혼자 정리하는 시간이 길어진다. 그러다 어느 날 “사실 오래전부터 힘들었어”가 통보로 나간다.'],
+RAKI:['결재형 연애','아테나형은 문제를 정면으로 푼다. 갈등 해결 능력은 최상위권인데, 해결이 끝나면 정작 감정을 나누는 절차를 생략한다. 상대는 사랑받는 건 아는데 가끔 결재받는 기분이라고 말한다. 신호: ① 싸움이 끝나면 포옹 없이 바로 일상 복귀 ② 상대의 하소연에 “그래서 결론은?”이 먼저 나온다.'],
+RAKO:['소리 없는 소진','페넬로페형은 말없이 오래 견디는 단단함이 있다. 문제는 그 인내가 상대에게 보이지 않는다는 것 — 참는 걸 모르면 고마워할 수도 없다. 신호: ① “괜찮아, 나는”이 말버릇이 된다 ② 서운함을 말하는 대신 혼자 실망을 정리한다. 소진이 임계점을 넘으면 당신은 싸우지 않고 떠난다. 상대는 끝까지 이유를 모른다.'],
+RUTI:['과몰입 인플레이션','에로스형의 사랑이 시작되면 세계가 그 사람 중심으로 재편된다. 뜨거움 자체는 죄가 아니다 — 문제는 유지비다. 신호: ① 상대의 답장 간격이 하루 기분을 결정한다 ② 읽씹 하나에 관계 전체를 재검토한다. 감정 예산이 소진되는 날, 사랑이 아니라 불안을 사랑하고 있었다는 걸 알게 된다.'],
+RUTO:['메아리 소멸','에코형은 표현이 많은데, 부딪히는 게 무서워 상대의 말만 되울린다. 신호: ① “너 하고 싶은 대로 해”가 기본값 ② 데이트 코스나 메뉴를 마지막으로 정한 게 언제인지 기억나지 않는다. 맞춰주는 동안 당신 목소리는 조금씩 사라지고, 어느 날 상대가 묻는다 — “근데 너는 뭘 좋아해?” 그때 대답이 막히면 이미 늦은 것이다.'],
+RUKI:['적립식 정산','헤라형은 서운함을 차곡차곡 적립했다가 만기일에 정면 추궁한다. 신호: ① “지난번에도”로 시작하는 문장이 늘어난다 ② 서운한 순간엔 말을 못 하고, 3주 뒤 각주까지 달아 소환한다. 문제는 적립 전에 말했으면 반은 해결됐을 일들이라는 것. 상대는 정산서를 받는 순간 내용이 아니라 분량에 압도된다.'],
+RUKO:['뒤돌아보는 순간','오르페우스형은 불안을 삼키고 참고 또 참는다. 그리고 결정적인 순간 — 관계가 거의 회복됐을 때 — 뒤를 돌아본다. 신호: ① 화해 직후에 “근데 그때 왜 그랬어?”를 꺼낸다 ② 이별 후에야 하고 싶은 말이 많아진다. 참은 시간이 길수록 돌아보는 힘도 세진다.'],
+BATI:['선 긋는 직진','아르테미스형은 할 말은 정확히 하는데, 거리는 절대 내주지 않는다. 상대는 혼란스럽다 — 이렇게 솔직한데 왜 가까워지지 않지? 신호: ① 연락 텀을 지적받으면 사과 대신 원칙을 선언한다 ② “각자 시간이 필요해”가 협상 불가 조항이다. 독립성은 당신의 힘인데, 상대에게는 종종 입장 거부 통보로 읽힌다.'],
+BATO:['월계수 변신','다프네형은 다가오면 멀어진다. 나쁜 사람이라서가 아니라, 잡히는 순간 자신이 사라진다고 느끼기 때문이다. 신호: ① 관계 진전 얘기(정례화·소개·미래)가 나오면 화제를 돌린다 ② 상대가 확신을 요구할수록 답장이 느려진다. 문제는 도망 자체가 아니라, 도망치면서 아무 설명도 남기지 않는다는 것.'],
+BAKI:['지하 왕국','하데스형은 감정을 지하에 보관한다. 문제 처리 능력은 있는데 마음 공개가 없어서, 상대는 늘 같은 말을 한다 — “네 생각을 모르겠어.” 신호: ① 힘든 일을 다 끝난 뒤에야 말한다(또는 끝나도 안 한다) ② “말해봤자 뭐가 달라져”가 내부 기본값. 당신의 침묵은 평온이 아니라 미개봉 상자라는 걸 상대는 모른다.'],
+BAKO:['거울 보기','나르키소스형은 자기 세계가 확고하다. 연애가 없어도 그럭저럭 괜찮고, 그 자족감이 매력이자 함정이다. 신호: ① 상대와 있는 것보다 혼자가 편한 날이 늘어난다 ② 상대의 서운함이 “왜 저래?”로 처리된다. 상대는 어느 순간 연인이 아니라 당신 세계의 관람객이 된 기분을 느끼고, 관람객은 조용히 퇴장한다.'],
+BUTI:['축제와 숙취','디오니소스형의 밤은 뜨겁다 — 고백도, 눈물도, 약속도 밤에 나온다. 문제는 낮이다. 신호: ① 새벽에 보낸 장문이 아침에 이불킥이 된다 ② 어제의 온도를 오늘 상대가 기대하면 부담스럽다. 상대는 어느 쪽이 진짜 당신인지 헷갈리기 시작하고, 온도차에 지친 쪽이 먼저 손을 놓는다.'],
+BUTO:['자기실현 예언','카산드라형은 끝을 먼저 본다. “우리 어차피 안 될 거야”라는 예언은 상대를 지치게 하고, 지친 상대가 떠나면 예언은 적중한다 — 당신이 맞힌 게 아니라 만든 것이다. 신호: ① “어차피”로 시작하는 문장 ② 좋은 순간에 문득 유통기한을 계산한다. 예언을 멈추는 것이 이 유형의 유일한 반전 루트다.'],
+BUKI:['계절성 연애','페르세포네형은 반은 지상에, 반은 지하에 산다. 잘 지내다가 주기적으로 연락이 끊기고, 아무 일 없었다는 듯 돌아온다. 신호: ① 에너지가 떨어지면 설명 없이 잠수한다 ② 복귀 후 그 공백을 묻는 걸 침범으로 느낀다. 상대에게 필요한 건 당신의 사계절 일정표인데, 당신은 그걸 준 적이 없다.'],
+BUKO:['뜨거울 때 다 태우기','이카로스형은 관계 시작 3주 안에 감정 예산의 대부분을 소진한다. 당신에게는 정상 온도로의 복귀가, 상대에게는 “식었다”로 읽힌다. 신호: ① 먼저 걸던 연락의 방향이 어느 날 역전된다 ② 데이트 계획을 세우는 쪽이 바뀐다. 이때 “역시 연애는 피곤해”로 반응하는 순간부터가 진짜 추락의 시작이다.']
+};
+function togglePv(){var b=$('pv-body'),a=$('pv-arrow');var on=b.style.display==='none';b.style.display=on?'block':'none';a.textContent=on?'▴ 접기':'▾ 펼치기'}
+function renderPv(code){var p=PV[code];if(!p){$('pv-card').style.display='none';return}$('pv-title').textContent=MYTH[code][0];$('pv-peek').innerHTML='<b>[미리보기] 위험 패턴 #1 — “'+p[0]+'”</b><br>'+p[1]}
 function sendStory(){
   var el=$('story-text'),t=el.value.trim();
   if(t.length<5){el.style.borderColor='#e85d8a';el.focus();return}
