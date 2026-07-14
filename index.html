@@ -173,7 +173,7 @@
     <div class="prog"><i id="q-prog"></i></div>
     <div class="exit-row" id="q-exit" style="display:none" onclick="exitNow()"><u>지금 종료하고 결과 보기</u></div>
     <div class="q-text" id="q-text"></div>
-    <div id="q-opts"></div>
+    <div id="q-opts"></div><div id="q-back" style="display:none;text-align:center;margin-top:14px;font-size:13.5px;color:#9a8b92;cursor:pointer;padding:6px">← 이전 문항으로 (답 수정)</div>
   </section>
 
   <section class="screen" id="s-result">
@@ -469,6 +469,8 @@ function renderQ(){
   keys.forEach(k=>{const d=document.createElement('div');d.className='opt';d.textContent=opts[k];
     d.onclick=()=>{answers.push({phase:phaseOf(idx),domain:dom,type:k,tk:tkm?tkm[k]:null,io:iom?iom[k]:null});idx++;
       if(idx<QLIST.length)renderQ();else showResult()};$('q-opts').appendChild(d)});
+  const bb=$('q-back');bb.style.display=idx>0?'block':'none';
+  bb.onclick=function(){if(idx>0){answers.pop();idx--;renderQ()}};
 }
 
 function counts(f){const c={S:0,A:0,V:0,F:0};
