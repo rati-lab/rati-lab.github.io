@@ -223,7 +223,7 @@
         <input type="email" id="p-email" placeholder="이메일 주소">
         <button class="btn" onclick="submitPreorder()">출시 알림 받기</button>
       </div>
-      <div class="done" id="preorder-done" style="display:none">등록 완료 — 출시 때 가장 먼저 알려드릴게요</div>
+      <p style="font-size:10.5px;color:#8d8188;line-height:1.6;margin-top:10px">이메일은 커플 리포트 출시 알림 발송 목적으로만 사용되며, 발송 후 파기됩니다. 등록 시 수집·이용에 동의한 것으로 봅니다.</p><div class="done" id="preorder-done" style="display:none">등록 완료 — 출시 때 가장 먼저 알려드릴게요</div>
     </div>
 
     <button class="btn" onclick="saveImage()">결과 이미지 저장</button>
@@ -456,7 +456,7 @@ function resumeQuiz(){go('s-quiz');renderQ()}
 function exitNow(){showResult()}
 function renderQ(){
   const q=QLIST[idx];
-  const dom=q[0],txt=q[1],opts=q[2];
+  const dom=q[0],txt=q[1],opts=q[2],tkm=q[3]||0,iom=q[4]||0;
   const num=idx+1;
   $('q-domain').textContent=dom+' 영역';$('q-count').textContent='문항 '+num+' / 22';
   const a=accAt(answers.length);
