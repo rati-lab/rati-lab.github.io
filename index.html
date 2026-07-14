@@ -499,7 +499,7 @@ function showResult(){
   const fc=FCOL[code[0]+code[1]];
   document.querySelector('.r-head').style.background='linear-gradient(150deg,'+fc[0]+','+fc[1]+' 70%)';
   document.querySelector('.code-pill').style.color=fc[1];
-  const ci=$('r-char');ci.src=code.toLowerCase()+'.png';ci.style.display='block';ci.onerror=function(){ci.style.display='none'};
+  const ci=$('r-char');ci.src='rati_characters_16/'+code.toLowerCase()+'.png';ci.style.display='block';ci.onerror=function(){ci.style.display='none'};
   $('r-name').textContent=nick+' · '+(document.querySelector('#f-gender .sel')?.dataset.v||'-')+' · '+ageV+(mbti!=='모름'?' · '+mbti:'');
   $('r-acc-line').textContent='판정 정밀도 '+acc+'% · '+n+'문항 기준';
   $('r-fact').textContent=full?m[2]:(n+'문항 기준 잠정 판정입니다. 16문항 이상 응시하면 4축 분석과 영역별 분해가 생성됩니다. '+m[2]);
@@ -516,7 +516,7 @@ function showResult(){
     $('r-grid').innerHTML=DOMAINS.map(d=>
       '<div class="cell"><div class="d">'+d+' 영역</div><div class="t">'+TYPES[domainType(d)]+' 우세</div></div>').join('');
     $('r-ax-card').style.display='block';$('r-domain-card').style.display='block';
-    $('r-all').innerHTML=['RA','RU','BA','BU'].map(f=>'<div style="font-size:11.5px;font-weight:700;color:var(--gold);margin:12px 0 6px">'+FAMILY[f]+'</div><div class="grid4">'+Object.keys(MYTH).filter(k=>k.slice(0,2)===f).map(k=>{const on=k===code;return '<div class="cell" style="text-align:left;'+(on?'background:var(--blue-soft);outline:2px solid var(--blue)':'')+'"><img src="'+k.toLowerCase()+'.png" style="width:44px;height:44px;float:right;margin-left:4px" onerror="this.remove()"><div class="d">'+k+(on?' · 나':'')+'</div><div class="t" style="font-size:14px">'+MYTH[k][0]+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+MYTH[k][1]+'</div></div>'}).join('')+'</div>').join('');
+    $('r-all').innerHTML=['RA','RU','BA','BU'].map(f=>'<div style="font-size:11.5px;font-weight:700;color:var(--gold);margin:12px 0 6px">'+FAMILY[f]+'</div><div class="grid4">'+Object.keys(MYTH).filter(k=>k.slice(0,2)===f).map(k=>{const on=k===code;return '<div class="cell" style="text-align:left;'+(on?'background:var(--blue-soft);outline:2px solid var(--blue)':'')+'"><img src="rati_characters_16/'+k.toLowerCase()+'.png" style="width:44px;height:44px;float:right;margin-left:4px" onerror="this.remove()"><div class="d">'+k+(on?' · 나':'')+'</div><div class="t" style="font-size:14px">'+MYTH[k][0]+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+MYTH[k][1]+'</div></div>'}).join('')+'</div>').join('');
     $('r-all-card').style.display='block';
   }else{$('r-ax-card').style.display='none';$('r-domain-card').style.display='none';$('r-all-card').style.display='none'}
   if(deep){
