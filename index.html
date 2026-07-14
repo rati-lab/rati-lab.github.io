@@ -482,7 +482,7 @@ function axScores(){
     if(x.io){inn+=w;if(x.io==='I')i+=w}});
   return [r,a,tn?t/tn:.5,inn?i/inn:.5];
 }
-function codeFrom(sc){return (sc[0]>=.5?'R':'B')+(sc[1]>=.5?'A':'U')+(sc[2]>=.5?'T':'K')+(sc[3]>=.5?'I':'O')}
+function codeFrom(sc){return (sc[0]>=.72?'R':'B')+(sc[1]>=.68?'A':'U')+(sc[2]>=.60?'T':'K')+(sc[3]>=.58?'I':'O')}
 function domainType(d){const c=counts(a=>a.domain===d);const pri={A:3,V:2,F:1,S:0};
   return Object.keys(c).sort((x,y)=>c[y]-c[x]||pri[y]-pri[x])[0]}
 
