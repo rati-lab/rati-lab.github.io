@@ -209,6 +209,7 @@
         <div style="background:#f0e9ec;border-radius:99px;height:12px;overflow:hidden"><i id="st-bar" style="display:block;height:100%;width:0;border-radius:99px;transition:width .9s ease"></i></div>
         <div id="st-badge" style="display:none;margin-top:12px;font-size:13.5px;font-weight:800;padding:7px 16px;border-radius:99px"></div>
       </div>
+      <div class="card" id="nr-card" style="text-align:left"><h2>종합 해석</h2><div id="nr-body" style="font-size:13.5px;line-height:1.9"></div></div>
       <div class="card" id="r-ax-card"><h2>4축 분석</h2><p style="font-size:11.5px;color:var(--muted);margin:2px 0 10px">막대는 참여자 평균(50%) 대비 나의 상대 위치예요</p><div id="r-axes"></div></div>
       <div class="card" id="r-domain-card"><h2>영역별 판정</h2><div class="grid4" id="r-grid"></div></div>
       <div class="card" id="sw-card" style="text-align:left"><h2>강점 & 주의할 점</h2><div id="sw-body" style="font-size:13px;line-height:1.85"></div></div>
@@ -594,7 +595,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  renderSW(code);renderPv(code);loadStat(code,fc);
+  renderNr(code,sc);renderSW(code);renderPv(code);loadStat(code,fc);
   go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -636,6 +637,45 @@ function loadStat(code,fc){
     $('stat-card').style.display='block';
     setTimeout(function(){bar.style.width=Math.max(pct,4)+'%'},80);
   }).catch(function(){});
+}
+const NRC={
+RATI:'종합하면 당신은 연애의 균형 감각을 타고난 쪽이다. 다가가되 매달리지 않고, 말하되 퍼붓지 않는다. 다만 그 안정감이 상대에게는 가끔 “너무 완성돼 있어서 내가 들어갈 틈이 없다”로 읽힐 수 있다 — 당신의 숙제는 잘하는 연애가 아니라 함께 서투르는 연애다.',
+RATO:'종합하면 당신은 관계를 데우는 데 최적화된 사람이다. 따뜻하고, 꾸준하고, 편안하다. 단 하나의 예외가 갈등이다 — 불화의 공기만 감지되면 화로의 불을 줄이고 조용히 기다린다. 평화주의가 문제를 해결한 적은 없다는 것만 기억하면 이 유형은 사실상 완전체다.',
+RAKI:'종합하면 당신은 사랑을 행동으로 증명하는 전략가다. 위기에서 제일 믿음직한 유형이지만, 평시에는 그 과묵함이 비용이 된다. 상대가 원하는 건 해결책 이전에 “나도 그랬어” 한 마디라는 걸 자주 잊는다.',
+RAKO:'종합하면 당신은 오래 견디는 사랑을 하는 사람이다. 화려하지 않지만 흔들리지도 않는다. 위험한 건 당신의 인내가 무한해 보인다는 착시다 — 소진은 소리 없이 쌓이고, 당신은 폭발 대신 퇴장을 택하는 유형이라 상대는 마지막까지 눈치채지 못한다.',
+RUTI:'종합하면 당신은 사랑에 전부를 거는 사람이다. 그 몰입이 관계 초반의 마법을 만들지만, 같은 몰입이 상대의 일거수일투족을 실시간 모니터링하게도 만든다. 사랑의 크기를 줄일 필요는 없다 — 사랑과 불안을 분리하는 연습이 필요할 뿐이다.',
+RUTO:'종합하면 당신은 상대에게 맞춰주는 데서 기쁨을 찾는 사람이다. 문제는 그 배려가 쌓이면 관계에서 당신이라는 사람이 희미해진다는 것. 부딪히는 게 관계를 깨는 게 아니라, 목소리가 사라지는 쪽이 관계를 더 천천히, 더 확실하게 깬다.',
+RUKI:'종합하면 당신은 관계에 진심이라 서운함도 많은 사람이다. 관찰력이 좋아 상대의 변화를 누구보다 빨리 감지하는데, 그걸 그때그때 말하는 대신 적립한다. 적립이 아니라 즉시 결제로 바꾸는 것 — 그게 이 유형의 연애 난이도를 절반으로 줄이는 방법이다.',
+RUKO:'종합하면 당신은 깊게 사랑하고 오래 참는 사람이다. 문제는 참은 것들이 사라지지 않고 마음 지하실에 쌓인다는 것. 관계가 안정될 때쯤 지하실 문이 열리는 패턴 — 그걸 알아채는 것부터가 시작이다.',
+BATI:'종합하면 당신은 솔직함과 독립성을 둘 다 가진 드문 조합이다. 할 말을 하니까 오해는 적은데, 거리를 내주지 않으니 친밀감이 정체된다. 당신에게 필요한 건 표현 연습이 아니라 — 그건 이미 잘한다 — 가끔 문을 열어두는 용기다.',
+BATO:'종합하면 당신은 자유로울 때 가장 매력적인 사람이다. 그런데 관계가 깊어지려는 순간마다 도망 본능이 켜진다. 도망 자체는 죄가 아니다 — 어디까지 갔다 오는지 상대에게 말해주지 않는 게 문제다. 지도를 공유하면 이 유형의 연애는 갑자기 쉬워진다.',
+BAKI:'종합하면 당신은 조용히 신뢰를 쌓는 사람이다. 말보다 태도로 증명하는 스타일인데, 상대는 텔레파시 능력자가 아니다. 열 번 중 한 번이라도 속을 열어 보이면, 그 한 번이 백 번의 행동보다 관계를 멀리 데려간다.',
+BAKO:'종합하면 당신은 혼자서도 완결된 세계를 가진 사람이다. 그 자족감이 매력의 원천이자, 상대를 관람객으로 만드는 원인이기도 하다. 당신의 세계에 상대의 의자 하나를 놓는 것 — 세계를 부수라는 게 아니라 좌석 하나만 늘리라는 거다.',
+BUTI:'종합하면 당신은 뜨겁게 표현하고 빠르게 식는, 진폭의 사람이다. 그 진폭이 연애를 축제로 만들지만 상대는 매일 축제에 살 수 없다. 온도를 낮추라는 게 아니다 — 낮은 온도의 날에도 관계가 유지된다는 걸 보여주는 게 핵심이다.',
+BUTO:'종합하면 당신은 예민한 직관으로 관계의 균열을 남들보다 먼저 보는 사람이다. 문제는 그 예지가 예언이 되고, 예언이 자기실현된다는 것. 균열을 보는 눈을 끄지 말고, 그 눈으로 좋은 신호도 세기 시작하면 판이 바뀐다.',
+BUKI:'종합하면 당신은 몰입과 잠수를 오가는 계절의 사람이다. 함께일 때의 깊이는 진짜인데, 사라질 때의 침묵이 그 진심을 깎아먹는다. 잠수를 고칠 필요는 없다 — “나 이런 주기가 있어”라는 예고 한 줄이면 오해의 대부분이 사라진다.',
+BUKO:'종합하면 당신은 사랑의 점화 능력은 최상급인데 연료 관리가 약한 사람이다. 뜨거움이 식는 걸 사랑이 끝난 걸로 오해하지만 않으면 — 그 지점만 넘기면 — 당신의 연애는 시작만큼 유지도 강해진다.'
+};
+function renderNr(code,sc){
+  var TH=[.72,.68,.60,.58];
+  var p=sc.map(function(s,i){var th=TH[i];return s>=th?Math.max(50,Math.round(50+50*(s-th)/(1-th))):Math.min(49,Math.round(50*s/th))});
+  var AXL=[['다가감','선긋기'],['확신','흔들림'],['말함','담아둠'],['직면','이탈']];
+  var HI=['먼저 연락하고, 먼저 만나자고 하고 — 관계의 온도를 끌어올리는 쪽은 대체로 당신이다.','상대의 답장이 늦어도 세계가 무너지지 않는다. 이 안정감이 관계의 바닥짐이다.','좋으면 좋다, 서운하면 서운하다 — 감정이 실시간으로 밖으로 나온다.','문제가 생기면 피하지 않고 테이블에 올린다. 싸움을 두려워하지 않는 편이다.'];
+  var LO=['혼자의 시간이 확보돼야 관계도 굴러간다 — 거리는 당신에게 방어가 아니라 산소다.','상대의 작은 신호 하나에 마음의 날씨가 바뀐다. 민감함은 레이더이자 소음이다.','감정을 꺼내기 전에 안에서 세 번 굴린다. 상대는 당신의 결론만 보게 된다.','갈등의 공기가 감지되면 일단 그 자리를 벗어나는 게 기본값이다.'];
+  var dev=p.map(function(x){return x-50});
+  var idx=[0,1,2,3].sort(function(a,b){return Math.abs(dev[b])-Math.abs(dev[a])});
+  var top=idx[0], second=idx[1];
+  var s='';
+  if(Math.abs(dev[top])<7){
+    s='당신은 네 축 모두 또래 평균선 근처에 있는 드문 케이스다. 한 방향으로 굳어 있지 않아서, 상대가 누구냐에 따라 연애의 얼굴이 크게 달라지는 하이브리드형이다.';
+  }else{
+    var tn=AXL[top][dev[top]>=0?0:1];
+    s='당신 연애의 가장 뚜렷한 시그니처는 <b>“'+tn+'”</b>이다. '+(dev[top]>=0?HI[top]:LO[top]);
+    if(Math.abs(dev[second])>=12){var sn=AXL[second][dev[second]>=0?0:1];s+=' 그다음으로 짙은 결은 “'+sn+'” — '+(dev[second]>=0?HI[second]:LO[second]);}
+    var bl=[0,1,2,3].filter(function(i){return Math.abs(dev[i])<7}).map(function(i){return '“'+AXL[i][0]+'·'+AXL[i][1]+'”'});
+    if(bl.length)s+=' 반면 '+bl.join(', ')+' 축은 평균선 위에 걸쳐 있어서, 상황과 상대에 따라 방향이 바뀌는 구간이다.';
+  }
+  $('nr-body').innerHTML='<p style="margin:0 0 10px">'+s+'</p><p style="margin:0">'+(NRC[code]||'')+'</p>';
 }
 const SW={
 RATI:[['안정적이고 예측 가능한 애정 표현','갈등을 대화로 푸는 능력','상대를 불안하게 만들지 않는 신뢰감'],['상대의 서툰 감정 표현을 답답해할 수 있음','관계가 너무 올바르기만 해서 설렘이 줄 수 있음']],
