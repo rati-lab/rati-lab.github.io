@@ -205,6 +205,7 @@
           베타 참여자는 출시 시 50% 할인이 적용됩니다.
         </div>
       </div>
+      <div class="card" id="r-all-card" style="display:none"><h2>16유형 비교 — 너는 어디쯤이야?</h2><div id="r-all"></div></div>
       <p class="stat-hook" id="r-stat"></p>
     </div>
 
@@ -510,7 +511,9 @@ function showResult(){
     $('r-grid').innerHTML=DOMAINS.map(d=>
       '<div class="cell"><div class="d">'+d+' 영역</div><div class="t">'+TYPES[domainType(d)]+' 우세</div></div>').join('');
     $('r-ax-card').style.display='block';$('r-domain-card').style.display='block';
-  }else{$('r-ax-card').style.display='none';$('r-domain-card').style.display='none'}
+    $('r-all').innerHTML=['RA','RU','BA','BU'].map(f=>'<div style="font-size:11.5px;font-weight:700;color:var(--gold);margin:12px 0 6px">'+FAMILY[f]+'</div><div class="grid4">'+Object.keys(MYTH).filter(k=>k.slice(0,2)===f).map(k=>{const on=k===code;return '<div class="cell" style="text-align:left;'+(on?'background:var(--blue-soft);outline:2px solid var(--blue)':'')+'"><div class="d">'+k+(on?' · 나':'')+'</div><div class="t" style="font-size:14px">'+MYTH[k][0]+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+MYTH[k][1]+'</div></div>'}).join('')+'</div>').join('');
+    $('r-all-card').style.display='block';
+  }else{$('r-ax-card').style.display='none';$('r-domain-card').style.display='none';$('r-all-card').style.display='none'}
   if(deep){
     const c=counts(),tot=Object.values(c).reduce((a,b)=>a+b,0);
     const mh=Math.round((c.A+c.F)/tot*100);
