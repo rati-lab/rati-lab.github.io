@@ -136,7 +136,8 @@
       </p>
     </div>
     <p style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6;margin:2px 0 10px">정답은 없어요. 선택지가 나와 100% 똑같지 않아도<br><b style="color:var(--body)">그나마 제일 가까운 쪽</b>을 고르면 됩니다.</p>
-    <button class="btn" onclick="go('s-form')">검사 시작하기</button>
+    <div id="intro-cnt" style="display:none;text-align:center;font-size:13.5px;color:#5a4e54;margin:2px 0 12px">지금까지 <b id="intro-cnt-n" style="color:#e85d8a;font-size:16.5px">0</b>명이 검사했어요</div>
+      <button class="btn" onclick="go('s-form')">검사 시작하기</button>
     <p class="notice">본 검사는 애착이론을 참고한 콘텐츠이며 임상 진단 도구가 아닙니다.<br>응답은 익명 통계로만 활용됩니다.</p>
   </section>
 
@@ -708,6 +709,13 @@ function renderMx(code){
   $('mx-body').innerHTML=body;
   $('mx-rare').innerHTML=rare;
 }
+(function(){var el=document.getElementById('intro-cnt');if(!el)return;
+  fetch('https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec?code=RATI').then(function(r){return r.json()}).then(function(j){
+    var t=j&&j.total;if(!t||t<10)return;
+    var b=document.getElementById('intro-cnt-n');var start=Math.max(0,t-40);el.style.display='block';
+    var st=Date.now();(function tick(){var p=Math.min(1,(Date.now()-st)/900);var v=Math.round(start+(t-start)*(1-Math.pow(1-p,3)));b.textContent=v.toLocaleString('ko-KR');if(p<1)requestAnimationFrame(tick)})();
+  }).catch(function(){});
+})();
 const NRC={
 RATI:'종합하면 당신은 연애의 균형 감각을 타고난 쪽이다. 다가가되 매달리지 않고, 말하되 퍼붓지 않는다. 다만 그 안정감이 상대에게는 가끔 “너무 완성돼 있어서 내가 들어갈 틈이 없다”로 읽힐 수 있다 — 당신의 숙제는 잘하는 연애가 아니라 함께 서투르는 연애다.',
 RATO:'종합하면 당신은 관계를 데우는 데 최적화된 사람이다. 따뜻하고, 꾸준하고, 편안하다. 단 하나의 예외가 갈등이다 — 불화의 공기만 감지되면 화로의 불을 줄이고 조용히 기다린다. 평화주의가 문제를 해결한 적은 없다는 것만 기억하면 이 유형은 사실상 완전체다.',
