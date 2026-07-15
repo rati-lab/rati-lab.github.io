@@ -232,6 +232,7 @@
           베타 참여자는 출시 시 50% 할인이 적용됩니다.
         </div>
       </div>
+      <div class="card" id="dex-card" style="text-align:left;display:none"><h2>📖 16유형 도감</h2><div style="font-size:11.5px;color:#9a8b92;margin:-6px 0 12px">전 애인, 짝사랑, 친구는 무슨 유형일까 — 눌러서 구경해봐</div><div id="dex-grid"></div><div id="dex-detail" style="margin-top:14px;border-radius:14px;padding:14px;display:none"></div></div>
       <div class="card" id="r-all-card" style="display:none"><h2>16유형 비교 — 너는 어디쯤이야?</h2><div id="r-all"></div></div>
       
     </div>
@@ -597,7 +598,7 @@ function showResult(){
     }
     $('r-deep-card').style.display='block';$('r-deep-cta').style.display='none';
   }else{$('r-deep-card').style.display='none';$('r-report-card').style.display='none';$('r-deep-cta').style.display='block'}
-  renderNr(code,sc);renderSW(code);renderMx(code);renderPv(code);loadStat(code,fc);
+  renderNr(code,sc);renderSW(code);renderMx(code);renderPv(code);renderDex(code);loadStat(code,fc);
   go(answers.length>=22?'s-story':'s-result');
   sendLog({kind:'result',sid:SID,utm:UTM,nick,mbti,
     gender:document.querySelector('#f-gender .sel')?.dataset.v||'',age:$('f-age').value||'',
@@ -625,8 +626,35 @@ function sendLog(payload){
     headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})}catch(e){}
 }
 
+var DEXC={RA:['#eec55f','#c9973f'],RU:['#ee6f97','#b93a67'],BA:['#8b9be0','#5a6fc9'],BU:['#b184d8','#8b4fc0']};
+var DEXSEL=null,DEXME=null;
+function renderDex(code){
+  DEXME=code;var g=$('dex-grid');g.innerHTML='';
+  ['RA','RU','BA','BU'].forEach(function(f){
+    var h=document.createElement('div');h.style.cssText='font-size:11.5px;font-weight:700;margin:12px 0 6px;letter-spacing:.3px;color:'+DEXC[f][1];h.textContent=FAMILY[f];g.appendChild(h);
+    var gr=document.createElement('div');gr.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:7px';
+    Object.keys(MYTH).forEach(function(k){if(k.indexOf(f)!==0)return;
+      var b=document.createElement('button');
+      b.style.cssText='border:none;background:#faf3f6;border-radius:12px;padding:7px 2px 6px;text-align:center;cursor:pointer;font-family:inherit'+(k===code?';outline:2px solid '+DEXC[f][1]+';background:#fdeef3':'');
+      b.innerHTML='<img src="rati_characters_16/'+k.toLowerCase()+'.png" style="width:40px;height:40px;display:block;margin:0 auto 3px" loading="lazy"><b style="font-size:10.5px;display:block">'+MYTH[k][0]+'</b><span style="font-size:9px;color:#9a8b92">'+k+'</span>';
+      b.onclick=function(){showDex(k)};gr.appendChild(b);
+    });
+    g.appendChild(gr);
+  });
+  $('dex-card').style.display='block';
+  showDex(code);
+}
+function showDex(k){
+  DEXSEL=k;var f=k.slice(0,2),d=$('dex-detail');
+  d.style.display='block';d.style.background=DEXC[f][0]+'22';
+  var st='';
+  if(window.__ST&&window.__ST.total>=20){var n=(window.__ST.counts&&window.__ST.counts[k])||0;var p=Math.round(n/window.__ST.total*1000)/10;st='<div style="font-size:12px;font-weight:700;color:'+DEXC[f][1]+';margin-top:6px">전체의 '+p+'% · 지금까지 '+n+'명</div>';}
+  d.innerHTML='<div style="display:flex;gap:12px;align-items:center;margin-bottom:8px"><img src="rati_characters_16/'+k.toLowerCase()+'.png" style="width:64px;height:64px"><div><div style="font-size:15px;font-weight:800;color:'+DEXC[f][1]+'">'+MYTH[k][0]+(k===DEXME?' <span style="font-size:10px;background:#e85d8a;color:#fff;border-radius:8px;padding:1px 6px;vertical-align:2px">내 유형</span>':'')+'</div><div style="font-size:12px;color:#9a8b92">'+MYTH[k][1]+' · '+k+'</div></div></div><div style="font-size:13px;line-height:1.75">'+MYTH[k][2]+'</div><div style="font-size:11.5px;color:#9a8b92;margin-top:6px">닮은꼴 — '+MYTH[k][3]+'</div>'+st;
+}
+function updDex(){if(DEXSEL)showDex(DEXSEL)}
 function loadStat(code,fc){
   fetch('https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){
+    window.__ST=j;try{updDex()}catch(e){}
     var total=j.total||0, mine=(j.counts&&j.counts[code])||0;
     if(total<20)return;
     var pct=Math.round(mine/total*1000)/10;
