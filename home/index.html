@@ -892,4 +892,32 @@ const io=new IntersectionObserver(es=>{es.forEach(en=>{if(!en.isIntersecting)ret
 document.querySelectorAll('.cnt,.gfill').forEach(el=>{let p=el.closest('section,header')||el.parentElement;io.observe(p);});
 document.querySelectorAll('.cnt').forEach(c=>{const r=c.getBoundingClientRect();if(r.top<innerHeight&&!c.dataset.done){c.dataset.done=1;countUp(c,+c.dataset.n,1500);}});
 </script>
+<script>
+(function(){var EP='https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec';
+fetch(EP,{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){
+var t=(j&&j.total)||0;if(t<20)return;var s=t.toLocaleString('en-US');
+document.querySelectorAll('.cnt[data-n="1428"]').forEach(function(c){c.dataset.n=t;if(c.dataset.done){countUp(c,t,800);}});
+var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);var n;var list=[];
+while(n=w.nextNode()){if(n.nodeValue.indexOf('1,428')!==-1)list.push(n);}
+list.forEach(function(nd){nd.nodeValue=nd.nodeValue.split('1,428').join(s);});
+}).catch(function(){});
+function openAl(){
+var ov=document.getElementById('bato-alert-ov');
+if(!ov){
+ov=document.createElement('div');ov.id='bato-alert-ov';
+ov.style.cssText='position:fixed;inset:0;background:rgba(20,12,16,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+ov.innerHTML='<div style="background:#fff;border-radius:16px;max-width:360px;width:100%;padding:28px 24px;text-align:center;position:relative"><button id="bato-al-x" style="position:absolute;top:10px;right:14px;border:0;background:none;font-size:22px;color:#9a8b92;cursor:pointer">×</button><div style="font-weight:800;font-size:17px;color:#2b2126">상대방 느낌 검사(BATO) 오픈 알림</div><p style="font-size:13px;color:#544850;line-height:1.6;margin:10px 0 16px">이메일을 남겨주시면 오픈할 때<br>딱 한 번 알림 메일을 보내드려요.</p><input id="bato-al-em" type="email" placeholder="이메일 주소" style="width:100%;box-sizing:border-box;border:1.5px solid #e5d9dd;border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px"><button id="bato-al-go" style="width:100%;background:#b93a67;color:#fff;border:0;border-radius:10px;padding:13px 0;font-size:15px;font-weight:700;cursor:pointer">알림 신청</button><div id="bato-al-done" style="display:none;font-weight:700;color:#2e9e5b;font-size:14px;padding:12px 0 2px">신청 완료! 오픈하면 메일 드릴게요 💌</div><div style="font-size:11px;color:#9a8b92;margin-top:10px">알림 1회 발송 후 이메일은 파기됩니다.</div></div>';
+document.body.appendChild(ov);
+ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});
+document.getElementById('bato-al-x').onclick=function(){ov.style.display='none';};
+document.getElementById('bato-al-go').onclick=function(){
+var em=document.getElementById('bato-al-em').value.trim();
+if(!em||em.indexOf('@')<0){document.getElementById('bato-al-em').style.borderColor='#d43a3a';return;}
+try{fetch(EP,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({kind:'preorder',sid:'home',utm:'home',email:em,product:'bato_alert',code:'',mbti:''})}).catch(function(){})}catch(e){}
+document.getElementById('bato-al-em').style.display='none';document.getElementById('bato-al-go').style.display='none';document.getElementById('bato-al-done').style.display='block';
+};}
+ov.style.display='flex';}
+document.querySelectorAll('a[href^="mailto:drkms104@gmail.com?subject=%5BRATI%5D%20%EC%83%81%EB%8C%80%EB%B0%A9"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();openAl();});});
+})();
+</script>
 </body></html>
