@@ -189,6 +189,7 @@
       <b style="font-size:14.5px">연인과의 문제, 썸, 짝사랑… 지금 하고 있는 이야기가 있다면 들려주세요 💌</b>
       <p style="font-size:12.5px;color:var(--muted);line-height:1.65;margin:8px 0 4px">완전 익명이에요. 흥미로운 이야기로 선별되면 <b style="color:var(--body)">다른 유형들의 의견</b>을 들어볼 수 있어요.</p>
       <p style="font-size:11px;color:#b9a8ae;line-height:1.6;margin:0 0 10px">채택 시 익명 보장을 위해 내용을 각색해 인스타그램 만화 등으로 공개될 수 있어요.</p>
+      <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:0 0 10px">+ 문항 4개 중에 <b style="color:var(--body)">내 반응이 없었던 문항</b>이 있으면 그것도 알려주세요 — 다음 판에 반영해요.</p>
       <textarea id="story-text" maxlength="1000" rows="4" placeholder="예) 3일째 답장이 건조한데 물어봐도 '아니 그냥'이라고만 해요…" style="width:100%;box-sizing:border-box;border:1.5px solid #e5d9dd;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;resize:vertical;background:#fffdfe;color:var(--body);outline:none"></textarea>
       <button class="btn sub" style="margin-top:10px" onclick="sendStory()">이야기 남기고 결과 보기</button>
     </div>
@@ -566,7 +567,7 @@ function showResult(){
       '<div class="cell"><div class="d">'+d+' 영역</div><div class="t">'+TYPES[domainType(d)]+' 우세</div></div>').join('');
     $('r-ax-card').style.display='block';$('r-domain-card').style.display='block';
     $('r-all').innerHTML=['RA','RU','BA','BU'].map(f=>'<div style="font-size:11.5px;font-weight:700;color:var(--gold);margin:12px 0 6px">'+FAMILY[f]+'</div><div class="grid4">'+Object.keys(MYTH).filter(k=>k.slice(0,2)===f).map(k=>{const on=k===code;return '<div class="cell" style="text-align:left;'+(on?'background:var(--blue-soft);outline:2px solid var(--blue)':'')+'"><img src="rati_characters_16/'+k.toLowerCase()+'.png" style="width:44px;height:44px;float:right;margin-left:4px" onerror="this.remove()"><div class="d">'+k+(on?' · 나':'')+'</div><div class="t" style="font-size:14px">'+MYTH[k][0]+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+MYTH[k][1]+'</div></div>'}).join('')+'</div>').join('');
-    $('r-all-card').style.display='block';
+    $('r-all-card').style.display='none';
   }else{$('r-ax-card').style.display='none';$('r-domain-card').style.display='none';$('r-all-card').style.display='none'}
   if(deep){
     const c=counts(),tot=Object.values(c).reduce((a,b)=>a+b,0);
