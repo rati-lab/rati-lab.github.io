@@ -1,0 +1,27 @@
+/* RATI 브랜드 디자인 토큰
+   원본 근거: docs/dev-standards.md (Drive: RATI 개발-표준)
+   사용법: <link rel="stylesheet" href="/brand/tokens.css"> 후 var(--pink) 등으로 참조 */
+
+:root {
+  /* ── 팔레트 (브랜드 핑크) ───────────────── */
+  --pink:    #e85d8a; /* 주 — 메인 브랜드 컬러 */
+  --pink-d:  #b93a67; /* 딥 — 제목·강조·버튼 눌림 */
+  --pink-l:  #f2a6c2; /* 연 — 보조·배경 포인트 */
+  --pink-xl: #e7d3db; /* 회핑 — 옅은 배경·구분선 */
+
+  /* ── 타이포그래피 ─────────────────────── */
+  /* 본문: NanumBarunGothic / 제목: NanumSquareRound */
+  --font-body:    "NanumBarunGothic", "나눔바른고딕", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "NanumSquareRound", "나눔스퀘어라운드", "NanumBarunGothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* 주의: NanumSquareRound에는 ✓(체크) 글리프가 없다 — 체크 표시는 선분/SVG로 그릴 것.
+   PDF 파이프라인에서 Noto CJK는 family명 불일치로 사용 금지 (docs/dev-standards.md). */
+
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
