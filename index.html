@@ -219,7 +219,8 @@
 <header id="hd">
   <div class="hd-in">
     <a class="logo" href="#top">RATI<span class="dot">.</span><span class="lab">lab</span></a>
-    <nav class="hd-r">
+    <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="hdNav" onclick="return RATI_NAV&&RATI_NAV.toggle()"><span></span><span></span><span></span></button>
+    <nav class="hd-r" id="hdNav">
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST</b></a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
       <a class="hd-link" href="types.html">유형설명</a>
@@ -232,6 +233,89 @@
     </nav>
   </div>
 </header>
+<style id="hd-nav-css">
+  /* 모바일 헤더 햄버거 메뉴 (데스크톱·#dtOv 헤더는 불변) */
+  .hd-burger{display:none;position:relative;width:42px;height:40px;border:0;background:transparent;cursor:pointer;padding:0;flex:0 0 auto;z-index:3}
+  .hd-burger span{position:absolute;left:10px;right:10px;height:2px;border-radius:2px;background:var(--ink,#241C26);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .18s}
+  .hd-burger span:nth-child(1){top:13px}
+  .hd-burger span:nth-child(2){top:19px}
+  .hd-burger span:nth-child(3){top:25px}
+  #hd.nav-open .hd-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  #hd.nav-open .hd-burger span:nth-child(2){opacity:0}
+  #hd.nav-open .hd-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  @media(max-width:880px){
+    .hd-in{position:relative;flex-wrap:nowrap!important;row-gap:0}
+    .hd-burger{display:inline-flex}
+    #hd .hd-r{position:absolute;top:100%;left:0;right:0;width:auto;
+      display:flex!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 14px 10px!important;
+      background:rgba(255,255,255,.98);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border:0;border-top:1px solid var(--line,#eadfe4);border-bottom:1px solid var(--line,#eadfe4);
+      border-radius:0;box-shadow:0 22px 34px -24px rgba(36,28,38,.35);
+      overflow:hidden;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
+      mask-image:none!important;-webkit-mask-image:none!important;
+      transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
+    #hd.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto}
+    #hd .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+      font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
+    #hd .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
+    #hd .hd-r .hd-link:active{background:#fdf2f6}
+    #hd .hd-r .hd-cta{display:none!important}
+  }
+  /* ── 도감/원리 오버레이(#dtOv) 헤더도 동일 햄버거 ── */
+  #dtOv .rt-bar .hd-right{display:flex;align-items:center;gap:14px}
+  #dtOv .rt-bar .hd-right .sy-x{position:static!important;top:auto!important;right:auto!important;left:auto!important;margin:0!important;flex:0 0 auto;font-size:24px;line-height:1;padding:6px;transition:opacity .18s}
+  /* 메뉴 펼침 중엔 오버레이 × 잠시 숨김 — X 두 개 혼동 방지 */
+  #dtOv .rt-bar.nav-open .hd-right .sy-x{opacity:0;pointer-events:none}
+  #dtOv .rt-bar.nav-open .dt-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  #dtOv .rt-bar.nav-open .dt-burger span:nth-child(2){opacity:0}
+  #dtOv .rt-bar.nav-open .dt-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  @media(max-width:880px){
+    #dtOv .rt-bar .hd-in{position:relative;flex-wrap:nowrap!important;row-gap:0}
+    #dtOv .rt-bar .dt-burger{display:inline-flex}
+    #dtOv .rt-bar .hd-r{position:absolute;top:100%;left:0;right:0;width:auto;
+      display:flex!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 14px 10px!important;
+      background:rgba(255,255,255,.98);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border:0;border-top:1px solid var(--line,#eadfe4);border-bottom:1px solid var(--line,#eadfe4);
+      border-radius:0;box-shadow:0 22px 34px -24px rgba(36,28,38,.35);
+      overflow:hidden;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
+      mask-image:none!important;-webkit-mask-image:none!important;
+      transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
+    #dtOv .rt-bar.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto}
+    #dtOv .rt-bar .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+      font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
+    #dtOv .rt-bar .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
+    #dtOv .rt-bar .hd-r .hd-cta{display:none!important}
+  }
+</style>
+<script>
+  window.RATI_NAV=(function(){
+    var reg={};
+    function mk(bar, burgerSel){
+      var burger=bar.querySelector(burgerSel), nav=bar.querySelector('.hd-r');
+      var api={
+        set:function(open){ bar.classList.toggle('nav-open',open);
+          if(burger){burger.setAttribute('aria-expanded',open?'true':'false');burger.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');} },
+        toggle:function(){ api.set(!bar.classList.contains('nav-open')); return false; },
+        close:function(){ api.set(false); }
+      };
+      if(nav)nav.addEventListener('click',function(e){ if(e.target.closest('.hd-link,.hd-cta')) api.close(); });
+      document.addEventListener('click',function(e){ if(bar.classList.contains('nav-open') && !bar.contains(e.target)) api.close(); });
+      return api;
+    }
+    function init(){
+      var hd=document.getElementById('hd'); if(hd)reg.main=mk(hd,'.hd-burger');
+      var db=document.querySelector('#dtOv .rt-bar'); if(db)reg.doc=mk(db,'.dt-burger');
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ reg.main&&reg.main.close(); reg.doc&&reg.doc.close(); } });
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+    return {
+      toggle:function(){ return reg.main?reg.main.toggle():false; },
+      close:function(){ reg.main&&reg.main.close(); },
+      docToggle:function(){ return reg.doc?reg.doc.toggle():false; },
+      docClose:function(){ reg.doc&&reg.doc.close(); }
+    };
+  })();
+</script>
 
 <section class="hero" id="top">
   <div class="wrap">
@@ -3769,8 +3853,10 @@ var qrcode = function() {
   document.getElementById('odDoneClose').addEventListener('click',hide);
   ov.addEventListener('click',function(e){if(e.target===ov)hide()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ov.hidden)hide()});
-  // 결제 설정 — 배포 전 채울 것: kakaoQR = 카카오페이 앱에서 만든 내 송금 QR 링크 (금액은 코드로 프리셋)
+  // 결제 설정 — kakaoQR = 카카오페이 앱에서 만든 내 송금 QR 링크 (금액은 코드로 프리셋). 채우면 카카오페이 버튼 자동 노출.
   var PAYCFG={kakaoQR:''};
+  // 카카오페이 QR 미설정 시 버튼 숨김 — '준비 중' 깨진 인상 방지, 토스만 노출. QR 채우면 자동으로 다시 보임.
+  try{var _kkBtn=document.getElementById('odKakao');if(_kkBtn)_kkBtn.style.display=PAYCFG.kakaoQR?'':'none';}catch(e){}
   function finishPay(){
     var payer=em.value.trim().split('@')[0];
     try{RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:(cd&&cd.value?cd.value.trim():''),profile:window.RATI_PROFILE||null})}catch(e){}
@@ -5072,18 +5158,21 @@ window.RATI_GUESS=(function(){
 <div class="rt-ov" id="dtOv" hidden>
   <div class="rt-bar"><div class="hd-in">
     <a class="logo" href="index.html#top" onclick="RATI_DOC.close();return false">RATI<span class="dot">.</span><span class="lab">lab</span></a><em id="dtStep" style="display:none"></em>
-    <nav class="hd-r">
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST</b></a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
-      <a class="hd-link" href="types.html">유형설명</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('menhera');e&&e.scrollIntoView()},60);return false">멘헤라 지수</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('stories');e&&e.scrollIntoView()},60);return false">사연</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('reviews');e&&e.scrollIntoView()},60);return false">리뷰</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('price');e&&e.scrollIntoView()},60);return false">리포트</a>
-      <a class="hd-cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_TEST.open();return false">검사 시작</a>
+    <div class="hd-right">
+      <button class="hd-burger dt-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="dtNav" onclick="return RATI_NAV&&RATI_NAV.docToggle()"><span></span><span></span><span></span></button>
+      <nav class="hd-r" id="dtNav">
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST</b></a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
+        <a class="hd-link" href="types.html">유형설명</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('menhera');e&&e.scrollIntoView()},60);return false">멘헤라 지수</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('stories');e&&e.scrollIntoView()},60);return false">사연</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('reviews');e&&e.scrollIntoView()},60);return false">리뷰</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('price');e&&e.scrollIntoView()},60);return false">리포트</a>
+        <a class="hd-cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_TEST.open();return false">검사 시작</a>
+      </nav>
       <button class="sy-x" type="button" onclick="RATI_DOC.close()" aria-label="닫기">×</button>
-    </nav>
+    </div>
   </div></div>
   <div class="rt-shell" id="dtBody" style="max-width:720px"></div>
 </div>

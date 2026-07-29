@@ -123,6 +123,8 @@
 <div class="aur"><i class="x1"></i><i class="x2"></i></div>
 <header><div class="hd-in">
   <a class="logo" href="index.html#top">RATI<span class="dot">.</span><span class="lab">lab</span></a>
+  <div class="hd-right">
+  <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST</b></a>
     <a class="hd-link" href="index.html?doc=theory">원리</a>
@@ -134,7 +136,50 @@
     <a class="hd-link" href="index.html#price">리포트</a>
     <a class="hd-cta" href="index.html?test=1">검사 시작</a>
   </nav>
+  <a class="hd-x" href="index.html" aria-label="닫기 — 홈으로">×</a>
+  </div>
 </div></header>
+<style id="hd-nav-css">
+  .hd-burger{display:none;position:relative;width:42px;height:40px;border:0;background:transparent;cursor:pointer;padding:0;flex:0 0 auto;z-index:3}
+  .hd-burger span{position:absolute;left:10px;right:10px;height:2px;border-radius:2px;background:var(--ink,#241C26);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .18s}
+  .hd-burger span:nth-child(1){top:13px}
+  .hd-burger span:nth-child(2){top:19px}
+  .hd-burger span:nth-child(3){top:25px}
+  header.nav-open .hd-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  header.nav-open .hd-burger span:nth-child(2){opacity:0}
+  header.nav-open .hd-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  .hd-right{display:flex;align-items:center;gap:14px}
+  .hd-x{display:none;font-size:24px;line-height:1;color:var(--mut,#9A8C9C);padding:6px;text-decoration:none;flex:0 0 auto;transition:opacity .18s}
+  .hd-x:hover{color:var(--ink,#241C26)}
+  header.nav-open .hd-x{opacity:0;pointer-events:none}
+  @media(max-width:880px){
+    header{padding:10px 0}
+    .hd-x{display:inline-flex;align-items:center}
+    header .hd-in{position:relative;flex-wrap:nowrap!important;row-gap:0}
+    .hd-burger{display:inline-flex}
+    header .hd-r{position:absolute;top:100%;left:0;right:0;width:auto;
+      display:flex!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 14px 10px!important;
+      background:rgba(255,255,255,.98);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border:0;border-top:1px solid var(--line,#eadfe4);border-bottom:1px solid var(--line,#eadfe4);
+      border-radius:0;box-shadow:0 22px 34px -24px rgba(36,28,38,.35);
+      overflow:hidden!important;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
+      transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
+    header.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto!important}
+    header .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+      font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
+    header .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
+    header .hd-r .hd-link:active{background:#fdf2f6}
+    header .hd-r .hd-cta{display:none!important}
+  }
+</style>
+<script>
+(function(){var hd=document.querySelector('header');if(!hd)return;
+  function close(){hd.classList.remove('nav-open');var b=hd.querySelector('.hd-burger');if(b){b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','메뉴 열기');}}
+  var nav=hd.querySelector('.hd-r');if(nav)nav.addEventListener('click',function(e){if(e.target.closest('.hd-link,.hd-cta'))close();});
+  document.addEventListener('click',function(e){if(hd.classList.contains('nav-open')&&!hd.contains(e.target))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 <main class="twrap">
   <section class="thero"><div class="thero-in">
     <div class="thero-txt">
