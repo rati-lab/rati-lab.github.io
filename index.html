@@ -1229,13 +1229,13 @@ window.RATI_REVIEW=(function(){
         <button class="cta" type="button" id="sySend" style="padding:14px 26px;font-size:14.5px">사연 보내기</button>
         <button class="btn2" type="button" id="syCopy">내용 복사</button>
       </div>
-      <p class="sy-fine mono">보내기를 누르면 메일 앱이 열립니다 — 앱이 없으면 '내용 복사' 후 <b>drkms104@gmail.com</b>에 붙여넣어 주세요.</p>
+      <p class="sy-fine mono">보내기를 누르면 사연이 <b>바로 등록</b>돼요 — 메일 앱은 열리지 않습니다. (답장 원하면 이메일만 남겨주세요)</p>
     </div>
     <div id="syDone" hidden>
       <div class="sy-done-emo">💌</div>
-      <h3>메일 앱이 열렸어요 — 전송만 누르면 접수 완료!</h3>
+      <h3>사연이 접수됐어요!</h3>
       <p class="sy-sub" style="margin-top:10px">잘 읽을게요. 채택되면 유형 분석과 함께 소개해드려요.</p>
-      <p class="sy-fine mono" style="margin-top:14px">메일 앱에서 <b>전송</b>까지 눌러야 최종 접수됩니다. 안 열렸다면 '내용 복사'로 보내주세요.</p>
+      <p class="sy-fine mono" style="margin-top:14px">따로 메일을 보내실 필요 없어요 — 바로 등록됐습니다.</p>
       <div class="sy-btns" style="justify-content:center"><button class="btn2" type="button" id="syDoneClose">닫기</button></div>
     </div>
   </div>
@@ -1300,7 +1300,6 @@ window.RATI_REVIEW=(function(){
     if(!valid())return;
     var nick=nk.value.trim()||'익명';
      try{RATI_TRACK('story',{nick:nick,text:body().slice(0,2000)})}catch(e){}
-    location.href='mailto:drkms104@gmail.com?subject='+encodeURIComponent('[사연] '+nick)+'&body='+encodeURIComponent(body());
     frm.hidden=true;done.hidden=false;
   });
   document.getElementById('syCopy').addEventListener('click',function(){
