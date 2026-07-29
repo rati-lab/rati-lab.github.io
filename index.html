@@ -2,6 +2,18 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) — GA4 (Phase 1: 추가만 · 기존 Apps Script POST 로깅과 병행) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7MT2EN429N"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // DebugView는 URL에 ?ga_debug 붙이면 켜짐 (평상시엔 일반 수집)
+  var __gaCfg={};try{if(new URLSearchParams(location.search).has('ga_debug'))__gaCfg.debug_mode=true;}catch(e){}
+  gtag('config', 'G-7MT2EN429N', __gaCfg);
+  // 안전 래퍼 — gtag 미로드(광고차단 등) 시에도 사이트 동작 불변
+  window.RATI_GA=function(name,params){try{if(typeof gtag==='function')gtag('event',name,params||{});}catch(e){}};
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RATI.lab — 연애 애착 유형 검사 · 연애는 측정된다</title>
 <meta name="description" content="새벽 2시의 '자?'부터 잠수이별까지 — 실제 상황 22개로 판정하는 연애 애착 유형. 4축·16유형·멘헤라 지수까지 무료.">
@@ -228,7 +240,7 @@
       <h1>기분 탓이 아닙니다.<br><span class="soft">측정값입니다.</span></h1>
       <p class="hero-sub">연애에서 반복되는 그 패턴 — 감이 아니라 좌표로 보여드립니다.</p>
       <div class="hero-cta">
-        <a class="cta" href="#" onclick="return RATI_TEST.open()" style="text-decoration:none">내 RATI 검사하기 (무료)</a>
+        <a class="cta" href="#" onclick="return RATI_TEST.open('hero')" style="text-decoration:none">내 RATI 검사하기 (무료)</a>
         <a class="btn2" href="javascript:void(0)" onclick="RATI_GUESS.open();return false" style="border-color:rgba(232,93,138,.55);color:var(--rosed)">그 사람과 나 — 궁합 보기</a>
       </div>
       <div class="data-line">
@@ -295,7 +307,7 @@
     <span class="tb-k mono">FREE TEST 01 · 나</span>
     <b>내 RATI 검사</b>
     <p>실제 상황 22문항, 2분. 4축 좌표 위의 내 위치와 16유형, 멘헤라 지수까지 — 결과는 전부 무료입니다.</p>
-    <div class="tb-act"><button class="cta" type="button" style="padding:13px 24px;font-size:14px" onclick="RATI_TEST.open()">내 RATI 검사하기 (무료)</button></div>
+    <div class="tb-act"><button class="cta" type="button" style="padding:13px 24px;font-size:14px" onclick="RATI_TEST.open('header')">내 RATI 검사하기 (무료)</button></div>
   </div>
   <div class="tb-card alt">
     <span class="tb-k mono">FREE TEST 02 · 그 사람</span>
@@ -1018,7 +1030,7 @@ window.RATI_REVIEW=(function(){
         <div class="logo" style="color:#fff">RATI<span class="dot">.</span><span class="lab">lab</span></div>
         <p class="f-line">성격은 성격유형이 말해줍니다.<br>연애는 RATI가 측정합니다.</p>
       </div>
-      <a class="cta" href="#" onclick="return RATI_TEST.open()" style="text-decoration:none">내 RATI 검사하기 (무료)</a>
+      <a class="cta" href="#" onclick="return RATI_TEST.open('footer')" style="text-decoration:none">내 RATI 검사하기 (무료)</a>
     </div>
     <div class="f-note">본 검사는 재미와 자기이해를 위한 콘텐츠이며 임상 진단이 아닙니다 · 만 14세 이상 대상 · 상대 유형은 관찰 추정 · 표기된 통계는 실측 기준.<br>
       MBTI®는 The Myers-Briggs Company의 등록상표이며, RATI는 이와 무관한 별개의 검사입니다.</div>
@@ -1303,6 +1315,7 @@ window.RATI_REVIEW=(function(){
     if(!valid())return;
     var nick=nk.value.trim()||'익명';
      try{RATI_TRACK('story',{nick:nick,text:body().slice(0,2000)})}catch(e){}
+     try{if(window.RATI_GA)RATI_GA('story_submit',{page:((document.getElementById('gsOv')&&!document.getElementById('gsOv').hidden)?'guess':(window.RATI_LAST_CODE?'result':'home'))})}catch(e){}
     frm.hidden=true;done.hidden=false;
   });
   document.getElementById('syCopy').addEventListener('click',function(){
@@ -3705,12 +3718,12 @@ var qrcode = function() {
 (function(){
   var ov=document.getElementById('odOv'); if(!ov) return;
   var PRODUCTS={deep:{n:'심층 리포트 (13쪽)',amt:6900},couple:{n:'RATI × RATI',amt:8900},tier2:{n:'RATI+성격유형 × RATI+성격유형',amt:12900},tier3:{n:'RATI+성격유형+사주 × RATI+성격유형+사주',amt:16900}};
-  var cur=PRODUCTS.deep;
+  var cur=PRODUCTS.deep,curKey='deep';
   var frm=document.getElementById('odForm'),done=document.getElementById('odDone'),
       em=document.getElementById('odMail'),cd=document.getElementById('odCode'),
       mateW=document.getElementById('odMateWrap'),er=document.getElementById('odErr');
   function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}
-  function show(key){cur=PRODUCTS[key]||PRODUCTS.deep;
+  function show(key){cur=PRODUCTS[key]||PRODUCTS.deep;curKey=(PRODUCTS[key]?key:'deep');try{if(window.RATI_GA)RATI_GA('product_click',{product:(key==='deep'?'deep':'couple'),tier:key,price:cur.amt})}catch(e){}
     document.getElementById('odName').textContent=cur.n;
     document.getElementById('odPrice').textContent=fmt(cur.amt)+'원';
     var isMatch=(key==='couple'||key==='tier2'||key==='tier3');
@@ -3761,6 +3774,7 @@ var qrcode = function() {
   function finishPay(){
     var payer=em.value.trim().split('@')[0];
     try{RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:(cd&&cd.value?cd.value.trim():''),profile:window.RATI_PROFILE||null})}catch(e){}
+    try{if(window.RATI_GA)RATI_GA('payment_claimed',{product:(curKey==='deep'?'deep':'couple'),tier:curKey,price:cur.amt})}catch(e){}
     // 배포 시: window.RATI_ORDER_ENDPOINT 있으면 여기서 주문정보 POST (수집서버 preorders)
     document.getElementById('odDoneMail').textContent=em.value.trim();
     document.getElementById('odDoneName').textContent=payer;
@@ -3778,7 +3792,7 @@ var qrcode = function() {
     qrPanel.hidden=false;er.hidden=true;
     qrPanel.scrollIntoView({block:'nearest'});
   }
-  document.getElementById('odPay').addEventListener('click',function(){
+  document.getElementById('odPay').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'toss'})}catch(e){}
     if(!valid())return;
     if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
       location.href=tossLink();
@@ -3787,7 +3801,7 @@ var qrcode = function() {
       showQr(tossLink(),'휴대폰 카메라로 스캔하세요','토스 앱이 <b>금액·계좌가 채워진 송금 화면</b>으로 바로 열립니다. 입금자명은 <b>이메일 앞부분</b>으로!');
     }
   });
-  document.getElementById('odKakao').addEventListener('click',function(){
+  document.getElementById('odKakao').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'kakaopay'})}catch(e){}
     if(!valid())return;
     if(PAYCFG.kakaoQR){
       if(/Android|iPhone|iPad/i.test(navigator.userAgent)){ location.href=PAYCFG.kakaoQR; finishPay(); }
@@ -3796,7 +3810,7 @@ var qrcode = function() {
     else { er.textContent='카카오페이 연결을 준비 중이에요 — 지금은 토스 QR 또는 계좌 복사를 이용해주세요.'; er.hidden=false; }
   });
   document.getElementById('odPaid').addEventListener('click',function(){finishPay()});
-  document.getElementById('odCopy').addEventListener('click',function(){
+  document.getElementById('odCopy').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('account_copy',{})}catch(e){}
     var t=this,txt='토스뱅크 1000-4209-8680 김민수 · '+cur.n+' '+fmt(cur.amt)+'원 · 입금자명: '+(em.value.trim()?em.value.trim().split('@')[0]:'이메일 앞부분');
     function ok(){t.textContent='복사됨 ✓';setTimeout(function(){t.textContent='계좌·금액 복사'},1800)}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok)}else{
@@ -4090,7 +4104,7 @@ window.RATI_TEST=(function(){
   var idx=0,ans=[],res=null,busy=false,profile=null;
   var ov,body,prog,step;
   function el(){ov=document.getElementById('rtOv');body=document.getElementById('rtBody');prog=document.getElementById('rtProg');step=document.getElementById('rtStep')}
-  function open(){el();idx=0;ans=[];res=null;profile=null;ov.hidden=false;document.body.style.overflow='hidden';renderIntake();return false}
+  function open(entry){el();window.__RATI_VIEW='';try{if(window.RATI_GA)RATI_GA('test_start',{entry:entry||'other'})}catch(e){}idx=0;ans=[];res=null;profile=null;ov.hidden=false;document.body.style.overflow='hidden';renderIntake();return false}
   function renderIntake(){
     step.textContent='시작 전 · 정보 입력';prog.style.width='0%';
     var MB=['모름 / 비공개','INFP','INFJ','INTP','INTJ','ISFP','ISFJ','ISTP','ISTJ','ENFP','ENFJ','ENTP','ENTJ','ESFP','ESFJ','ESTP','ESTJ'];
@@ -4160,7 +4174,7 @@ window.RATI_TEST=(function(){
     body.querySelectorAll('.tqo').forEach(function(b){b.addEventListener('click',function(){pick(parseInt(b.getAttribute('data-k'),10),b)})});
   }
   function pick(k,btn){
-    if(busy)return;busy=true;btn.classList.add('on');ans[idx]=k;
+    if(busy)return;busy=true;btn.classList.add('on');ans[idx]=k;try{if(window.RATI_GA)RATI_GA('question_answered',{q_num:idx+1})}catch(e){}
     setTimeout(function(){ if(idx===Q.length-1){calc();renderDone()} else {idx++;renderQ()} },190);
   }
   function back(){if(idx>0&&!busy){idx--;renderQ()}}
@@ -4286,6 +4300,7 @@ window.RATI_TEST=(function(){
   function renderR(){
     step.textContent='결과 리포트 · 데모';prog.style.width='100%';
     try{RATI_TRACK('test_done',{code:res.code,n:answeredN(),acc:precision(answeredN()),answers:ans.map(function(a){return typeof a==='number'?'SAVF'.charAt(a):''}).join(''),profile:window.RATI_PROFILE||null});fetch(window.RATI_STAT_ENDPOINT+'?code='+res.code,{mode:'no-cors',cache:'no-store'})}catch(e){}
+    window.__RATI_VIEW='result';try{if(window.RATI_GA)RATI_GA('test_complete',{code:res.code,precision:precision(answeredN()),q_count:answeredN(),early:answeredN()<Q.length})}catch(e){}
     var g=G[res.code.slice(0,2)],t=T[res.code];
     var pf=window.RATI_PROFILE,pfLine='';
     if(pf){var gm=(pf.gender==='비공개'?'선택 안 함':pf.gender);pfLine=pf.nick+' · '+gm+' · '+pf.age+'세'+(pf.mbti&&pf.mbti.indexOf('모름')<0?' · '+pf.mbti:'');}
@@ -4489,7 +4504,7 @@ window.RATI_GUESS=(function(){
   var mode=null,gidx=0,gans=[],gres=null;
   var ov,body,prog,step;
   function el(){ov=document.getElementById('gsOv');body=document.getElementById('gsBody');prog=document.getElementById('gsProg');step=document.getElementById('gsStep')}
-  function open(){el();mode=null;gidx=0;gans=[];gres=null;ov.hidden=false;document.body.style.overflow='hidden';if(window.RATI_GUESS_PROFILE){renderMode()}else{renderGItk()}return false}
+  function open(){el();window.__RATI_VIEW='';mode=null;gidx=0;gans=[];gres=null;ov.hidden=false;document.body.style.overflow='hidden';if(window.RATI_GUESS_PROFILE){renderMode()}else{renderGItk()}return false}
   function renderGItk(){
     step.textContent='상대 추측 · 시작 전';prog.style.width='2%';
     var MB=['모름','INFP','INFJ','INTP','INTJ','ISFP','ISFJ','ISTP','ISTJ','ENFP','ENFJ','ENTP','ENTJ','ESFP','ESFJ','ESTP','ESTJ'];
@@ -4723,6 +4738,7 @@ window.RATI_GUESS=(function(){
     step.textContent='상대 추측 · 티저';prog.style.width='100%';
     window.RATI_GUESS_MODE=mode?mode.n:'';
     try{RATI_TRACK('guess_done',{code:gres.code,mode:mode?mode.n:'',answers:(gans||[]).map(function(a){return typeof a==='number'?String(a):''}).join(''),conf:(gres&&gres.conf?JSON.stringify(gres.conf):''),exact:!!(gres&&gres.exact),profile:window.RATI_GUESS_PROFILE||null})}catch(e){}
+    window.__RATI_VIEW='result';try{if(window.RATI_GA)RATI_GA('guess_complete',{code:gres.code})}catch(e){}
     var c=gres.code,g=GG[c.slice(0,2)];
     var confHtml='';
     if(gres.exact){confHtml='<span class="gs-conf mono" style="border-color:'+g[1]+';color:'+g[1]+'">상대 실측 코드</span>'}
@@ -4953,7 +4969,7 @@ window.RATI_GUESS=(function(){
     var g=GG[their.slice(0,2)];
     var qs=REL[mode.k];
     if(!my){body.innerHTML='<div class="rp-page" style="text-align:center;margin-top:30px"><p style="font-size:14px;font-weight:800">내 좌표가 필요합니다</p><p style="font-size:12.5px;color:var(--slate);margin-top:10px">궁합은 두 좌표를 겹치는 일이라, 내 무료 검사(2분)가 먼저예요.</p><div style="margin-top:16px"><button class="cta" onclick="RATI_GUESS.close();RATI_TEST.open()">내 검사부터 — 무료</button></div></div>';return}
-    var ct=chemType(my,their),dyn=dynName(my,their);
+    var ct=chemType(my,their),dyn=dynName(my,their);window.__RATI_VIEW='result';try{if(window.RATI_GA)RATI_GA('couple_complete',{codes:(my||'')+'x'+their})}catch(e){}
     var title=dyn?('“'+dyn+'”'):('“'+BLOCK[(my[0]===their[0]?my[0]+my[0]:(my[0]<their[0]?my[0]+their[0]:their[0]+my[0]))]||ct.label+'”');
     if(!dyn)title='“'+ct.label+'”';
     // 01 지금 무슨 일 — 관계 8답 보드
@@ -5460,7 +5476,7 @@ window.RATI_SHARE=(function(){
   function copy(t,done){
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast(done)},function(){toast('복사가 막혔어요 — 주소창의 링크를 직접 복사해주세요')})}
     else{toast('복사가 막혔어요 — 주소창의 링크를 직접 복사해주세요')}}
-  function go(ch,kind,code){
+  function go(ch,kind,code){try{if(window.RATI_GA)RATI_GA('share_click',{channel:ch})}catch(e){}
     var u=url(ch,kind,code),t=msg(kind,code);
     if(ch==='x'){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(u),'_blank','width=560,height=640');return}
     if(ch==='fb'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u)+'&quote='+encodeURIComponent(t),'_blank','width=560,height=640');return}
@@ -5582,6 +5598,8 @@ window.RATI_UTM=window.RATI_UTM||(function(){try{var p=new URLSearchParams(locat
 window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({kind:kind,ts:new Date().toISOString(),page:(location.pathname.split('/').pop()||'index')+location.hash,sid:window.RATI_SID,utm:window.RATI_UTM},data||{}))})}catch(e){}};
 document.addEventListener('click',function(e){
   if(!e.target.closest)return;var el;
+  var __rov=e.target.closest('#rtOv,#gsOv');
+  if(__rov&&window.__RATI_VIEW==='result'){var __rc=e.target.closest('.cta,.btn2');if(__rc&&!__rc.classList.contains('itk-go')){try{if(window.RATI_GA)RATI_GA('result_cta_click',{label:(__rc.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)})}catch(e2){}}}
   if(el=e.target.closest('.hd-link,.hd-cta,.logo')){RATI_TRACK('event',{cat:'header',label:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,30)});return}
   if(el=e.target.closest('.pbtn')){var card=el.closest('.gtb'),nm=card&&card.querySelector('.gtb-name');RATI_TRACK('event',{cat:'product',label:nm?nm.textContent.replace(/\s+/g,' ').trim().slice(0,40):'주문'});return}
   if(el=e.target.closest('[onclick*="RATI_TEST.order"]')){RATI_TRACK('event',{cat:'product',label:'심층 리포트 주문'});return}
@@ -5606,6 +5624,17 @@ window.__RATI_STAT = null;
           }
         }
       }).catch(function(){});
+  }catch(e){}
+})();
+/* GA4 section_view — 주요 섹션 진입 시 1회 (페이지뷰·스크롤은 향상된 측정으로 자동) */
+(function(){
+  try{
+    if(!('IntersectionObserver' in window))return;
+    var seen={};
+    var io=new IntersectionObserver(function(ents){ents.forEach(function(en){
+      if(en.isIntersecting){var id=en.target.id;if(id&&!seen[id]){seen[id]=1;try{if(window.RATI_GA)RATI_GA('section_view',{section:id})}catch(e){}}}
+    })},{threshold:0,rootMargin:'-45% 0px -45% 0px'});
+    ['theory','menhera','stories','gung','sample','reviews','price','order','contact'].forEach(function(id){var elx=document.getElementById(id);if(elx)io.observe(elx)});
   }catch(e){}
 })();
 </script>
