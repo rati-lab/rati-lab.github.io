@@ -236,9 +236,9 @@
       <a class="hd-link" href="types.html">유형설명</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
       <a class="hd-link" href="#menhera">멘헤라 지수</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('stories');return false">사연</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('reviews');return false">리뷰</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('price');return false">리포트</a>
+      <a class="hd-link" href="#stories">사연</a>
+      <a class="hd-link" href="#reviews">리뷰</a>
+      <a class="hd-link" href="#price">리포트</a>
       <a class="hd-cta" href="#" onclick="return RATI_TEST.open()">검사 시작</a>
     </nav>
   </div>
@@ -5176,9 +5176,9 @@ window.RATI_GUESS=(function(){
         <a class="hd-link" href="types.html">유형설명</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('menhera');e&&e.scrollIntoView()},60);return false">멘헤라 지수</a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('stories');return false">사연</a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('reviews');return false">리뷰</a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('price');return false">리포트</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('stories');e&&e.scrollIntoView()},60);return false">사연</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('reviews');e&&e.scrollIntoView()},60);return false">리뷰</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.close();setTimeout(function(){var e=document.getElementById('price');e&&e.scrollIntoView()},60);return false">리포트</a>
         <a class="hd-cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_TEST.open();return false">검사 시작</a>
       </nav>
       <button class="sy-x" type="button" onclick="RATI_DOC.close()" aria-label="닫기">×</button>
@@ -5284,24 +5284,11 @@ window.RATI_DOC=(function(){
   +'<div class="rp-t">멘헤라 지수 단독 테스트</div>'
   +'<p class="rp-p" style="font-size:13px">연애 과몰입도만 빠르게 재는 초단기 스핀오프 — 준비 중입니다. 지금은 대표 검사 결과에서 멘헤라 지수를 무료로 확인할 수 있어요.</p></div>'
   +'<div class="rr-btns"><button class="btn2" onclick="RATI_DOC.close()">닫기</button></div>';
-  /* 사연·리뷰·리포트 = 랜딩의 원본 섹션을 그대로 오버레이로 이동(복제 아님 → 기능·이벤트 유지), 닫으면 제자리 복원 */
-  var SECT={stories:'사연',reviews:'리뷰 · 실사용 후기',price:'리포트 · 가격'};
-  var movedSect=null,sectPh=null;
-  function restoreSect(){if(movedSect&&sectPh&&sectPh.parentNode){sectPh.parentNode.replaceChild(movedSect,sectPh);}movedSect=null;sectPh=null;}
   function open(kind){el();
-    restoreSect();
-    if(SECT[kind]){
-      var s=document.getElementById(kind); if(!s)return false;
-      step.textContent=SECT[kind];body.innerHTML='';
-      sectPh=document.createComment('sect-ph');s.parentNode.insertBefore(sectPh,s);
-      body.appendChild(s);movedSect=s;
-      try{s.querySelectorAll('.rv').forEach(function(x){x.classList.add('in')})}catch(e){}
-    } else {
-      step.textContent = kind==='theory'?'원리 · 전문':(kind==='tests'?'검사 목록':'궁합 · 조합해설');
-      body.innerHTML = kind==='theory'?THEORY:(kind==='tests'?TESTS:GUNG);
-    }
+    step.textContent = kind==='theory'?'원리 · 전문':(kind==='tests'?'검사 목록':'궁합 · 조합해설');
+    body.innerHTML = kind==='theory'?THEORY:(kind==='tests'?TESTS:GUNG);
     ov.hidden=false;document.body.style.overflow='hidden';window.scrollTo(0,0);ov.scrollTop=0;return false}
-  function close(){restoreSect();ov.hidden=true;document.body.style.overflow=''}
+  function close(){ov.hidden=true;document.body.style.overflow=''}
   document.addEventListener('keydown',function(e){var o=document.getElementById('dtOv');if(e.key==='Escape'&&o&&!o.hidden)close()});
   return {open:open,close:close};
 })();
