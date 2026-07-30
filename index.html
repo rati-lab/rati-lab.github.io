@@ -13,7 +13,17 @@
   gtag('config', 'G-7MT2EN429N', __gaCfg);
   // 안전 래퍼 — gtag 미로드(광고차단 등) 시에도 사이트 동작 불변
   window.RATI_GA=function(name,params){try{if(typeof gtag==='function')gtag('event',name,params||{});}catch(e){}};
+  // 인앱 브라우저(카톡·인스타·네이버 등) 라이트 모드 — WKWebView 메모리/GPU 한도로 인한 크래시-리로드 루프 방지
+  try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
 </script>
+<style id="inapp-lite-css">
+  /* 인앱 라이트 모드: GPU 무거운 장식만 끔 — 기능·레이아웃 불변, 일반 브라우저 영향 없음 */
+  html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
+  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
+  html.inapp-lite .rt-ov{background:#FDF8FB}
+  html.inapp-lite #hd .hd-r,html.inapp-lite #dtOv .rt-bar .hd-r{background:#fff}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RATI.lab — 연애 애착 유형 검사 · 연애는 측정된다</title>
 <meta name="description" content="새벽 2시의 '자?'부터 잠수이별까지 — 실제 상황 22개로 판정하는 연애 애착 유형. 4축·16유형·멘헤라 지수까지 무료.">
