@@ -3791,9 +3791,9 @@ var qrcode = function() {
   .rr-mh b{font-family:var(--serif);font-size:36px;font-weight:900;line-height:1}
   .rr-mh span{font-size:12px;color:var(--slate)}
   .rr-disc{border:1px dashed rgba(36,28,38,.22);border-radius:12px;padding:11px 14px;font-size:11px;color:var(--slate);line-height:1.7;margin-top:16px;background:rgba(255,255,255,.6)}
-  .rr-btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
-  .rr-btns .cta{flex:1.3;padding:15px 18px;font-size:14.5px}
-  .rr-btns .btn2{flex:1;text-align:center}
+  .rr-btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+  .rr-btns .cta{flex:1 1 auto;padding:15px 18px;font-size:14.5px;white-space:nowrap;justify-content:center}
+  .rr-btns .btn2{flex:1 1 auto;text-align:center;white-space:nowrap;justify-content:center}
   /* 리포트 */
   .rp-page{background:linear-gradient(175deg,#fff,#FDF9FB);border:1px solid var(--line);border-radius:20px;padding:28px 30px;margin-top:18px;box-shadow:0 24px 54px -34px rgba(36,28,38,.4)}
   .rp-hd{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:9px;letter-spacing:1.2px;color:var(--mut);border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
@@ -3808,7 +3808,7 @@ var qrcode = function() {
   .rp-olay{position:absolute;inset:-8px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(253,249,251,.9) 42%,#FDF9FB 85%);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:12px;text-align:center;padding:16px}
   .rp-freebar{margin-top:16px;text-align:center;font-size:10px;letter-spacing:1px;color:var(--rosed);border:1px dashed var(--rose);border-radius:10px;padding:9px 12px;background:#FEF6F9}
   .rp-hero{border-radius:20px;color:var(--ink);text-align:center;padding:26px 20px 20px;margin-top:16px;box-shadow:0 18px 44px -26px rgba(120,90,120,.32)}
-  .rp-pill{background:#fff;color:var(--ink);font-weight:900;font-size:12px;letter-spacing:5px;padding:6px 20px;border-radius:99px;display:inline-block;border:1px solid rgba(0,0,0,.05);box-shadow:0 3px 12px rgba(120,90,120,.16)}
+  .rp-pill{background:#fff;color:var(--ink);font-weight:900;font-size:12px;letter-spacing:5px;padding:6px 20px;border-radius:99px;display:inline-block;border:1px solid rgba(0,0,0,.05);box-shadow:0 3px 12px rgba(120,90,120,.16);position:relative;z-index:2}
   .rp-hero h2{font-size:19px;font-weight:900;margin-top:4px;color:color-mix(in srgb,var(--gc,#241C26) 82%,#35263a)}
   .rp-hsub{font-size:11.5px;color:var(--slate);opacity:1;margin-top:5px}
   .rp-hmeta{border-top:1px solid rgba(90,78,92,.2);margin-top:12px;padding-top:9px;font-size:9px;color:var(--mut);letter-spacing:1px}
@@ -3962,7 +3962,7 @@ window.RATI_TEST=(function(){
       +'<h2 class="rt-q">'+q.q+'</h2>';
     ord.forEach(function(k){html+='<button class="tqo" data-k="'+k+'">'+q.o[k]+'</button>'});
     var an=answeredN();
-    if(an>=8){html='<div class="rt-early mono">지금 종료 시 응답 완성도 <b>'+precision(an)+'%</b> · <a href="javascript:void(0)" onclick="RATI_TEST.finish()">지금 종료하고 결과 보기</a></div>'+html}
+    if(an>=8){html='<div class="rt-early mono">지금 종료 시 응답 신뢰도 <b>'+precision(an)+'%</b> · <a href="javascript:void(0)" onclick="RATI_TEST.finish()">지금 종료하고 결과 보기</a></div>'+html}
     else{html='<div class="rt-early mono" style="color:var(--mut)">8문항부터 판정 가능</div>'+html}
     html+='<div class="rt-foot"><button class="rt-back" '+(idx===0?'disabled':'')+' onclick="RATI_TEST.back()">← 이전 문항 (답 수정)</button><span class="rt-hint">정답 없음 · 제일 가까운 쪽</span><button class="rt-home" onclick="RATI_TEST.close()">홈으로 나가기</button></div>';
     body.innerHTML=html;window.scrollTo(0,0);ov.scrollTop=0;busy=false;
@@ -4154,10 +4154,10 @@ window.RATI_TEST=(function(){
     +'<p class="eyebrow" style="letter-spacing:3px">MEASUREMENT COMPLETE · 결과 리포트</p>'
     +'<div class="rp-hero" style="--gc:'+g.c+';background:radial-gradient(125% 95% at 50% 36%,color-mix(in srgb,'+g.c+' 30%,transparent) 0%,color-mix(in srgb,'+g.c+' 14%,transparent) 55%,color-mix(in srgb,'+g.c+' 7%,transparent) 100%);margin-top:14px">'
     +'<span class="rp-pill">'+res.code.split('').join(' ')+'</span>'
-    +'<div class="sp" data-type="'+res.code+'" style="--c:'+g.c+';--s:84px;position:relative;bottom:0;margin:84px auto 10px"><i></i></div>'
+    +'<div class="sp" data-type="'+res.code+'" style="--c:'+g.c+';--s:84px;position:relative;bottom:0;margin:172px auto 10px"><i></i></div>'
     +'<h2>'+t[0]+'</h2><div class="rp-hsub">'+g.k+' 그룹 · '+g.e+'</div>'
     +(pfLine?'<div class="rp-hprof mono">'+pfLine+'</div>':'')
-    +'<div class="rp-hmeta mono">응답 완성도 '+prec+'% · '+an+'문항 기준 · '+ds+' · DEMO</div></div>'
+    +'<div class="rp-hmeta mono">응답 신뢰도 '+prec+'% · 답한 문항 '+an+'/22 · '+ds+' · DEMO</div></div>'
     /* 분포 */
     +'<div class="rp-page" style="text-align:center"><p style="font-size:13px;color:var(--slate)">지금까지 <b>'+(statTotal?statTotal.toLocaleString('ko-KR'):'2,624')+'명</b>이 검사했어요 <span class="mono" style="font-size:9px;color:var(--mut)">('+(statTotal?'실시간 집계':'집계 중')+')</span></p>'
     +'<p style="font-size:15px;margin-top:8px">나와 같은 <b>'+t[0]+'</b>은 <b style="color:'+g.c+';font-size:22px">'+my+'%</b> · 16유형 중 '+rank+'번째 <span class="mono" style="font-size:9px;color:var(--mut)">표본 '+(statTotal?statTotal.toLocaleString('ko-KR'):'1,428')+'</span></p>'
@@ -4568,7 +4568,7 @@ window.RATI_GUESS=(function(){
     body.innerHTML='<p class="eyebrow" style="letter-spacing:3px">GUESS RESULT · 관찰 기반 추정</p>'
     +'<div class="rp-hero" style="--gc:'+g[1]+';background:radial-gradient(125% 95% at 50% 36%,color-mix(in srgb,'+g[1]+' 30%,transparent) 0%,color-mix(in srgb,'+g[1]+' 14%,transparent) 55%,color-mix(in srgb,'+g[1]+' 7%,transparent) 100%);margin-top:14px">'
     +'<span class="rp-pill">'+c.split('').join(' ')+'</span>'
-    +'<div class="sp" data-type="'+c+'" style="--c:'+g[1]+';--s:80px;position:relative;bottom:0;margin:80px auto 8px"><i></i></div>'
+    +'<div class="sp" data-type="'+c+'" style="--c:'+g[1]+';--s:80px;position:relative;bottom:0;margin:164px auto 8px"><i></i></div>'
     +'<h2>그 사람은, '+TN[c]+'</h2><div class="rp-hsub">'+g[0]+' 그룹 · '+(gres.exact?'상대 실측':mode.n+' 모드 · 관찰 추정')+'</div>'
     +'<div class="rp-hmeta mono">'+(gres.exact?'입력된 코드 기준':'당신이 본 모습 22문항 기준 · 실제 응답과 다를 수 있어요')+'</div></div>'
     +'<div class="rp-page"><div class="rp-t" style="font-size:17px">한 줄 정체성</div>'
