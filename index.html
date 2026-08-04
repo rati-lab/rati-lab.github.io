@@ -20,6 +20,11 @@
       location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href);
     } else if(/\bLine\//i.test(__ua) && location.search.indexOf('openExternalBrowser')<0){
       location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';
+    } else if(/Android/i.test(__ua) && /Instagram|FBAN|FBAV|NAVER\(inapp|DaumApps|Twitter/i.test(__ua)){
+      // 안드로이드 기타 인앱 → 크롬 강제(intent). sessionStorage 가드로 1회만 시도(크롬 미설치 무한루프 방지)
+      try{ if(!sessionStorage.getItem('extEsc')){ sessionStorage.setItem('extEsc','1');
+        location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';
+      } }catch(e2){}
     }
   }catch(e){}
   // 인앱 브라우저(카톡·인스타·네이버 등) 라이트 모드 — WKWebView 메모리/GPU 한도로 인한 크래시-리로드 루프 방지

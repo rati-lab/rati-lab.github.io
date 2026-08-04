@@ -8,6 +8,7 @@
 try{var __ua=navigator.userAgent||'';
 if(/KAKAOTALK/i.test(__ua)){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href);}
 else if(/\bLine\//i.test(__ua)&&location.search.indexOf('openExternalBrowser')<0){location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';}
+else if(/Android/i.test(__ua)&&/Instagram|FBAN|FBAV|NAVER\(inapp|DaumApps|Twitter/i.test(__ua)){try{if(!sessionStorage.getItem('extEsc')){sessionStorage.setItem('extEsc','1');location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';}}catch(e2){}}
 }catch(e){}
 try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
 <style id="inapp-lite-css">
