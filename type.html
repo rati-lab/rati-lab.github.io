@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RATI 유형 소개</title>
-<script>/* 인앱 브라우저 라이트 모드 — WKWebView 크래시-리로드 방지 */try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
+<script>/* 카톡·라인 인앱 → 외부 브라우저 자동 탈출, 실패 시 라이트 모드 폴백 */
+try{var __ua=navigator.userAgent||'';
+if(/KAKAOTALK/i.test(__ua)){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href);}
+else if(/\bLine\//i.test(__ua)&&location.search.indexOf('openExternalBrowser')<0){location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';}
+}catch(e){}
+try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
 <style id="inapp-lite-css">
   html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
   html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
