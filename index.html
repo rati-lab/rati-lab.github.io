@@ -98,6 +98,13 @@
   /* 9) 유료 리포트 가격 사다리 — 팝업 본문(#dtBody, max 720px)에선 2열이 찌그러지므로 항상 1열 */
   #dtBody .pline-grid{display:grid!important;grid-template-columns:1fr!important;gap:14px!important}
   #dtBody .pline{width:100%!important}
+  /* 10) 궁합 티어 카드 — 데스크탑: 제목·설명|가격|주문 한 줄 (시안 통합서 flex 소실 → block 복원) */
+  @media(min-width:641px){
+    #dtBody .gtb{display:flex!important;align-items:center;gap:18px}
+    #dtBody .gtb .gtb-main{flex:1 1 auto;min-width:0}
+    #dtBody .gtb .gtb-price{flex:0 0 auto;white-space:nowrap;text-align:right}
+    #dtBody .gtb .pbtn{flex:0 0 auto}
+  }
   /* 모바일: 각 단계 세로 스택 (본문 구겨짐 방지) · 순서 = 제목·설명 → 가격 → 주문 */
   @media(max-width:760px){
     #dtBody .pl-step{flex-direction:column!important;align-items:stretch!important;gap:10px!important;text-align:left!important}
