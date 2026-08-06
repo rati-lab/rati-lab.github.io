@@ -36,6 +36,10 @@
   html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
   html.inapp-lite .rt-ov{background:#FDF8FB}
   html.inapp-lite #hd .hd-r,html.inapp-lite #dtOv .rt-bar .hd-r{background:#fff}
+  /* 웹뷰에서 IO/rAF 리빌이 안 돌면 본문이 op .08/0에 갇힘 → 라이트에선 스크롤 리빌 전부 즉시 표시 */
+  html.inapp-lite .toss-motion.toss-hidden{opacity:1!important;translate:none!important;scale:1!important;filter:none!important}
+  html.inapp-lite .rv{opacity:1!important;transform:none!important}
+  html.inapp-lite .sec{opacity:1!important;transform:none!important}
 </style>
 <style id="price-doc-only-css">
   /* 헤더 문서·히어로 버튼과 중복인 블록은 랜딩 스크롤에서 제외 · 리포트(가격)=헤더 '리포트', 근본있게(theory)=헤더 '원리', 무료검사 2종 카드=히어로 버튼 2개 */

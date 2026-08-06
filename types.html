@@ -15,6 +15,8 @@ try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(naviga
   html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
   html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
+  /* 리빌이 애니메이션 의존(.tcreveal pop 등)이라 animation:none 시 opacity:0에 갇힘 → 라이트에선 전부 즉시 표시 */
+  html.inapp-lite .reveal,html.inapp-lite .tcard.tcreveal{opacity:1!important;transform:none!important;translate:0 0!important;scale:1!important}
 </style>
 <meta name="description" content="RATI 16가지 연애 애착 유형 — 4그룹(확신·낭만·여유·반전) 좌표로 보는 나와 그 사람의 연애 방식.">
 <meta property="og:type" content="website">
