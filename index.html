@@ -3834,7 +3834,7 @@ var qrcode = function() {
   .rp-olay{position:absolute;inset:-8px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(253,249,251,.9) 42%,#FDF9FB 85%);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:12px;text-align:center;padding:16px}
   .rp-freebar{margin-top:16px;text-align:center;font-size:10px;letter-spacing:1px;color:var(--rosed);border:1px dashed var(--rose);border-radius:10px;padding:9px 12px;background:#FEF6F9}
   .rp-hero{border-radius:20px;color:var(--ink);text-align:center;padding:26px 20px 20px;margin-top:16px;box-shadow:0 18px 44px -26px rgba(120,90,120,.32)}
-  .rp-pill{background:#fff;color:var(--ink);font-weight:900;font-size:12px;letter-spacing:5px;padding:6px 20px;border-radius:99px;display:inline-block;border:1px solid rgba(0,0,0,.05);box-shadow:0 3px 12px rgba(120,90,120,.16);position:relative;z-index:2}
+  .rp-pill{background:#fff;color:var(--ink);font-weight:900;font-size:12px;letter-spacing:5px;padding:6px 15px 6px 20px;border-radius:99px;display:inline-block;border:1px solid rgba(0,0,0,.05);box-shadow:0 3px 12px rgba(120,90,120,.16);position:relative;z-index:2}
   .rp-hero h2{font-size:19px;font-weight:900;margin-top:4px;color:color-mix(in srgb,var(--gc,#241C26) 82%,#35263a)}
   .rp-hsub{font-size:11.5px;color:var(--slate);opacity:1;margin-top:5px}
   .rp-hmeta{border-top:1px solid rgba(90,78,92,.2);margin-top:12px;padding-top:9px;font-size:9px;color:var(--mut);letter-spacing:1px}
@@ -4253,6 +4253,7 @@ window.RATI_TEST=(function(){
     +'<div class="rr-disc">베타 리포트입니다 · 채점은 근사치, 해설은 축·그룹 단위 문장입니다. 정식 리포트는 라이브 파이프라인(v1 동결) 채점과 실측 코호트 통계로, 내 응답 22개 기준 문장 단위까지 다시 씁니다. 본 검사는 재미와 자기이해를 위한 콘텐츠이며 임상 진단이 아닙니다.</div>'
     +'<div class="rr-btns"><a class="cta" href="javascript:void(0)" onclick="RATI_TEST.close();return false" style="text-decoration:none">RATI.lab 홈으로 가기</a><button class="btn2" onclick="RATI_TEST.saveImage(this)">결과 이미지 저장</button><button class="btn2" onclick="RATI_TEST.close();setTimeout(function(){RATI_GUESS.open()},250)">상대 유형 알아보기</button><button class="btn2" onclick="RATI_TEST.open()">RATI 검사 다시하기</button></div>';
     body.innerHTML=html;window.scrollTo(0,0);ov.scrollTop=0;
+    setTimeout(function(){try{prepareShareImage()}catch(e){}},1400);
   }
   function report(){renderR()}
   function order(){ if(window.openOrderModal){window.openOrderModal('deep')} }
@@ -4285,8 +4286,71 @@ window.RATI_TEST=(function(){
       }).catch(function(){ if(btn){btn.textContent='실패 · 스크린샷으로 저장해주세요';btn.disabled=false;setTimeout(function(){btn.textContent=orig},3000);} });
     }catch(e){ if(btn){btn.textContent='실패 · 스크린샷으로 저장해주세요';btn.disabled=false;setTimeout(function(){btn.textContent=orig},3000);} }
   }
+  /* 인스타 공유용: 결과 카드 캔버스 + 하단 ratilab.com 워터마크 밴드 → PNG File. 결과 렌더 후 미리 생성해 캐시(공유 시트 즉시 오픈용) */
+  var _shareFile=null,_shareBusy=false;
+  function buildShareImage(){
+    return new Promise(function(res,rej){
+      /* 스토리용: 결과 전체가 아니라 상단 유형 카드(rp-hero)만 — 세로로 긴 전체 캡처는 스토리에 부적합 */
+      var lib=window.html2canvas,target=document.querySelector('#rtBody .rp-hero')||document.getElementById('rtBody');
+      if(typeof lib!=='function'||!target){rej();return}
+      lib(target,{backgroundColor:'#FDF8FB',scale:2,useCORS:true,logging:false,
+        ignoreElements:function(el){return el.classList&&(el.classList.contains('rr-btns')||el.classList.contains('mesh')||el.classList.contains('rr-disc')||el.classList.contains('sh-wrap'));},
+        onclone:function(cdoc){
+          try{
+            var win=cdoc.defaultView||window,props=['color','backgroundColor','borderTopColor','borderRightColor','borderBottomColor','borderLeftColor','outlineColor','fill','stroke'];
+            function toRgb(v){var m=/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/.exec(v);if(!m)return null;return 'rgba('+Math.round(m[1]*255)+','+Math.round(m[2]*255)+','+Math.round(m[3]*255)+','+(m[4]!==undefined?m[4]:1)+')';}
+            var els=cdoc.querySelectorAll('*');
+            for(var i=0;i<els.length;i++){var cs=win.getComputedStyle(els[i]);
+              for(var p=0;p<props.length;p++){var v=cs[props[p]];if(v&&v.indexOf('color(')>=0){var r=toRgb(v);if(r)els[i].style[props[p]]=r;}}
+              var bi=cs.backgroundImage;if(bi&&bi.indexOf('color(')>=0){els[i].style.backgroundImage=bi.replace(/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/g,function(_,a,b,c,d){return 'rgba('+Math.round(a*255)+','+Math.round(b*255)+','+Math.round(c*255)+','+(d!==undefined?d:1)+')';});}
+            }
+            /* 공유 카드 전용: 라운드 카드 느낌 제거(풀블리드) + BETA 표기 제외 + 멘헤라 지수 배지 — 화면 결과지는 불변 */
+            var hero=cdoc.querySelector('#rtBody .rp-hero');
+            if(hero){hero.style.borderRadius='0';hero.style.margin='0';hero.style.boxShadow='none';}
+            var meta=cdoc.querySelector('#rtBody .rp-hero .rp-hmeta');
+            if(meta){meta.textContent=meta.textContent.replace(/\s*·\s*BETA\s*$/,'');}
+            var prof=cdoc.querySelector('#rtBody .rp-hero .rp-hprof');
+            if(prof)prof.parentNode.removeChild(prof);
+            var mh=cdoc.querySelector('#rtBody .mbig');
+            if(hero&&mh&&meta){
+              var wrap=cdoc.createElement('div');
+              wrap.style.cssText='text-align:center;margin:12px 0 6px';
+              var pill=cdoc.createElement('div');
+              pill.innerHTML='<span style="position:relative;z-index:2;line-height:1">멘헤라 지수 <b style="font-size:16px;font-weight:800">'+mh.textContent.trim()+'</b></span>';
+              pill.style.cssText='position:relative;z-index:1;display:inline-block;padding:10px 20px 12px;border-radius:99px;background:#ffffff;border:1px solid rgba(138,99,210,.3);font-weight:800;font-size:12.5px;letter-spacing:.4px;color:#8A63D2;line-height:1';
+              wrap.appendChild(pill);
+              meta.parentNode.insertBefore(wrap,meta);
+            }
+          }catch(e){}
+        }})
+      .then(function(cv){
+        var band=Math.round(cv.width*0.055);
+        var out=document.createElement('canvas');out.width=cv.width;out.height=cv.height+band;
+        var ctx=out.getContext('2d');
+        ctx.fillStyle='#FDF8FB';ctx.fillRect(0,0,out.width,out.height);
+        ctx.drawImage(cv,0,0);
+        ctx.fillStyle='#241C26';ctx.fillRect(0,cv.height,out.width,band);
+        ctx.fillStyle='#fff';ctx.textBaseline='middle';ctx.textAlign='center';
+        ctx.font='600 '+Math.round(band*0.36)+'px Pretendard,-apple-system,sans-serif';
+        ctx.fillText('RATI.lab — 연애는 측정된다 · ratilab.com',out.width/2,cv.height+band/2);
+        out.toBlob(function(b){
+          if(!b){rej();return}
+          var nick=(window.RATI_PROFILE&&window.RATI_PROFILE.nick)||'result';
+          res(new File([b],'RATI_'+nick+'.png',{type:'image/png'}));
+        },'image/png');
+      }).catch(rej);
+    });
+  }
+  function prepareShareImage(){
+    if(_shareBusy)return;_shareBusy=true;_shareFile=null;
+    buildShareImage().then(function(f){_shareFile=f;_shareBusy=false;},function(){_shareBusy=false;});
+  }
+  function getShareFile(){
+    if(_shareFile)return Promise.resolve(_shareFile);
+    return buildShareImage().then(function(f){_shareFile=f;return f;});
+  }
   document.addEventListener('keydown',function(e){var o=document.getElementById('rtOv');if(e.key==='Escape'&&o&&!o.hidden){var m1=document.getElementById('odOv');if(m1&&!m1.hidden)return; close()}});
-  return {open:open,close:close,back:back,report:report,result:renderR,order:order,finish:earlyFinish,saveImage:saveImage,
+  return {open:open,close:close,back:back,report:report,result:renderR,order:order,finish:earlyFinish,saveImage:saveImage,shareFile:getShareFile,prepShare:prepareShareImage,
     _story:function(){var b=document.getElementById('syOpen');if(b)b.click()}};
 })();
 </script>
@@ -5336,7 +5400,17 @@ window.RATI_SHARE=(function(){
         Kakao.Share.sendDefault({objectType:'feed',content:{title:t,description:'22문항 · 4축 · 16유형 · 감이 아니라 좌표로',imageUrl:'https://ratilab.com/og.png',link:{mobileWebUrl:u,webUrl:u}},buttons:[{title:'나도 검사하기',link:{mobileWebUrl:u,webUrl:u}}]});return}
       if(navigator.share){navigator.share({title:'RATI',text:t,url:u}).catch(function(){});return}
       copy(t+' '+u,'링크 복사 완료 · 카톡 채팅방에 붙여넣으세요 💬');return}
-    if(ch==='insta'){copy(t+' '+u,'링크 복사 완료 · 인스타 스토리·프로필에 붙여넣으세요 📸');return}
+    if(ch==='insta'){
+      /* 모바일: 결과 카드 이미지(워터마크 포함)를 OS 공유 시트로 → 인스타 선택 시 스토리에 바로 삽입. 미지원/실패 시 링크 복사 폴백 */
+      var canFiles=false;try{canFiles=!!(navigator.canShare&&navigator.canShare({files:[new File([''],'t.png',{type:'image/png'})]}));}catch(e){}
+      if(canFiles&&window.RATI_TEST&&RATI_TEST.shareFile&&document.getElementById('rtBody')){
+        toast('결과 카드 준비 중… 📸');
+        RATI_TEST.shareFile().then(function(f){
+          return navigator.share({files:[f],title:'RATI',text:t+' '+u});
+        }).then(function(){try{if(window.RATI_GA)RATI_GA('share_done',{channel:'insta_story'})}catch(e){}})
+        .catch(function(err){if(err&&err.name==='AbortError')return;copy(t+' '+u,'링크 복사 완료 · 인스타 스토리·프로필에 붙여넣으세요 📸');});
+        return}
+      copy(t+' '+u,'링크 복사 완료 · 인스타 스토리·프로필에 붙여넣으세요 📸');return}
     copy(t+' '+u,'링크 복사 완료 ✓');
   }
   function row(kind,code){
