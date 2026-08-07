@@ -352,7 +352,7 @@
     <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="hdNav" onclick="return RATI_NAV&&RATI_NAV.toggle()"><span></span><span></span><span></span></button>
     <nav class="hd-r" id="hdNav">
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a>
+        <a class="hd-link" href="javascript:void(0)" style="display:none!important" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 display:none 스타일만 제거 -->
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
       <a class="hd-link" href="types.html">유형설명</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
@@ -4946,7 +4946,7 @@ window.RATI_GUESS=(function(){
       <button class="hd-burger dt-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="dtNav" onclick="var b=this.closest('.rt-bar'),o=b.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
       <nav class="hd-r" id="dtNav">
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a>
+        <a class="hd-link" href="javascript:void(0)" style="display:none!important" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 display:none 스타일만 제거 -->
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
         <a class="hd-link" href="types.html">유형설명</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
@@ -5080,6 +5080,7 @@ window.RATI_DOC=(function(){
   var movedSect=null,sectPh=null;
   function restoreSect(){if(movedSect&&sectPh&&sectPh.parentNode){sectPh.parentNode.replaceChild(movedSect,sectPh);}movedSect=null;sectPh=null;}
   function open(kind){el();
+    if(kind==='deep'&&window.RATI_DEEP_CLOSED){alert('심층 테스트는 잠시 준비 중이에요 — 곧 다시 열릴게요 💌');return false}
     restoreSect();
     ov.classList.toggle('doc-deep', kind==='deep'); /* deep: 상단 X 숨김 — 하단 '← 이전으로'가 닫기 역할 (민수 지시 2026-08-07) */
     if(kind==='deep'){try{RATI_TRACK('event',{cat:'deep',label:'doc_open'});}catch(e){}}
@@ -5386,6 +5387,8 @@ window.RATI_ARCH=(function(){
 <script>
 /* 공유 루프 (기획/공유루프-스펙 P0) · 링크는 전부 OG 정상인 루트로 + utm으로 재유입 측정.
    카카오: SHARECFG.kakaoKey에 JS 키 넣고 도메인 등록하면 리치 카드 활성 (미설정 시 시스템 공유/링크복사 폴백) */
+window.RATI_DEEP_CLOSED=true; /* 심층 점검 중(원장 12유형 대기) — 재오픈 시 이 줄과 아래 스타일만 삭제 (deep.html 플래그와 세트) */
+document.write('<style id="deep-closed-css">[onclick*="open(\'deep\')"]{display:none!important}</style>');
 window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||'669a06a6cf4d194c2facd0bc20b05783'; /* 카카오 JavaScript 키 — 발급 시 여기 한 곳만 채우면 사이트 전체 카톡 직접 공유 활성 */
 (function(){ /* 키가 있으면 SDK 자동 로드 */
   if(!window.RATI_KAKAO_KEY)return;
@@ -6652,6 +6655,7 @@ h1{font-size:52px;line-height:1.28}
     var KEY='rati_promo_deep_hide';
     var d=new Date(),ymd=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
     try{if(localStorage.getItem(KEY)===ymd)return;}catch(e){}
+    if(window.RATI_DEEP_CLOSED)return; /* 심층 점검 중 — 프로모 자동 팝업 정지 */
     var ov=document.getElementById('promoOv');if(!ov)return;
     function close(){ov.classList.remove('on');setTimeout(function(){ov.hidden=true},280)}
     setTimeout(function(){

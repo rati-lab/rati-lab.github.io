@@ -30,6 +30,7 @@ window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{metho
     }
   }catch(e){}
   try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
+  window.RATI_DEEP_CLOSED=true; /* 심층 점검 중(원장 12유형 대기) — 재오픈 시 이 줄만 삭제 (index.html의 플래그와 세트) */
   window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||'669a06a6cf4d194c2facd0bc20b05783'; /* 카카오 JS 키 — index.html과 동일 값 */
   if(window.RATI_KAKAO_KEY){var __ks=document.createElement('script');__ks.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';__ks.crossOrigin='anonymous';__ks.onload=function(){try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init(window.RATI_KAKAO_KEY);}catch(e){}};document.head.appendChild(__ks);}
 </script>
@@ -214,7 +215,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
-    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a>
+    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)" hidden><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 hidden만 제거 -->
     <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
     <a class="hd-link" href="types.html">유형설명</a>
     <a class="hd-link" href="index.html?doc=theory">원리</a>
@@ -405,6 +406,15 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
 <script>
 (function(){
   'use strict';
+  /* ── 점검 게이트 — RATI_DEEP_CLOSED면 준비 안내만 표시(설문 진입 차단). 재오픈 시 플래그 삭제로 복원 ── */
+  if(window.RATI_DEEP_CLOSED){
+    ['s0','sG','s1','s2','s3'].forEach(function(s){var el=document.getElementById(s);if(el)el.classList.remove('on');});
+    var __m=document.createElement('section');__m.className='step on';
+    __m.innerHTML='<div class="card" style="text-align:center;padding:44px 24px"><div style="font-size:40px">🛠️</div><h2 style="margin-top:12px">심층 테스트, 잠시 준비 중이에요</h2><p class="sub" style="margin-top:10px">더 정확한 리포트를 위해 정비하고 있어요 — 곧 다시 열릴게요.<br>오픈하면 무료 이벤트도 그대로 이어집니다!</p><a class="cta" href="https://ratilab.com/" style="display:inline-block;margin-top:18px;text-decoration:none;padding:13px 30px">홈으로 가기</a></div>';
+    var __h=document.getElementById('s0');__h.parentNode.insertBefore(__m,__h);
+    try{RATI_TRACK('event',{cat:'deep',label:'view_closed'});}catch(e){}
+    return;
+  }
   /* ── 심층 문항 큐 — 문항 원장 v2.3 (32문항 + 모듈 인트로 4곳 E/F/H/I) · deep_questions.js에서 자동 전사 ── */
   var QUEUE=(window.RATI_DEEP&&RATI_DEEP.queue)||[];
   if(!QUEUE.length){document.title='문항 로드 실패';}
