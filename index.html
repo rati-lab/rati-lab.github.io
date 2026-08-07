@@ -4258,36 +4258,23 @@ window.RATI_TEST=(function(){
   function report(){renderR()}
   function order(){ if(window.openOrderModal){window.openOrderModal('deep')} }
   function saveImage(btn){
-    var lib=window.html2canvas, target=document.getElementById('rtBody');
-    if(!target) return;
+    /* 결과 전체 캡처(16k px — 모바일 실패 잦음) 대신 스토리 카드(새 리포트 표지 문법)를 저장 · 2026-08-08 */
     var orig=btn?btn.textContent:'';
-    if(typeof lib!=='function'){ if(btn){btn.textContent='잠시 후 다시 · 또는 스크린샷';setTimeout(function(){btn.textContent=orig},2800);} return; }
+    function fail(){if(btn){btn.textContent='실패 · 스크린샷으로 저장해주세요';btn.disabled=false;setTimeout(function(){btn.textContent=orig},2600);}}
     if(btn){btn.textContent='이미지 만드는 중…';btn.disabled=true;}
-    var nick=(window.RATI_PROFILE&&window.RATI_PROFILE.nick)||'결과';
-    try{
-      lib(target,{backgroundColor:'#FDF8FB',scale:2,useCORS:true,logging:false,
-        ignoreElements:function(el){return el.classList&&(el.classList.contains('rr-btns')||el.classList.contains('mesh')||el.classList.contains('rr-disc'));},
-        onclone:function(cdoc){
-          /* color-mix 계산값(color(srgb ...))을 rgb로 변환 · html2canvas 1.4.1 미지원 대응 */
-          try{
-            var win=cdoc.defaultView||window, props=['color','backgroundColor','borderTopColor','borderRightColor','borderBottomColor','borderLeftColor','outlineColor','fill','stroke'];
-            function toRgb(v){var m=/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/.exec(v);if(!m)return null;return 'rgba('+Math.round(m[1]*255)+','+Math.round(m[2]*255)+','+Math.round(m[3]*255)+','+(m[4]!==undefined?m[4]:1)+')';}
-            var els=cdoc.querySelectorAll('*');
-            for(var i=0;i<els.length;i++){var cs=win.getComputedStyle(els[i]);
-              for(var p=0;p<props.length;p++){var v=cs[props[p]];if(v&&v.indexOf('color(')>=0){var r=toRgb(v);if(r)els[i].style[props[p]]=r;}}
-              var bi=cs.backgroundImage;if(bi&&bi.indexOf('color(')>=0){els[i].style.backgroundImage=bi.replace(/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/g,function(_,a,b,c,d){return 'rgba('+Math.round(a*255)+','+Math.round(b*255)+','+Math.round(c*255)+','+(d!==undefined?d:1)+')';});}
-            }
-          }catch(e){}
-        }})
-      .then(function(cv){
-        var a=document.createElement('a');a.download='RATI_'+nick+'.png';a.href=cv.toDataURL('image/png');
+    function run(){
+      buildShareImage().then(function(f){
+        var a=document.createElement('a');a.download=f.name;a.href=URL.createObjectURL(f);
         document.body.appendChild(a);a.click();document.body.removeChild(a);
+        setTimeout(function(){URL.revokeObjectURL(a.href)},4000);
         if(btn){btn.textContent='저장됨 ✓';btn.disabled=false;setTimeout(function(){btn.textContent=orig},2000);}
-      }).catch(function(){ if(btn){btn.textContent='실패 · 스크린샷으로 저장해주세요';btn.disabled=false;setTimeout(function(){btn.textContent=orig},3000);} });
-    }catch(e){ if(btn){btn.textContent='실패 · 스크린샷으로 저장해주세요';btn.disabled=false;setTimeout(function(){btn.textContent=orig},3000);} }
+        try{if(window.RATI_GA)RATI_GA('result_image_save')}catch(e){}
+      }).catch(fail);
+    }
+    if(window.html2canvas){run();return;}
+    var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+    s.onload=run;s.onerror=fail;document.head.appendChild(s);
   }
-  /* 인스타 공유용: 결과 카드 캔버스 + 하단 ratilab.com 워터마크 밴드 → PNG File. 결과 렌더 후 미리 생성해 캐시(공유 시트 즉시 오픈용) */
-  var _shareFile=null,_shareBusy=false;
   function buildShareImage(){
     return new Promise(function(res,rej){
       /* 전용 스토리 카드 — 새 리포트 표지 문법(그라데이션+오로라+메시+전신 캐릭터+명조) · 민수 지시 2026-08-08 재구성.
@@ -4307,8 +4294,6 @@ window.RATI_TEST=(function(){
       var aur=document.createElement('div');
       aur.style.cssText='position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px 420px at -80px -70px,rgba(246,168,198,.30),transparent 66%),radial-gradient(460px 440px at 720px 30px,rgba(199,169,245,.26),transparent 66%),radial-gradient(380px 360px at 50% 115%,rgba(169,222,227,.18),transparent 66%)';
       card.appendChild(aur);
-      var meshSrc=document.querySelector('svg.mesh');
-      if(meshSrc){var mz=meshSrc.cloneNode(true);mz.removeAttribute('class');mz.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.55;pointer-events:none';card.appendChild(mz);}
       var inner=document.createElement('div');
       inner.style.cssText='position:relative;z-index:2';
       inner.innerHTML=''
@@ -4323,9 +4308,13 @@ window.RATI_TEST=(function(){
       function done(){try{document.body.removeChild(card)}catch(e){}}
       var img=card.querySelector('img');
       var ready=(img&&!img.complete)?new Promise(function(r){img.onload=r;img.onerror=r;setTimeout(r,1500)}):Promise.resolve();
+      var timedOut=false;
+      var guard=setTimeout(function(){timedOut=true;done();rej(new Error('timeout'));},12000);
       ready.then(function(){
         return lib(card,{backgroundColor:'#FDF8FB',scale:2,useCORS:true,logging:false});
       }).then(function(cv){
+        clearTimeout(guard);
+        if(timedOut)return;
         done();
         cv.toBlob(function(b){
           if(!b){rej();return}
@@ -4335,6 +4324,7 @@ window.RATI_TEST=(function(){
       }).catch(function(e){done();rej(e)});
     });
   }
+  var _shareFile=null,_shareBusy=false;
   function prepareShareImage(){
     if(_shareBusy)return;_shareBusy=true;_shareFile=null;
     buildShareImage().then(function(f){_shareFile=f;_shareBusy=false;},function(){_shareBusy=false;});
