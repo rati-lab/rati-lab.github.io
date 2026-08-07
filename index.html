@@ -4121,7 +4121,8 @@ window.RATI_TEST=(function(){
   function renderR(){
     step.textContent='결과 리포트 · 베타';prog.style.width='100%';
     try{RATI_TRACK('test_done',{code:res.code,n:answeredN(),acc:precision(answeredN()),answers:ans.map(function(a){return typeof a==='number'?'SAVF'.charAt(a):''}).join(''),profile:window.RATI_PROFILE||null});fetch(window.RATI_STAT_ENDPOINT+'?code='+res.code,{mode:'no-cors',cache:'no-store'})}catch(e){}
-    window.__RATI_VIEW='result';try{if(window.RATI_GA)RATI_GA('test_complete',{code:res.code,precision:precision(answeredN()),q_count:answeredN(),early:answeredN()<Q.length})}catch(e){}
+    window.__RATI_VIEW='result';window.RATI_LAST_CODE=res.code; /* 심층 진입 시 유형 자동 전달용 */
+    try{if(window.RATI_GA)RATI_GA('test_complete',{code:res.code,precision:precision(answeredN()),q_count:answeredN(),early:answeredN()<Q.length})}catch(e){}
     var g=G[res.code.slice(0,2)],t=T[res.code];
     var pf=window.RATI_PROFILE,pfLine='';
     if(pf){var gm=(pf.gender==='비공개'?'선택 안 함':pf.gender);pfLine=pf.nick+' · '+gm+' · '+pf.age+'세'+(pf.mbti&&pf.mbti.indexOf('모름')<0?' · '+pf.mbti:'');}
@@ -5045,7 +5046,7 @@ window.RATI_DOC=(function(){
   +'<h1 style="font-family:var(--serif);font-size:clamp(26px,5.5vw,36px);font-weight:900;margin-top:10px">심층 테스트</h1>'
   +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 6px"><s style="color:#A79AA2;font-size:13.5px">정가 9,900원</s><b style="color:var(--rosed);font-size:17px">지금은 무료</b><span style="font-size:11px;font-weight:800;background:linear-gradient(90deg,var(--rosed),var(--rose));color:#fff;padding:4px 11px;border-radius:99px;letter-spacing:.04em">오픈 이벤트</span></div>'
   +'<p class="dt-hero-sub">무료 검사가 <b>유형</b>을 알려줬다면, 심층은 그 유형이 연락·썸·연애·이별에서 <b>어떻게 작동하는지</b>를 해부합니다.</p></div></div>'
-  +'<div class="rr-btns"><a class="cta" href="deep.html?start=1" style="text-decoration:none" onclick="try{RATI_GA(\'deep_start_click\',{entry:\'doc\'})}catch(e){}">심층 테스트 시작하기</a></div>'
+  +'<div class="rr-btns"><a class="cta" href="deep.html?start=1" style="text-decoration:none" onclick="try{if(window.RATI_LAST_CODE)this.href=\'deep.html?start=1&code=\'+window.RATI_LAST_CODE;RATI_GA(\'deep_start_click\',{entry:\'doc\'})}catch(e){}">심층 테스트 시작하기</a></div>'
   +'<div class="ga-paidnote" style="margin-top:0"><b>📮 결과는 화면에 뜨지 않아요.</b> 응답을 분석해 완성된 심층 리포트를 <b>이메일로</b> 보내드려요 — 검사 전에 받으실 주소만 정확히 알려주세요.</div>'
   +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px">'
   +'<div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center"><div style="font-size:20px">📄</div><div style="font-size:11.5px;font-weight:700;color:var(--slate);margin-top:5px;line-height:1.45">16페이지<br>심층 리포트</div></div>'

@@ -351,6 +351,21 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         </select>
         <div class="help">성격유형 × RATI 교차 분석(리포트 05 섹션)에 쓰여요. 모르면 그대로 두세요.</div>
       </div>
+      <div class="fld">
+        <label for="fRcode">내 RATI 유형 <span class="req">*</span></label>
+        <select class="in" id="fRcode">
+          <option value="">모름 / 아직 검사 전</option>
+          <option value="RATI">RATI — 완벽주의형</option><option value="RATO">RATO — 품어주는형</option>
+          <option value="RAKI">RAKI — 해결사형</option><option value="RAKO">RAKO — 버팀목형</option>
+          <option value="RUTI">RUTI — 올인형</option><option value="RUTO">RUTO — 맞춰주는형</option>
+          <option value="RUKI">RUKI — 속정형</option><option value="RUKO">RUKO — 여운형</option>
+          <option value="BATI">BATI — 소신형</option><option value="BATO">BATO — 자유형</option>
+          <option value="BAKI">BAKI — 과묵형</option><option value="BAKO">BAKO — 독립형</option>
+          <option value="BUTI">BUTI — 열정파형</option><option value="BUTO">BUTO — 직감형</option>
+          <option value="BUKI">BUKI — 충전형</option><option value="BUKO">BUKO — 불꽃형</option>
+        </select>
+        <div class="help" id="rcodeHelp">무료 검사 결과의 4글자 코드예요 — 유형을 고르면 내 유형 리포트가 자동 발송돼요. 기억이 안 나면 <a href="https://ratilab.com/" style="color:var(--rosed);font-weight:700">무료 검사</a>에서 다시 확인!</div>
+      </div>
 
       <div class="gate-note">🔒 <span>입력하신 정보는 <b>리포트 생성과 발송에만</b> 사용돼요. 결과는 웹에 게시되지 않고 이메일로만 전달됩니다.</span></div>
       <button class="cta" id="startQuiz" disabled>설문 시작하기</button>
@@ -375,7 +390,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         <div class="mail" id="doneMail">you@example.com</div>
         <p class="done-note">
           응답 분석이 끝나는 대로 <b>16p 심층 리포트 · 증서 · 요약 브리핑</b>이 위 주소로 도착해요.<br>
-          10분 안에 안 보이면 <b>스팸함</b>을 한번 확인해 주세요.
+          리포트 생성·발송에 <b>5분 정도 걸릴 수 있어요</b> — 5분이 지나도 안 보이면 <b>스팸함</b>을 한번 확인해 주세요.
         </p>
       </div>
       <a class="ghost" href="https://ratilab.com/">RATI.lab 홈으로</a>
@@ -500,6 +515,11 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   });
   state.mbti=$('fMbti').value; /* 기본 '모름 / 비공개'도 유효 — 스펙의 미입력 분기로 처리 */
   $('fMbti').addEventListener('change',function(){state.mbti=this.value;gateCheck();});
+  /* RATI 유형 — 결과 화면에서 ?code=로 넘어오면 프리필. '모름'이면 발송이 수동 대기로 빠져요(시트 '유형미상') */
+  try{var __pc=(new URLSearchParams(location.search).get('code')||'').toUpperCase();
+  if(/^[RB][UA][TK][IO]$/.test(__pc)){$('fRcode').value=__pc;}}catch(e){}
+  state.rcode=$('fRcode').value;
+  $('fRcode').addEventListener('change',function(){state.rcode=this.value;gateCheck();});
 
   /* 게이트 → 설문 */
   $('startQuiz').addEventListener('click',function(){
@@ -561,7 +581,9 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
       QUEUE.filter(function(x){return x.type==='q'}).forEach(function(x,i){byDq[x.dq]=state.answers[i];});
       state.scores=RATI_DEEP.score(byDq);
     }catch(e){}
-    try{localStorage.setItem('rati_deep_submission_'+Date.now(),JSON.stringify(state));}catch(e){} /* 백엔드 연결 전 응답 유실 방지 백업 */
+    try{localStorage.setItem('rati_deep_submission_'+Date.now(),JSON.stringify(state));}catch(e){} /* 응답 유실 방지 로컬 백업(백엔드와 병행) */
+    /* 본 제출 — GAS doPost deep_submit 분기(DEEP응답 탭 기록 + 발송 파이프라인 트리거) */
+    try{RATI_TRACK('deep_submit',{email:state.email,profile:{nick:state.name,gender:state.sex,age:state.age,mbti:state.mbti},code:state.rcode||'',answers:state.answers,scores:state.scores});}catch(e){}
     $('doneMail').textContent=state.email;
     show('s3');
     RATI_GA('deep_quiz_done',{mbti:state.mbti,loop_stage:state.scores&&state.scores.loop.stage});try{RATI_TRACK('event',{cat:'deep',label:'submit',mbti:state.mbti,email_domain:(state.email.split('@')[1]||'')});}catch(e){}
