@@ -1,0 +1,159 @@
+/* ══ RATI 리포트 테마 — ratilab.com 디자인 시스템 계승 (렌더 주입 레이어 · 마크업/문구 불변) ══
+   팔레트·유리 카드·명조 디스플레이·크리스털 캐릭터 = 사이트 레퍼런스.
+   본문 NanumBarunGothic / 제목 NanumSquareRound(스펙 4장 크기 유지) / 디스플레이 Noto Serif KR.
+   단일 라이트 테마 — 브랜드 문서로서 의도적 선택. */
+
+:root{
+  --t-ink:#241C26; --t-slate:#5B4E5C; --t-mut:#9A8C9C;
+  --t-rose:#E85D8A; --t-rosed:#B93A67; --t-line:#F0DFE8; --t-gold:#C98A1F;
+}
+
+/* 바탕 — 랜딩과 동일 구성: 그라데이션 + 오로라 4색(랜딩 .a1~.a4 정확값) + 삼각 메시 그리드 */
+body{
+  background:linear-gradient(170deg,#FEF8FA 0%,#FBF7FC 55%,#F7F5FD 100%) fixed !important;
+  color:var(--t-ink) !important;
+}
+body::before{ /* 오로라 — 랜딩 a1 핑크 .28 / a2 보라 .24 / a3 청록 .20 / a4 골드 .18 */
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(660px 660px at -170px -130px, rgba(246,168,198,.28), transparent 66%),
+    radial-gradient(740px 700px at calc(100% + 210px) 40px, rgba(199,169,245,.24), transparent 66%),
+    radial-gradient(600px 580px at 20% 520px, rgba(169,222,227,.20), transparent 66%),
+    radial-gradient(540px 540px at 84% -190px, rgba(244,217,160,.18), transparent 62%);
+}
+body::after{ /* 랜딩 .mesh 그대로 — 컨스텔레이션 그리드 */
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url("mesh.svg") center/cover no-repeat;opacity:.85;
+}
+
+/* 표지 — 사이트 히어로 문법 */
+.cover{background:none !important;}
+.cover .code{
+  border:1px solid rgba(0,0,0,.05) !important;
+  box-shadow:0 3px 12px rgba(120,90,120,.16) !important;
+  letter-spacing:.42em !important;color:var(--t-ink) !important;font-weight:900 !important;
+}
+.cover h1{font-family:'Noto Serif KR','Noto Serif CJK KR',serif !important;font-weight:700 !important;letter-spacing:-.5px;}
+.cover .group{letter-spacing:.16em !important;color:var(--t-mut) !important;}
+.cover .tagline{color:var(--t-slate) !important;}
+.cover .meta{color:var(--t-mut) !important;border-top-color:var(--t-line) !important;}
+.rare{border-color:var(--t-line) !important;background:rgba(255,255,255,.82) !important;
+  box-shadow:0 18px 40px -32px rgba(36,28,38,.35);}
+
+/* 크리스털 캐릭터 — 사이트 도감 자산으로 이모지 대체 (스펙 6장) */
+.char{
+  font-size:0 !important;
+  width:170px !important;height:190px !important;border-radius:0 !important;
+  background:url("../chars/BATO.webp") center bottom/contain no-repeat !important;
+  box-shadow:none !important;
+  position:relative;
+}
+.char::after{ /* 바닥 그림자 — 전신이 떠 보이지 않게 */
+  content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  width:64%;height:14px;border-radius:50%;
+  background:radial-gradient(ellipse at center, rgba(185,58,103,.22), transparent 70%);
+}
+
+/* 섹션 카드 — 사이트 유리 카드 */
+.sec{
+  background:rgba(255,255,255,.82) !important;
+  border:1px solid var(--t-line) !important;
+  border-radius:22px !important;
+  box-shadow:0 24px 54px -40px rgba(36,28,38,.42) !important;
+}
+.sec .kicker{
+  color:var(--t-rosed) !important;letter-spacing:.24em !important;
+  border-bottom-color:var(--t-line) !important;font-weight:700;
+  font-family:ui-monospace,'SF Mono',Menlo,monospace !important;font-size:11px !important;
+}
+.sec h2{color:var(--t-ink) !important;}
+.sec h3{color:var(--t-rosed) !important;}
+
+/* 장면·처방 — 팔레트만 사이트 정렬 */
+.scene{background:#FDF2F7 !important;border-left-color:#F2A6C2 !important;color:#6E5A66 !important;}
+.scene::before{color:var(--t-rose) !important;}
+.rx{background:#FFFDF4 !important;border-color:var(--t-gold) !important;}
+.rx::before{color:var(--t-gold) !important;}
+.punch{color:var(--t-rosed) !important;}
+
+/* 게이지 — 사이트 그라데이션 필 */
+.bar{background:#F0E4EC !important;}
+.bar .fill,.bar i{background:linear-gradient(90deg,#F2A6C2,var(--t-rose)) !important;}
+.bar .dot{border-color:var(--t-rose) !important;}
+.bar .avg,.bar u{background:#CBB7C0 !important;}
+.axis .cap,.cap{color:var(--t-mut) !important;}
+
+/* 티저 베일 — 사이트 필 배지 스타일 */
+.tease{border-color:var(--t-line) !important;}
+.veil .tag{
+  border:1.5px solid rgba(232,93,138,.4) !important;color:var(--t-rosed) !important;
+  box-shadow:0 8px 18px -10px rgba(185,58,103,.4) !important;font-weight:800 !important;
+}
+
+/* 공유 카드 — 명조 인용 + 사이트 연분홍 */
+.share{background:linear-gradient(160deg,#fff,#FDEEF4) !important;border-color:#F2A6C2 !important;}
+.share .disp,.final .disp{font-family:'Noto Serif KR','Noto Serif CJK KR',serif !important;font-weight:700 !important;}
+.share .btns span{cursor:pointer;transition:transform .14s;border-color:var(--t-line) !important;
+  box-shadow:0 6px 14px -10px rgba(36,28,38,.3);}
+.share .btns span:hover{transform:translateY(-2px);}
+
+/* 전환 CTA — 사이트 핑크 유리 버튼 */
+.cta{border-color:rgba(232,93,138,.45) !important;background:linear-gradient(160deg,#fff,#FEF4F8) !important;}
+.cta .btn{
+  background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96)) !important;
+  border:1px solid rgba(255,214,229,.9) !important;
+  box-shadow:0 13px 29px -14px rgba(185,58,103,.75),inset 0 1.5px 0 rgba(255,255,255,.5),inset 0 -2px 5px rgba(120,20,60,.25) !important;
+  cursor:pointer;transition:transform .16s;
+}
+.cta .btn:hover{transform:translateY(-2px);}
+.story{background:rgba(255,255,255,.82) !important;border-color:var(--t-line) !important;}
+.story .sbtn{cursor:pointer;background:#fff;}
+.foot{color:var(--t-mut) !important;}
+
+/* 심층 웹판 전용 요소 */
+.event-bar{background:linear-gradient(90deg,var(--t-rosed),var(--t-rose)) !important;}
+.lock-badge{border-color:#F2A6C2 !important;color:var(--t-rosed) !important;background:#FEF1F6 !important;}
+.lock-badge.open{background:#F0FAF6 !important;color:#3F8B74 !important;border-color:#BFE5D8 !important;}
+.sig,.match,.script,.zone{border-color:var(--t-line) !important;}
+.final{background:linear-gradient(160deg,#fff,#FDEEF4) !important;border-color:#F2A6C2 !important;}
+
+/* 고정폭 SVG(레이더) 모바일 안전망 — 마크업 불변 */
+.sec svg{max-width:100%;height:auto;}
+
+/* ── 한국어 조판 다듬기 — 단어 단위 줄바꿈·고아 단어 방지 (배치 부자연 해소) ── */
+body{word-break:keep-all;overflow-wrap:break-word;}
+/* 행간 체계 — 실측 근거: 브런치 본문 1.9~2.0 · 시안 카드류 1.9 · 제목이 본문 1.75를 상속하던 것 교정 */
+.sec p{line-height:1.8 !important;}
+.sec h2{line-height:1.4 !important;}
+.sec h3{line-height:1.55 !important;}
+.cover h1{line-height:1.28 !important;}
+.scene,.rx{line-height:1.8 !important;}
+.sec li{line-height:1.8 !important;}
+.share .disp,.final .disp{line-height:1.66 !important;}
+.axis .cap,.cap{line-height:1.7 !important;}
+h1,h2,h3,.share .disp,.final .disp{text-wrap:balance;}
+p,.rare,.scene,.rx,.kv{text-wrap:pretty;}
+.cover .tagline{max-width:420px !important;}
+.cover .meta{line-height:2 !important;letter-spacing:.02em;}
+.rare{line-height:1.9 !important;padding:16px 22px !important;}
+/* 칩 — 두 줄로 꺾여도 필 형태가 자연스럽게 */
+.chip{white-space:normal;line-height:1.65 !important;border-radius:18px !important;padding:6px 15px !important;}
+.cover .chip{display:inline-block;max-width:88%;}
+
+/* ── 티저 잠금 연출 강화 — 블러 콘텐츠가 "아른거리게" 보이도록 ── */
+.tease{background:rgba(255,255,255,.65) !important;border-radius:16px !important;}
+.tease .blur{filter:blur(4.5px) saturate(.9) !important;opacity:.92;color:#7c6672 !important;}
+.tease .veil{
+  background:linear-gradient(180deg,rgba(253,248,250,0) 0%,rgba(253,248,250,.42) 46%,rgba(253,248,250,.92) 100%) !important;
+  align-items:flex-end !important;padding-bottom:14px;
+}
+.veil .tag{
+  background:#fff !important;padding:9px 18px !important;
+  border:1.5px solid rgba(232,93,138,.45) !important;
+  box-shadow:0 10px 24px -10px rgba(185,58,103,.5),inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+.veil .tag::before{content:"🔒 ";font-size:12px;}
+
+/* 접근성 — 포커스 가시화 */
+a:focus-visible,button:focus-visible,[data-share]:focus-visible{outline:2.5px solid var(--t-rose);outline-offset:2px;border-radius:6px;}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}

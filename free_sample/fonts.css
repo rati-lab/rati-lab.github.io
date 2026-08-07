@@ -1,0 +1,14 @@
+/* RATI 리포트 정본 폰트 — 본문 NanumBarunGothic / 제목 NanumSquareRound
+   렌더 단계에서 주입되는 오버라이드 시트 (템플릿 마크업·문구 불변 원칙).
+   원본: 네이버 나눔글꼴(OFL) hangeul.pstatic.net — 로컬 동봉으로 오프라인·CI 안정성 확보. */
+@font-face{font-family:'NanumBarunGothic';font-weight:400;src:url(NanumBarunGothicWeb.woff) format('woff');}
+@font-face{font-family:'NanumBarunGothic';font-weight:700;src:url(NanumBarunGothicWebBold.woff) format('woff');}
+@font-face{font-family:'NanumSquareRound';font-weight:400;src:url(NanumSquareRoundR.woff) format('woff');}
+@font-face{font-family:'NanumSquareRound';font-weight:700;src:url(NanumSquareRoundB.woff) format('woff');}
+@font-face{font-family:'NanumSquareRound';font-weight:800;src:url(NanumSquareRoundEB.woff) format('woff');}
+
+/* 본문 정본 */
+body{font-family:'NanumBarunGothic','Noto Sans KR','Noto Sans CJK KR',sans-serif !important;}
+/* 제목 정본 — 증서(.serif 명조 영역)는 제외 */
+h1:not(.serif h1),h2,h3,.disp,.secno{font-family:'NanumSquareRound','NanumBarunGothic',sans-serif !important;}
+.serif,.serif h1{font-family:'Noto Serif KR','Noto Serif CJK KR',serif !important;}
