@@ -6624,15 +6624,11 @@ h1{font-size:52px;line-height:1.28}
   .promo-mail b{color:#B93A67}
   /* 배경형 레이아웃 (민수 지시 2026-08-08): 포스터를 카드 전체 배경으로, 텍스트는 흰 그라데이션 위에 —
      이미지가 잘리지 않고 어떤 화면 높이에서도 전체가 자연스럽게 들어간다 */
-  /* 상단 = 세로 포스터의 오브젝트 컷 · 하단 = 이미지 하단과 동일 파스텔로 이음새 없이 연장 */
-  .promo-poster{display:block;width:100%;height:min(34vh,300px);object-fit:cover;object-position:center 22%}
-  .promo-bd{padding:12px 18px 0}
+  /* 텍스트 블록은 고정, 포스터가 남는 공간을 채우는 flex 구조 — 어떤 화면 높이에서도 잘림 0 */
+  .promo-card{display:flex;flex-direction:column}
+  .promo-poster{display:block;width:100%;flex:1 1 auto;min-height:110px;max-height:300px;height:auto;object-fit:cover;object-position:center 22%}
+  .promo-bd{flex:0 0 auto;padding:12px 18px 0}
   .promo-x{z-index:2}
-  @media(max-height:700px){
-    .promo-poster{height:22vh}.promo-bd{padding-top:8px}.promo-cta{margin-top:12px!important;padding:12px 0}.promo-mail{margin-top:8px;padding:7px 14px;font-size:12px}
-    .promo-zero b{font-size:26px}
-    .promo-t{font-size:20px}
-  }
   .promo-card{position:relative;width:min(340px,88vw);max-height:min(94vh,94dvh);overflow-y:auto;-webkit-overflow-scrolling:touch;background:linear-gradient(180deg,#E5BCBA 0%,#EFCCCB 8%,#FBE9EC 30%,#FFF7FB 60%)!important;border:1px solid rgba(232,93,138,.28)!important;border-radius:26px;padding:0 0 16px;text-align:center;overflow:hidden;box-shadow:0 40px 90px -30px rgba(36,28,38,.55)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:translateY(14px) scale(.97);transition:transform .34s cubic-bezier(.2,.8,.25,1)}
   #promoOv.on .promo-card{transform:none}
   .promo-x{position:absolute;top:10px;right:10px;z-index:2;width:38px!important;height:38px!important;border:0;background:rgba(255,255,255,.78);border-radius:99px;font-size:15px;color:#6E6068!important;text-decoration:none!important;font-weight:400;cursor:pointer;padding:0!important;margin:0!important;display:flex!important;align-items:center;justify-content:center;line-height:1;box-shadow:0 4px 12px -6px rgba(36,28,38,.35)}
