@@ -143,13 +143,13 @@ try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(naviga
   <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
+    <a class="hd-link" href="index.html?doc=deep"><b>심층 TEST (유료)</b></a>
     <a class="hd-link" href="index.html?doc=theory">원리</a>
     <a class="hd-link" href="types.html">유형설명</a>
-    <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설</a>
+    <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
     <a class="hd-link" href="index.html?doc=menhera">멘헤라 지수</a>
     <a class="hd-link" href="index.html?doc=stories">사연</a>
     <a class="hd-link" href="index.html?doc=reviews">리뷰</a>
-    <a class="hd-link" href="index.html?doc=price">유료 리포트</a>
     <a class="hd-cta" href="index.html?test=1">검사 시작</a>
   </nav>
   <a class="hd-x" href="index.html" aria-label="닫기 — 홈으로">×</a>
@@ -230,5 +230,8 @@ try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(naviga
   .gband .deco.heart{width:30px!important;height:30px!important;top:7%!important;opacity:.92}
 }
 </style>
+
+<a href="index.html" id="backPill" style="position:fixed;left:16px;bottom:16px;z-index:80;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96));border:1px solid rgba(255,214,229,.9);border-radius:99px;padding:11px 20px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;box-shadow:0 13px 29px -14px rgba(185,58,103,.75),inset 0 1.5px 0 rgba(255,255,255,.5)">← 이전으로</a>
+<script>document.getElementById('backPill').addEventListener('click',function(e){if(history.length>1){e.preventDefault();history.back();}});</script>
 </body>
 </html>

@@ -352,13 +352,13 @@
     <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="hdNav" onclick="return RATI_NAV&&RATI_NAV.toggle()"><span></span><span></span><span></span></button>
     <nav class="hd-r" id="hdNav">
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b></a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
       <a class="hd-link" href="types.html">유형설명</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
+      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('menhera');return false">멘헤라 지수</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('stories');return false">사연</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('reviews');return false">리뷰</a>
-      <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('price');return false">유료 리포트</a>
       <a class="hd-cta" href="#" onclick="return RATI_TEST.open()">검사 시작</a>
     </nav>
   </div>
@@ -769,7 +769,7 @@
       <div class="pline rv">
         <div class="pl-hd"><span class="pl-k mono">① 나 혼자 — 나를 아는 리포트</span><h3>내 리포트</h3><p>내가 연애에서 왜 이러는지 — 13쪽으로 깊게 풀어줍니다.</p></div>
         <div class="pl-step pl-free"><div class="pl-price">0원</div><div class="pl-body"><b>기본 결과 리포트</b><p>내 유형·그래프·멘헤라 지수까지 — 검사만 하면 전부 무료</p></div><a class="pbtn mono" href="#" onclick="return RATI_TEST.open()">검사 →</a></div>
-        <div class="pl-step hot"><div class="pl-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−29%</span>4,900<s>6,900</s></div><div class="pl-body"><b>심층 리포트 <span class="mono pl-mini">13쪽</span></b><p>내 답 22개를 다시 읽고 · 반복되는 연애 패턴 끊는 법 · 그대로 쓰면 되는 대사 12줄 · 30일 플랜</p></div><button class="pbtn mono" type="button" data-order="deep" aria-label="심층 리포트 4,900원 주문">주문 →</button></div>
+        <div class="pl-step hot"><div class="pl-price"><span class="pl-now">오픈 이벤트</span><span class="pl-off">FREE</span>0<s>9,900</s></div><div class="pl-body"><b>심층 테스트 <span class="mono pl-mini">32문항</span></b><p>4축 정밀 해부 · 반복 루프 · 실전 스크립트 12 — 결과는 16쪽 리포트·증서로 이메일 도착</p></div><button class="pbtn mono" type="button" onclick="RATI_DOC.open('deep');return false" aria-label="심층 테스트 무료 이벤트">무료 →</button></div>
       </div>
       <div class="pline rv">
         <div class="pl-hd"><span class="pl-k mono">② 둘이서 — 우리 사이를 보는 리포트</span><h3>우리 리포트 — RATI × RATI 조합 해설</h3><p>짝사랑 · 썸 · 연애 · 친구 — 관계를 고르면 두 사람을 겹쳐서 봐드립니다.</p></div>
@@ -1193,7 +1193,7 @@
       </div>
       <div class="od-info">
         <p>· 입금자명은 <b>이메일 앞부분</b>으로 해주세요. 예) rati123@naver.com → <b>rati123</b></p>
-        <p>· 금액으로 상품을 구분합니다. (4,900 심층 · 6,900 궁합 · 9,900 +성격유형 · 12,900 +사주) 따로 메일을 보내지 않아도 됩니다.</p>
+        <p>· 금액으로 상품을 구분합니다. (6,900 궁합 · 9,900 +성격유형 · 12,900 +사주 — 심층은 무료 이벤트 중) 따로 메일을 보내지 않아도 됩니다.</p>
         <p>· 입금 확인 후 <b>24시간 이내</b> 이메일 도착 · 발송 전엔 <b>전액 환불</b></p>
       </div>
       <div class="sy-err mono" id="odErr" hidden></div>
@@ -3662,7 +3662,7 @@ var qrcode = function() {
       <div class="tp-meta mono"><span id="tpPct">분포 집계 중</span><span id="tpGline"></span></div>
       <div class="sy-btns" style="justify-content:center;margin-top:20px">
         <a class="cta" href="#" onclick="return RATI_TEST.open()" style="padding:13px 24px;font-size:13.5px;text-decoration:none">무료 검사로 내 유형 확인</a>
-        <a class="btn2" href="javascript:void(0)" id="tpDeep" onclick="RATI_DOC.open('price');return false" style="text-decoration:none">심층 리포트 4,900원</a>
+        <a class="btn2" href="javascript:void(0)" id="tpDeep" onclick="RATI_DOC.open('deep');return false" style="text-decoration:none">심층 테스트 · 지금 무료 🎉</a>
       </div>
     </div>
   </div>
@@ -4245,8 +4245,8 @@ window.RATI_TEST=(function(){
     +'<li><b>07</b> 궁합 추천 3 · 경계 3 · 유지비 견적서</li>'
     +'<li><b>08</b> 실전 스크립트 12 · 하지 말 말 → 대신 이 말 → 원리</li>'
     +'<li><b>09</b> 이별·재회 가이드 + <b>10</b> 30일 처방전 + <b>13</b> 마지막 카드</li></ul>'
-    +'<div style="text-align:center;margin-top:20px"><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_TEST.order()">심층 리포트 주문 · <s style="opacity:.55;font-weight:600;font-size:12px;margin-right:3px">6,900</s>4,900원</button>'
-    +'<p class="mono" style="font-size:10px;color:var(--mut);text-align:center;margin-top:11px;letter-spacing:.3px;line-height:1.7">런칭 할인가 · 13쪽 · <b style="color:var(--slate)">발송 전 전액 환불</b> · 입금 확인 후 도착 · 고유 토큰 링크</p></div>'
+    +'<div style="text-align:center;margin-top:20px"><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_DOC.open(\'deep\')">심층 테스트 무료로 받기 · <s style="opacity:.55;font-weight:600;font-size:12px;margin-right:3px">9,900</s>0원</button>'
+    +'<p class="mono" style="font-size:10px;color:var(--mut);text-align:center;margin-top:11px;letter-spacing:.3px;line-height:1.7">오픈 이벤트 무료 · 16쪽 · 신규 32문항 · <b style="color:var(--slate)">결과는 이메일로 도착</b></p></div>'
     +'<p class="rp-p" style="font-size:11px;color:var(--mut);text-align:center;margin-top:10px">처방은 "고쳐라"가 아니라 "설계해라" · 정식판의 원칙입니다.</p></div>'
     +(window.RATI_GUESS_CODE?'<div class="rp-page" style="text-align:center;border:1.5px solid rgba(232,93,138,.45);background:#FEF4F8"><div class="rp-hd"><span>NEXT</span><span>궁합으로</span></div><p style="font-size:14px;font-weight:800;word-break:keep-all">추측해둔 상대가 있네요 · '+((T[window.RATI_GUESS_CODE]||['상대'])[0])+' ('+window.RATI_GUESS_CODE+')</p><p style="font-size:12px;color:var(--slate);margin-top:8px">방금 나온 내 좌표('+res.code+')와 겹치면 조합 이름·난이도까지 바로 나옵니다.</p><div style="margin-top:14px"><button class="cta" style="padding:13px 26px;font-size:14px" onclick="RATI_TEST.close();setTimeout(function(){RATI_GUESS.resume()},250)">이 상대와 궁합 이어가기 →</button></div></div>':'')
     +window.RATI_SHARE.row('result',res.code)
@@ -4961,14 +4961,14 @@ window.RATI_GUESS=(function(){
       <button class="hd-burger dt-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="dtNav" onclick="var b=this.closest('.rt-bar'),o=b.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
       <nav class="hd-r" id="dtNav">
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b></a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
         <a class="hd-link" href="types.html">유형설명</a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설</a>
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('menhera');return false">멘헤라 지수</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('stories');return false">사연</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('reviews');return false">리뷰</a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('price');return false">유료 리포트</a>
-        <a class="hd-cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_TEST.open();return false">검사 시작</a>
+          <a class="hd-cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_TEST.open();return false">검사 시작</a>
       </nav>
       <button class="sy-x" type="button" onclick="RATI_DOC.close()" aria-label="닫기">×</button>
     </div>
@@ -5026,7 +5026,7 @@ window.RATI_DOC=(function(){
   +'<div class="gtb" style="--dc:#7C4FD8"><div class="gtb-main"><b class="gtb-name">RATI+성격유형 <span class="gtb-x">×</span> RATI+성격유형</b><p class="gtb-desc">성격유형을 문장 레벨로 엮은 통합 합성 · 24시간 이내</p></div><div class="gtb-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−23%</span>9,900<em>원</em><s>12,900</s></div><button class="pbtn mono" type="button" onclick="RATI_DOC.close();setTimeout(function(){RATI_COUPLE.open(\'tier2\')},80)">주문 →</button></div>'
   +'<div class="gtb" style="--dc:#C98A1F"><div class="gtb-main"><b class="gtb-name">RATI+성격유형+사주 <span class="gtb-x">×</span> RATI+성격유형+사주</b><p class="gtb-desc">3레이어 통합 · 24시간 이내 · <b class="gtb-note">상대 사주(생일) 몰라도 진행 가능</b> · 사주는 참고용</p></div><div class="gtb-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−24%</span>12,900<em>원</em><s>16,900</s></div><button class="pbtn mono" type="button" onclick="RATI_DOC.close();setTimeout(function(){RATI_COUPLE.open(\'tier3\')},80)">주문 →</button></div>'
   +'</div>'
-  +'<p class="rp-p" style="font-size:11px;color:var(--mut);margin-top:10px">내 유형만 깊게 · 심층 리포트 4,900원(13쪽)은 따로 있어요.</p></div>'
+  +'<p class="rp-p" style="font-size:11px;color:var(--mut);margin-top:10px">내 유형만 깊게 · 심층 테스트는 지금 무료 이벤트 중이에요(16쪽 리포트 · 이메일 발송).</p></div>'
   +'<details class="gung-acc" open><summary>어떻게 진행되나요?<span class="ga-i">＋</span></summary><div class="ga-body">'
   +'<ol class="ga-steps">'
   +'<li><b>1 · 관계 고르기</b><p>짝사랑 · 썸 · 연애 · 친구 · 지금 우리 사이를 고릅니다.</p></li>'
@@ -5054,6 +5054,23 @@ window.RATI_DOC=(function(){
   +'<p class="mono" style="font-size:9.5px;color:var(--mut);margin-top:10px">행동 처방 40% · 설명보다 처방. 4주 후 관계 문항 무료 재진단 포함.</p>'
   +'</div></details>'
   +'<div class="rr-btns"><a class="cta" href="javascript:void(0)" onclick="RATI_DOC.close();RATI_GUESS.open();return false" style="text-decoration:none">상대 유형 알아보기 · 무료</a><button class="btn2" onclick="RATI_DOC.close()">닫기</button></div>';
+  /* 심층 TEST 소개 팝업 — 헤더 문서 팝업 문법(TESTS 히어로 + price 상품 카드) 계승. CTA는 deep.html로 이동 */
+  var DEEP=''
+  +'<div class="pd-hero" style="--bc:#B93A67"><img alt="심층 리포트" src="pd_deep.webp" onerror="var p=this.closest(\'.pd-hero\');p&&p.parentNode&&p.parentNode.removeChild(p)"></div>'
+  +'<div class="dt-hero"><div class="dt-hero-txt"><p class="eyebrow" style="letter-spacing:3px">RATI DEEP · 결과는 이메일로 도착</p>'
+  +'<h1 style="font-family:var(--serif);font-size:clamp(26px,5.5vw,36px);font-weight:900;margin-top:10px">심층 테스트</h1>'
+  +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 6px"><s style="color:#A79AA2;font-size:13.5px">정가 9,900원</s><b style="color:var(--rosed);font-size:17px">지금은 무료</b><span style="font-size:11px;font-weight:800;background:linear-gradient(90deg,var(--rosed),var(--rose));color:#fff;padding:4px 11px;border-radius:99px;letter-spacing:.04em">오픈 이벤트</span></div>'
+  +'<p class="dt-hero-sub">무료 검사가 <b>유형</b>을 알려줬다면, 심층은 그 유형이 연락·썸·연애·이별에서 <b>어떻게 작동하는지</b>를 해부합니다.</p></div></div>'
+  +'<div class="rr-btns"><a class="cta" href="deep.html?start=1" style="text-decoration:none" onclick="try{RATI_GA(\'deep_start_click\',{entry:\'doc\'})}catch(e){}">심층 테스트 시작하기</a></div>'
+  +'<div class="ga-paidnote" style="margin-top:0"><b>📮 결과는 화면에 뜨지 않아요.</b> 응답을 분석해 완성된 심층 리포트를 <b>이메일로</b> 보내드려요 — 검사 전에 받으실 주소만 정확히 알려주세요.</div>'
+  +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px">'
+  +'<div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center"><div style="font-size:20px">📄</div><div style="font-size:11.5px;font-weight:700;color:var(--slate);margin-top:5px;line-height:1.45">16페이지<br>심층 리포트</div></div>'
+  +'<div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center"><div style="font-size:20px">📜</div><div style="font-size:11.5px;font-weight:700;color:var(--slate);margin-top:5px;line-height:1.45">발급번호<br>공식 증서</div></div>'
+  +'<div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center"><div style="font-size:20px">🖼️</div><div style="font-size:11.5px;font-weight:700;color:var(--slate);margin-top:5px;line-height:1.45">공유용<br>요약 브리핑</div></div></div>'
+  +'<div class="dt-row" style="margin-top:14px"><b>무료 TEST와 뭐가 달라요?</b><span>무료 22문항은 <b>유형 판정</b>까지 — 심층 32문항은 연락·썸·연애·이별 국면별 <b>작동 방식·예보·30일 처방</b>까지 갑니다.</span></div>'
+  +'<div class="dt-row"><b>어떻게 받아요?</b><span>이메일·이름·나이·성별·MBTI 입력 → 32문항 응답 → 완성된 리포트가 <b>입력한 이메일로</b> 발송돼요.</span></div>'
+  +'<div class="dt-row"><b>소요 시간</b><span>약 5분 · 32문항 · 📬 이메일 발송</span></div>'
+    +'<a href="javascript:void(0)" onclick="RATI_DOC.close();return false" style="position:fixed;left:16px;bottom:16px;z-index:80;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96));border:1px solid rgba(255,214,229,.9);border-radius:99px;padding:11px 20px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;box-shadow:0 13px 29px -14px rgba(185,58,103,.75),inset 0 1.5px 0 rgba(255,255,255,.5)">← 이전으로</a>';
   var TESTS=''
   +'<div class="dt-hero"><div class="dt-hero-txt"><p class="eyebrow" style="letter-spacing:3px">TEST CATALOG · 어떤 마음을 측정해볼까요</p>'
   +'<h1 style="font-family:var(--serif);font-size:clamp(26px,5.5vw,36px);font-weight:900;margin-top:10px">지금 할 수 있는 검사</h1>'
@@ -5079,6 +5096,7 @@ window.RATI_DOC=(function(){
   function restoreSect(){if(movedSect&&sectPh&&sectPh.parentNode){sectPh.parentNode.replaceChild(movedSect,sectPh);}movedSect=null;sectPh=null;}
   function open(kind){el();
     restoreSect();
+    ov.classList.toggle('doc-deep', kind==='deep'); /* deep: 상단 X 숨김 — 하단 '← 이전으로'가 닫기 역할 (민수 지시 2026-08-07) */
     try{var __bar=document.querySelector('#dtOv .rt-bar');__bar&&__bar.classList.remove('nav-open');}catch(e){}
     if(SECT[kind]){
       var s=document.getElementById(kind); if(!s)return false;
@@ -5099,8 +5117,8 @@ window.RATI_DOC=(function(){
       body.appendChild(s);movedSect=s;
       try{s.querySelectorAll('.rv').forEach(function(x){x.classList.add('in')})}catch(e){}
     } else {
-      step.textContent = kind==='theory'?'원리 · 전문':(kind==='tests'?'검사 목록':'궁합 · 조합해설');
-      body.innerHTML = kind==='theory'?THEORY:(kind==='tests'?TESTS:GUNG);
+      step.textContent = kind==='theory'?'원리 · 전문':(kind==='tests'?'검사 목록':(kind==='deep'?'심층 TEST (유료)':'궁합 · 조합해설'));
+      body.innerHTML = kind==='theory'?THEORY:(kind==='tests'?TESTS:(kind==='deep'?DEEP:GUNG));
     }
     ov.hidden=false;document.body.style.overflow='hidden';window.scrollTo(0,0);ov.scrollTop=0;return false}
   function close(){restoreSect();ov.hidden=true;document.body.style.overflow=''}
@@ -5109,6 +5127,14 @@ window.RATI_DOC=(function(){
 })();
 </script>
 <style>
+  #dtOv.doc-deep .sy-x{display:none} /* 심층 팝업: X 대신 하단 '← 이전으로' */
+  /* 심층 팝업 행간·수직 리듬 (민수 피드백 2026-08-08) */
+  #dtOv.doc-deep .dt-hero-sub{line-height:1.85;margin-top:10px}
+  #dtOv.doc-deep .rr-btns{margin:4px 0 24px}
+  #dtOv.doc-deep .ga-paidnote{line-height:1.8;padding:13px 16px;margin-bottom:16px}
+  #dtOv.doc-deep .dt-row{padding:14px 2px;line-height:1.75}
+  #dtOv.doc-deep .dt-row b{line-height:1.6}
+  #dtOv.doc-deep .dt-row span{line-height:1.8}
   .dt-row{display:grid;grid-template-columns:190px 1fr;gap:12px;padding:11px 2px;border-bottom:1px dashed #F0E4EC;font-size:12.5px}
   .dt-row:last-child{border-bottom:none}
   .dt-row b{color:var(--ink);line-height:1.55}
@@ -6580,16 +6606,18 @@ h1{font-size:52px;line-height:1.28}
   }
 </style>
 
-<!-- ══ PROMO : 진입 특가 팝업 (유료 리포트 할인) ══ -->
+<!-- ══ PROMO : 진입 이벤트 팝업 (심층 테스트 무료 이벤트) ══ -->
 <div id="promoOv" hidden>
-  <div class="promo-card" role="dialog" aria-modal="true" aria-label="유료 리포트 할인 안내">
+  <div class="promo-card" role="dialog" aria-modal="true" aria-label="심층 테스트 무료 이벤트 안내">
     <button class="promo-x text-action" type="button" aria-label="닫기">✕</button>
-    <img class="promo-poster" src="promo_poster.webp" alt="유료 리포트 SALE −29%" loading="lazy" onerror="this.remove()">
+    <img class="promo-poster" src="promo_poster.webp" alt="심층 테스트 무료 이벤트" loading="lazy" onerror="this.remove()">
     <div class="promo-bd">
-      <p class="promo-k mono">LAUNCH SALE · 기간 한정</p>
-      <h3 class="promo-t">유료 리포트<br><em>할인중!</em></h3>
-      <p class="promo-s">지금 구매하면 심층 리포트 <s>6,900</s> <b>4,900원</b>부터</p>
-      <button class="promo-cta cta" type="button">특가 보러가기 →</button>
+      <p class="promo-k mono">OPEN EVENT · 기간 한정</p>
+      <h3 class="promo-t">심층 테스트<br><em>지금 무료!</em></h3>
+      <p class="promo-s">유료 심층 테스트 정가 <s>9,900원</s></p>
+      <p class="promo-zero"><b>지금은 0원</b></p>
+      <p class="promo-mail">📮 결과 리포트는 <b>이메일로</b> 보내드려요</p>
+      <button class="promo-cta cta" type="button">무료로 받으러 가기 →</button>
       <button class="promo-today text-action" type="button">오늘 하루 보지 않기</button>
     </div>
   </div>
@@ -6598,6 +6626,10 @@ h1{font-size:52px;line-height:1.28}
   #promoOv{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(36,28,38,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
   #promoOv.on{opacity:1}
   #promoOv[hidden]{display:none}
+  .promo-zero{margin-top:6px}
+  .promo-zero b{font-size:34px;font-weight:900;color:#B93A67;letter-spacing:-.5px}
+  .promo-mail{margin-top:8px;font-size:13.5px;color:#5B4E58;background:#fff;border:1.5px solid rgba(232,93,138,.35);border-radius:99px;display:inline-block;padding:8px 16px}
+  .promo-mail b{color:#B93A67}
   .promo-card{position:relative;width:min(340px,88vw);background:linear-gradient(165deg,#FFF7FB 0%,#FDEDF4 55%,#FBE3EE 100%)!important;border:1px solid rgba(232,93,138,.28)!important;border-radius:26px;padding:0 0 16px;text-align:center;overflow:hidden;box-shadow:0 40px 90px -30px rgba(36,28,38,.55)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:translateY(14px) scale(.97);transition:transform .34s cubic-bezier(.2,.8,.25,1)}
   #promoOv.on .promo-card{transform:none}
   .promo-x{position:absolute;top:10px;right:10px;z-index:2;width:38px!important;height:38px!important;border:0;background:rgba(255,255,255,.78);border-radius:99px;font-size:15px;color:#6E6068!important;text-decoration:none!important;font-weight:400;cursor:pointer;padding:0!important;margin:0!important;display:flex!important;align-items:center;justify-content:center;line-height:1;box-shadow:0 4px 12px -6px rgba(36,28,38,.35)}
@@ -6617,7 +6649,7 @@ h1{font-size:52px;line-height:1.28}
 (function(){
   try{
     if(/[?&]doc=/.test(location.search))return;
-    var KEY='rati_promo_hide';
+    var KEY='rati_promo_deep_hide';
     var d=new Date(),ymd=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
     try{if(localStorage.getItem(KEY)===ymd)return;}catch(e){}
     var ov=document.getElementById('promoOv');if(!ov)return;
@@ -6625,18 +6657,18 @@ h1{font-size:52px;line-height:1.28}
     setTimeout(function(){
       ov.hidden=false;
       requestAnimationFrame(function(){ov.classList.add('on')});
-      try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'report_sale'})}catch(e){}
+      try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'deep_free'})}catch(e){}
     },700);
     ov.querySelector('.promo-x').addEventListener('click',close);
     ov.querySelector('.promo-today').addEventListener('click',function(){
       try{localStorage.setItem(KEY,ymd)}catch(e){}
-      try{if(window.RATI_GA)RATI_GA('promo_hide_today',{promo:'report_sale'})}catch(e){}
+      try{if(window.RATI_GA)RATI_GA('promo_hide_today',{promo:'deep_free'})}catch(e){}
       close();
     });
     ov.querySelector('.promo-cta').addEventListener('click',function(){
-      try{if(window.RATI_GA)RATI_GA('promo_click',{promo:'report_sale'})}catch(e){}
+      try{if(window.RATI_GA)RATI_GA('promo_click',{promo:'deep_free'})}catch(e){}
       close();
-      setTimeout(function(){try{RATI_DOC.open('price')}catch(e){}},230);
+      setTimeout(function(){try{RATI_DOC.open('deep')}catch(e){}},230);
     });
     ov.addEventListener('click',function(e){if(e.target===ov)close()});
   }catch(e){}

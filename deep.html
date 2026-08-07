@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) · GA4 — index.html과 동일 스니펫 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7MT2EN429N"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  var __gaCfg={};try{if(new URLSearchParams(location.search).has('ga_debug'))__gaCfg.debug_mode=true;}catch(e){}
+  gtag('config', 'G-7MT2EN429N', __gaCfg);
+  window.RATI_GA=function(name,params){try{if(typeof gtag==='function')gtag('event',name,params||{});}catch(e){}};
+  // 카톡·라인 인앱 → 외부 브라우저 자동 탈출 (index.html과 동일)
+  try{
+    var __ua=navigator.userAgent||'';
+    if(/KAKAOTALK/i.test(__ua)){
+      location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href);
+    } else if(/\bLine\//i.test(__ua) && location.search.indexOf('openExternalBrowser')<0){
+      location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';
+    } else if(/Android/i.test(__ua) && /Instagram|FBAN|FBAV|NAVER\(inapp|DaumApps|Twitter/i.test(__ua)){
+      try{ if(!sessionStorage.getItem('extEsc')){ sessionStorage.setItem('extEsc','1');
+        location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';
+      } }catch(e2){}
+    }
+  }catch(e){}
+  try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
+</script>
+<style id="inapp-lite-css">
+  /* 인앱 라이트: GPU 장식만 끔 · 기능 불변 (index.html 규칙 계승) */
+  html.inapp-lite .mesh,html.inapp-lite .aur{display:none!important}
+  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RATI DEEP | 심층 테스트 — 결과는 이메일로</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#241C26;--ink2:#332B38;--slate:#5B4E5C;--mut:#9A8C9C;
+  --rose:#E85D8A;--rosed:#B93A67;--roseL:#F480A7;
+  --amber:#C98A1F;--teal:#3D9EA8;--violet:#7C4FD8;--line:#F0DFE8;
+  --serif:'Noto Serif KR',serif;--mono:ui-monospace,'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard','Noto Sans KR',sans-serif;
+  color:var(--ink);background:linear-gradient(170deg,#FEF8FA 0%,#FBF7FC 55%,#F7F5FD 100%) fixed;
+  word-break:keep-all;overflow-wrap:break-word;line-height:1.7;min-height:100vh}
+.mesh{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.85}
+.aur{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aur i{position:absolute;border-radius:50%;filter:blur(40px)}
+.aur .a1{width:660px;height:660px;left:-170px;top:-130px;background:radial-gradient(circle,#F6A8C6,transparent 66%);opacity:.28}
+.aur .a2{width:740px;height:700px;right:-210px;top:40px;background:radial-gradient(circle,#C7A9F5,transparent 66%);opacity:.24}
+.aur .a3{width:600px;height:580px;left:20%;top:520px;background:radial-gradient(circle,#A9DEE3,transparent 66%);opacity:.2}
+.aur .a4{width:540px;height:540px;right:16%;top:-190px;background:radial-gradient(circle,#F4D9A0,transparent 62%);opacity:.18}
+
+header{position:sticky;top:0;z-index:60;padding:14px 0;transition:background .25s,box-shadow .25s,padding .25s}
+  header.scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(12px);box-shadow:0 10px 30px -22px rgba(36,28,38,.35);padding:10px 0}
+  .hd-in{max-width:1020px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-size:19px;font-weight:900}
+  .logo .dot{color:var(--rose)}.logo .lab{color:var(--rose);font-weight:800;letter-spacing:.5px}
+  .hd-r{display:flex;align-items:center;gap:18px}
+  .hd-link{font-size:13.5px;color:var(--slate);font-weight:600;white-space:nowrap}
+  .hd-link:hover{color:var(--rosed)}
+  .hd-cta{background:linear-gradient(180deg,#3B3240,#241C26);color:#fff;font-size:13.5px;font-weight:700;border-radius:99px;padding:10px 20px;white-space:nowrap;
+    box-shadow:0 8px 18px -8px rgba(36,28,38,.5),inset 0 1.5px 0 rgba(255,255,255,.22),inset 0 -2px 4px rgba(0,0,0,.35);transition:transform .16s}
+  .hd-cta:hover{transform:translateY(-1.5px)}
+header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+a{color:inherit;text-decoration:none}
+
+.wrap{max-width:560px;margin:0 auto;padding:28px clamp(16px,4vw,24px) 90px}
+.step{display:none}
+.step.on{display:block}
+
+.kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.24em;color:var(--rosed);margin-bottom:10px}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(26px,6.4vw,34px);line-height:1.32;letter-spacing:-.5px;text-wrap:balance}
+h2{font-size:clamp(19px,5vw,22px);line-height:1.4;font-weight:800;text-wrap:balance}
+.sub{color:var(--slate);font-size:15px;margin-top:12px;line-height:1.8;text-wrap:pretty}
+
+.card{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:22px;
+  box-shadow:0 24px 54px -40px rgba(36,28,38,.42);padding:clamp(20px,5vw,28px);margin-top:18px}
+
+/* 이벤트 필 */
+.evline{display:flex;align-items:center;gap:10px;margin:16px 0 0;flex-wrap:wrap}
+.evline .strike{color:var(--mut);text-decoration:line-through;font-size:14px}
+.evline .free{font-weight:900;color:var(--rosed);font-size:16px}
+.evline .pill{font-size:11px;font-weight:800;background:linear-gradient(90deg,var(--rosed),var(--rose));color:#fff;
+  padding:4px 11px;border-radius:99px;letter-spacing:.04em}
+
+/* 이메일 발송 공지 카드 */
+.notice{background:linear-gradient(160deg,#fff,#FDEEF4);border:1.5px solid #F2A6C2}
+.notice .nt{display:flex;gap:12px;align-items:flex-start}
+.notice .ni{font-size:26px;line-height:1.2}
+.notice b{color:var(--rosed)}
+.notice p{font-size:14.5px;line-height:1.85;color:var(--ink2);text-wrap:pretty}
+.deliv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.deliv .d{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center}
+.deliv .d .di{font-size:20px}
+.deliv .d .dt{font-size:11.5px;font-weight:700;color:var(--slate);margin-top:5px;line-height:1.45}
+
+.meta-line{display:flex;gap:14px;margin-top:16px;color:var(--mut);font-size:12.5px;letter-spacing:.02em}
+
+/* CTA — 사이트 핑크 유리 */
+.cta{display:block;width:100%;text-align:center;border:1px solid rgba(255,214,229,.9);cursor:pointer;
+  background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96));
+  color:#fff;font-weight:800;font-size:16px;padding:16px 20px;border-radius:99px;margin-top:22px;
+  box-shadow:0 13px 29px -14px rgba(185,58,103,.75),inset 0 1.5px 0 rgba(255,255,255,.5),inset 0 -2px 5px rgba(120,20,60,.25);
+  transition:transform .15s,opacity .15s;font-family:inherit}
+.cta:hover{transform:translateY(-2px)}
+.cta:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.ghost{display:block;width:100%;text-align:center;background:#fff;color:var(--ink);border:1.5px solid var(--line);cursor:pointer;
+  font-weight:700;font-size:14px;padding:13px 18px;border-radius:99px;margin-top:10px;font-family:inherit;
+  box-shadow:0 6px 14px -10px rgba(58,46,51,.3);transition:transform .14s;text-decoration:none}
+.ghost:hover{transform:translateY(-1.5px)}
+
+/* 폼 */
+.fld{margin-top:18px}
+.fld label{display:block;font-size:13px;font-weight:800;color:var(--ink2);margin-bottom:7px;letter-spacing:.01em}
+.fld label .req{color:var(--rosed)}
+.fld .help{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.6}
+.fld .help.warn{color:var(--rosed);font-weight:700}
+.in{width:100%;font:inherit;font-size:15px;padding:13px 16px;border-radius:14px;border:1.5px solid var(--line);
+  background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+.in:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(232,93,138,.14)}
+.in.err{border-color:var(--rosed);box-shadow:0 0 0 3px rgba(185,58,103,.12)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;font:inherit;font-size:14px;font-weight:700;padding:12px 14px;border-radius:14px;cursor:pointer;
+  border:1.5px solid var(--line);background:#fff;color:var(--slate);transition:all .13s}
+.seg button.on{border-color:var(--rose);background:#FEF1F6;color:var(--rosed);font-weight:800}
+.mbti{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mbti button{font:var(--mono);font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;
+  padding:11px 4px;border-radius:12px;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--slate);transition:all .13s}
+.mbti button.on{border-color:var(--rose);background:#FEF1F6;color:var(--rosed)}
+.mbti .unk{grid-column:1/-1;font-family:inherit;letter-spacing:0}
+.gate-note{display:flex;gap:9px;align-items:flex-start;background:#FFFDF4;border:1px solid #EAD9AE;border-radius:14px;
+  padding:12px 15px;margin-top:20px;font-size:12.5px;color:#7A6640;line-height:1.7}
+
+/* 설문 — 기존 검사(RATI_TEST)와 동일 문법: rt-qhead·명조 rt-q·tqo 자동 진행 (민수 지시 2026-08-07) */
+.prog{position:sticky;top:59px;z-index:9;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+  margin:0 -24px;padding:12px 24px;border-bottom:1px solid var(--line)}
+.prog .pt{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--mut);margin-bottom:7px}
+.prog .pt b{color:var(--rosed)}
+.pbar{height:4px;border-radius:99px;background:rgba(36,28,38,.08);overflow:hidden}
+.pbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#F2A6C2,var(--rose));
+  transition:width .25s;width:0}
+.rt-qhead{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.rt-qno{font-family:var(--mono);font-size:13px;color:var(--slate)}
+.rt-stage{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:99px;background:#F3EEFC;color:#7C4FD8}
+.rt-deep{font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;color:#8B5CF6;border:1px solid rgba(139,92,246,.35);border-radius:99px;padding:3px 8px}
+.rt-q{font-family:var(--serif);font-size:clamp(20px,4.6vw,25px);font-weight:700;line-height:1.55;margin-bottom:24px;min-height:2.8em;word-break:keep-all}
+.tqo{display:block;width:100%;text-align:left;cursor:pointer;border-radius:16px;padding:15px 18px;margin-bottom:11px;
+  font:inherit;font-size:14.5px;line-height:1.6;color:var(--ink);background:rgba(255,255,255,.85);border:1.5px solid var(--line);
+  box-shadow:0 6px 16px -12px rgba(36,28,38,.35);transition:transform .14s,border-color .14s,box-shadow .14s,background .14s}
+.tqo:hover{transform:translateY(-2px);border-color:rgba(232,93,138,.55);box-shadow:0 8px 22px rgba(232,93,138,.16);background:#fff}
+.tqo.on{border-color:var(--rose);background:#FEF1F6;transform:scale(.985)}
+.rt-early{font-size:10px;letter-spacing:.5px;color:var(--slate);margin-bottom:16px;text-align:right;font-family:var(--mono)}
+.rt-foot{display:flex;justify-content:space-between;align-items:center;margin-top:22px;flex-wrap:wrap;gap:6px 12px}
+.rt-back{border:0;background:none;cursor:pointer;font-size:13px;color:var(--mut);padding:8px 10px;font-family:inherit}
+.rt-back:disabled{opacity:.4;cursor:default}
+.rt-home{border:0;background:none;cursor:pointer;font-size:12.5px;color:var(--mut);padding:8px 10px;transition:color .15s;font-family:inherit;text-decoration:none}
+.rt-hint{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--mut)}
+/* 공유 게이트 채널 버튼 */
+.sh-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.shb{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;cursor:pointer;font:inherit;padding:6px}
+.shb i{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;font-style:normal;
+  box-shadow:0 8px 18px -10px rgba(36,28,38,.4);transition:transform .14s}
+.shb:hover i{transform:translateY(-2.5px)}
+.shb span{font-size:11.5px;font-weight:700;color:var(--slate)}
+.shb.done span{color:var(--rosed)}
+/* 모듈 인트로 카드 (원장 v2.2의 인트로 4곳 — 문구 도착 시 삽입) */
+.md-intro{text-align:center;padding:26px 0 6px}
+.md-intro .mi-kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.24em;color:var(--rosed)}
+.md-intro h3{font-family:var(--serif);font-size:clamp(20px,5vw,24px);font-weight:700;margin-top:12px;line-height:1.5}
+.md-intro p{font-size:14px;color:var(--slate);line-height:1.8;margin-top:10px}
+
+/* 완료 */
+.done-hero{text-align:center;padding:26px 0 6px}
+.done-hero .big{font-size:56px;line-height:1}
+.done-hero h2{margin-top:16px;font-family:var(--serif);font-weight:700;font-size:clamp(23px,6vw,28px)}
+.done-hero .mail{display:inline-block;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--rosed);
+  background:#FEF1F6;border:1.5px solid #F6CADB;border-radius:99px;padding:8px 18px;margin-top:16px;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.done-note{font-size:13.5px;color:var(--slate);line-height:1.85;text-align:center;margin-top:16px;text-wrap:pretty}
+.foot{margin-top:40px;text-align:center;color:var(--mut);font-size:11.5px;letter-spacing:.04em}
+a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="deep_questions.js"></script>
+</head>
+<body>
+<svg class="mesh" aria-hidden="true" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1440 1024">
+  <defs>
+    <linearGradient id="cline" x1="0" y1="0" x2="1" y2="0.45">
+      <stop offset="0" stop-color="#D98FA0"/><stop offset=".5" stop-color="#C3A6D6"/><stop offset="1" stop-color="#5FB2BC"/>
+    </linearGradient>
+    <radialGradient id="cfade" cx="50%" cy="36%" r="74%">
+      <stop offset="0" stop-color="#000"/><stop offset=".26" stop-color="#000"/><stop offset="1" stop-color="#e2e2e2"/>
+    </radialGradient>
+    <mask id="cmask"><rect width="1440" height="1024" fill="url(#cfade)"/></mask>
+  </defs>
+  <g mask="url(#cmask)">
+    <path d="M-15.5 -28.1L173.3 -34.4M-15.5 -28.1L41.9 109.8M-15.5 -28.1L191.5 129.4M173.3 -34.4L323.2 -10.8M173.3 -34.4L191.5 129.4M323.2 -10.8L191.5 129.4M323.2 -10.8L441.1 0.6M323.2 -10.8L288.7 115.5M323.2 -10.8L463.1 171.7M441.1 0.6L599.3 -5.3M441.1 0.6L463.1 171.7M599.3 -5.3L463.1 171.7M599.3 -5.3L762.1 -32.9M599.3 -5.3L611.9 152.9M599.3 -5.3L812.2 136.0M762.1 -32.9L953.4 26.3M762.1 -32.9L812.2 136.0M953.4 26.3L812.2 136.0M953.4 26.3L1086.9 -22.3M953.4 26.3L964.2 111.1M953.4 26.3L1081.2 122.6M1086.9 -22.3L1291.2 36.0M1086.9 -22.3L1081.2 122.6M1291.2 36.0L1081.2 122.6M1291.2 36.0L1446.8 -8.3M1291.2 36.0L1295.9 140.5M1291.2 36.0L1423.6 153.2M1446.8 -8.3L1423.6 153.2M41.9 109.8L191.5 129.4M41.9 109.8L-4.1 276.5M191.5 129.4L-4.1 276.5M191.5 129.4L288.7 115.5M191.5 129.4L185.9 308.6M191.5 129.4L297.5 298.6M288.7 115.5L463.1 171.7M288.7 115.5L297.5 298.6M463.1 171.7L297.5 298.6M463.1 171.7L611.9 152.9M463.1 171.7L482.2 322.8M463.1 171.7L660.2 275.5M611.9 152.9L812.2 136.0M611.9 152.9L660.2 275.5M812.2 136.0L660.2 275.5M812.2 136.0L964.2 111.1M812.2 136.0L842.3 261.8M812.2 136.0L952.8 313.3M964.2 111.1L1081.2 122.6M964.2 111.1L952.8 313.3M1081.2 122.6L952.8 313.3M1081.2 122.6L1295.9 140.5M1081.2 122.6L1089.4 291.7M1081.2 122.6L1239.5 306.1M1295.9 140.5L1423.6 153.2M1295.9 140.5L1239.5 306.1M1423.6 153.2L1239.5 306.1M1423.6 153.2L1463.3 298.4M-4.1 276.5L185.9 308.6M-4.1 276.5L33.0 423.9M-4.1 276.5L177.2 446.4M185.9 308.6L297.5 298.6M185.9 308.6L177.2 446.4M297.5 298.6L177.2 446.4M297.5 298.6L482.2 322.8M297.5 298.6L327.0 435.3M297.5 298.6L509.9 474.6M482.2 322.8L660.2 275.5M482.2 322.8L509.9 474.6M660.2 275.5L509.9 474.6M660.2 275.5L842.3 261.8M660.2 275.5L637.7 452.1M660.2 275.5L761.3 455.1M842.3 261.8L952.8 313.3M842.3 261.8L761.3 455.1M952.8 313.3L761.3 455.1M952.8 313.3L1089.4 291.7M952.8 313.3L972.9 478.5M952.8 313.3L1148.3 421.5M1089.4 291.7L1239.5 306.1M1089.4 291.7L1148.3 421.5M1239.5 306.1L1148.3 421.5M1239.5 306.1L1463.3 298.4M1239.5 306.1L1269.9 452.4M1239.5 306.1L1398.0 435.8M1463.3 298.4L1398.0 435.8M33.0 423.9L177.2 446.4M33.0 423.9L-29.2 554.3M177.2 446.4L-29.2 554.3M177.2 446.4L327.0 435.3M177.2 446.4L121.2 606.7M177.2 446.4L287.4 564.8M327.0 435.3L509.9 474.6M327.0 435.3L287.4 564.8M509.9 474.6L287.4 564.8M509.9 474.6L637.7 452.1M509.9 474.6L470.4 615.0M509.9 474.6L603.1 581.1M637.7 452.1L761.3 455.1M637.7 452.1L603.1 581.1M761.3 455.1L603.1 581.1M761.3 455.1L972.9 478.5M761.3 455.1L804.4 616.0M761.3 455.1L988.1 614.4M972.9 478.5L1148.3 421.5M972.9 478.5L988.1 614.4M1148.3 421.5L988.1 614.4M1148.3 421.5L1269.9 452.4M1148.3 421.5L1100.5 578.3M1148.3 421.5L1267.6 616.1M1269.9 452.4L1398.0 435.8M1269.9 452.4L1267.6 616.1M1398.0 435.8L1267.6 616.1M1398.0 435.8L1480.3 557.1M-29.2 554.3L121.2 606.7M-29.2 554.3L-28.5 709.9M-29.2 554.3L136.5 730.2M121.2 606.7L287.4 564.8M121.2 606.7L136.5 730.2M287.4 564.8L136.5 730.2M287.4 564.8L470.4 615.0M287.4 564.8L327.8 712.3M287.4 564.8L436.4 724.9M470.4 615.0L603.1 581.1M470.4 615.0L436.4 724.9M603.1 581.1L436.4 724.9M603.1 581.1L804.4 616.0M603.1 581.1L628.5 736.8M603.1 581.1L839.9 746.8M804.4 616.0L988.1 614.4M804.4 616.0L839.9 746.8M988.1 614.4L839.9 746.8M988.1 614.4L1100.5 578.3M988.1 614.4L961.4 740.9M988.1 614.4L1135.5 695.5M1100.5 578.3L1267.6 616.1M1100.5 578.3L1135.5 695.5M1267.6 616.1L1135.5 695.5M1267.6 616.1L1480.3 557.1M1267.6 616.1L1315.2 754.0M1267.6 616.1L1473.0 755.4M1480.3 557.1L1473.0 755.4M-28.5 709.9L136.5 730.2M-28.5 709.9L-9.5 869.6M136.5 730.2L-9.5 869.6M136.5 730.2L327.8 712.3M136.5 730.2L125.1 888.5M136.5 730.2L281.5 842.9M327.8 712.3L436.4 724.9M327.8 712.3L281.5 842.9M436.4 724.9L281.5 842.9M436.4 724.9L628.5 736.8M436.4 724.9L454.4 850.5M436.4 724.9L625.9 841.7M628.5 736.8L839.9 746.8M628.5 736.8L625.9 841.7M839.9 746.8L625.9 841.7M839.9 746.8L961.4 740.9M839.9 746.8L756.0 849.7M839.9 746.8L924.9 866.7M961.4 740.9L1135.5 695.5M961.4 740.9L924.9 866.7M1135.5 695.5L924.9 866.7M1135.5 695.5L1315.2 754.0M1135.5 695.5L1078.2 907.8M1135.5 695.5L1290.0 849.4M1315.2 754.0L1473.0 755.4M1315.2 754.0L1290.0 849.4M1473.0 755.4L1290.0 849.4M1473.0 755.4L1418.2 865.4M-9.5 869.6L125.1 888.5M-9.5 869.6L-12.0 993.7M-9.5 869.6L190.7 1063.7M125.1 888.5L281.5 842.9M125.1 888.5L190.7 1063.7M281.5 842.9L190.7 1063.7M281.5 842.9L454.4 850.5M281.5 842.9L317.0 1022.7M281.5 842.9L443.6 992.0M454.4 850.5L625.9 841.7M454.4 850.5L443.6 992.0M625.9 841.7L443.6 992.0M625.9 841.7L756.0 849.7M625.9 841.7L626.2 1005.1M625.9 841.7L828.9 996.8M756.0 849.7L924.9 866.7M756.0 849.7L828.9 996.8M924.9 866.7L828.9 996.8M924.9 866.7L1078.2 907.8M924.9 866.7L918.0 1060.3M924.9 866.7L1122.5 995.6M1078.2 907.8L1290.0 849.4M1078.2 907.8L1122.5 995.6M1290.0 849.4L1122.5 995.6M1290.0 849.4L1418.2 865.4M1290.0 849.4L1283.8 985.9M1290.0 849.4L1442.5 1062.5M1418.2 865.4L1442.5 1062.5M-12.0 993.7L190.7 1063.7M190.7 1063.7L317.0 1022.7M317.0 1022.7L443.6 992.0M443.6 992.0L626.2 1005.1M626.2 1005.1L828.9 996.8M828.9 996.8L918.0 1060.3M918.0 1060.3L1122.5 995.6M1122.5 995.6L1283.8 985.9M1283.8 985.9L1442.5 1062.5" fill="none" stroke="url(#cline)" stroke-width="1.25" stroke-linejoin="round"/>
+    <g fill="url(#cline)"><circle cx="-15.5" cy="-28.1" r="2.1"/><circle cx="173.3" cy="-34.4" r="2.1"/><circle cx="323.2" cy="-10.8" r="2.1"/><circle cx="441.1" cy="0.6" r="2.1"/><circle cx="599.3" cy="-5.3" r="2.1"/><circle cx="762.1" cy="-32.9" r="2.1"/><circle cx="953.4" cy="26.3" r="2.1"/><circle cx="1086.9" cy="-22.3" r="2.1"/><circle cx="1291.2" cy="36.0" r="2.1"/><circle cx="1446.8" cy="-8.3" r="2.1"/><circle cx="41.9" cy="109.8" r="2.1"/><circle cx="191.5" cy="129.4" r="2.1"/><circle cx="288.7" cy="115.5" r="2.1"/><circle cx="463.1" cy="171.7" r="2.1"/><circle cx="611.9" cy="152.9" r="2.1"/><circle cx="812.2" cy="136.0" r="2.1"/><circle cx="964.2" cy="111.1" r="2.1"/><circle cx="1081.2" cy="122.6" r="2.1"/><circle cx="1295.9" cy="140.5" r="2.1"/><circle cx="1423.6" cy="153.2" r="2.1"/><circle cx="-4.1" cy="276.5" r="2.1"/><circle cx="185.9" cy="308.6" r="2.1"/><circle cx="297.5" cy="298.6" r="2.1"/><circle cx="482.2" cy="322.8" r="2.1"/><circle cx="660.2" cy="275.5" r="2.1"/><circle cx="842.3" cy="261.8" r="2.1"/><circle cx="952.8" cy="313.3" r="2.1"/><circle cx="1089.4" cy="291.7" r="2.1"/><circle cx="1239.5" cy="306.1" r="2.1"/><circle cx="1463.3" cy="298.4" r="2.1"/><circle cx="33.0" cy="423.9" r="2.1"/><circle cx="177.2" cy="446.4" r="2.1"/><circle cx="327.0" cy="435.3" r="2.1"/><circle cx="509.9" cy="474.6" r="2.1"/><circle cx="637.7" cy="452.1" r="2.1"/><circle cx="761.3" cy="455.1" r="2.1"/><circle cx="972.9" cy="478.5" r="2.1"/><circle cx="1148.3" cy="421.5" r="2.1"/><circle cx="1269.9" cy="452.4" r="2.1"/><circle cx="1398.0" cy="435.8" r="2.1"/><circle cx="-29.2" cy="554.3" r="2.1"/><circle cx="121.2" cy="606.7" r="2.1"/><circle cx="287.4" cy="564.8" r="2.1"/><circle cx="470.4" cy="615.0" r="2.1"/><circle cx="603.1" cy="581.1" r="2.1"/><circle cx="804.4" cy="616.0" r="2.1"/><circle cx="988.1" cy="614.4" r="2.1"/><circle cx="1100.5" cy="578.3" r="2.1"/><circle cx="1267.6" cy="616.1" r="2.1"/><circle cx="1480.3" cy="557.1" r="2.1"/><circle cx="-28.5" cy="709.9" r="2.1"/><circle cx="136.5" cy="730.2" r="2.1"/><circle cx="327.8" cy="712.3" r="2.1"/><circle cx="436.4" cy="724.9" r="2.1"/><circle cx="628.5" cy="736.8" r="2.1"/><circle cx="839.9" cy="746.8" r="2.1"/><circle cx="961.4" cy="740.9" r="2.1"/><circle cx="1135.5" cy="695.5" r="2.1"/><circle cx="1315.2" cy="754.0" r="2.1"/><circle cx="1473.0" cy="755.4" r="2.1"/><circle cx="-9.5" cy="869.6" r="2.1"/><circle cx="125.1" cy="888.5" r="2.1"/><circle cx="281.5" cy="842.9" r="2.1"/><circle cx="454.4" cy="850.5" r="2.1"/><circle cx="625.9" cy="841.7" r="2.1"/><circle cx="756.0" cy="849.7" r="2.1"/><circle cx="924.9" cy="866.7" r="2.1"/><circle cx="1078.2" cy="907.8" r="2.1"/><circle cx="1290.0" cy="849.4" r="2.1"/><circle cx="1418.2" cy="865.4" r="2.1"/><circle cx="-12.0" cy="993.7" r="2.1"/><circle cx="190.7" cy="1063.7" r="2.1"/><circle cx="317.0" cy="1022.7" r="2.1"/><circle cx="443.6" cy="992.0" r="2.1"/><circle cx="626.2" cy="1005.1" r="2.1"/><circle cx="828.9" cy="996.8" r="2.1"/><circle cx="918.0" cy="1060.3" r="2.1"/><circle cx="1122.5" cy="995.6" r="2.1"/><circle cx="1283.8" cy="985.9" r="2.1"/><circle cx="1442.5" cy="1062.5" r="2.1"/></g>
+  </g>
+</svg>
+<div class="aur" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
+
+<header><div class="hd-in">
+  <a class="logo" href="index.html#top">RATI<span class="dot">.</span><span class="lab">lab</span></a>
+  <div class="hd-right">
+  <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
+  <nav class="hd-r">
+    <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
+    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)"><b>심층 TEST (유료)</b></a>
+    <a class="hd-link" href="index.html?doc=theory">원리</a>
+    <a class="hd-link" href="types.html">유형설명</a>
+    <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
+    <a class="hd-link" href="index.html?doc=menhera">멘헤라 지수</a>
+    <a class="hd-link" href="index.html?doc=stories">사연</a>
+    <a class="hd-link" href="index.html?doc=reviews">리뷰</a>
+    <a class="hd-cta" href="index.html?test=1">검사 시작</a>
+  </nav>
+  <a class="hd-x" href="index.html" aria-label="닫기 — 홈으로">×</a>
+  </div>
+</div></header>
+<style id="hd-nav-css">
+  .hd-burger{display:none;position:relative;width:42px;height:40px;border:0;background:transparent;cursor:pointer;padding:0;flex:0 0 auto;z-index:3}
+  .hd-burger span{position:absolute;left:10px;right:10px;height:2px;border-radius:2px;background:var(--ink,#241C26);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .18s}
+  .hd-burger span:nth-child(1){top:13px}
+  .hd-burger span:nth-child(2){top:19px}
+  .hd-burger span:nth-child(3){top:25px}
+  header.nav-open .hd-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  header.nav-open .hd-burger span:nth-child(2){opacity:0}
+  header.nav-open .hd-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  .hd-right{display:flex;align-items:center;gap:14px}
+  .hd-x{display:none;font-size:24px;line-height:1;color:var(--mut,#9A8C9C);padding:6px;text-decoration:none;flex:0 0 auto;transition:opacity .18s}
+  .hd-x:hover{color:var(--ink,#241C26)}
+  header.nav-open .hd-x{opacity:0;pointer-events:none}
+  @media(max-width:880px){
+    header{padding:10px 0}
+    .hd-x{display:inline-flex;align-items:center}
+    header .hd-in{position:relative;flex-wrap:nowrap!important;row-gap:0}
+    .hd-burger{display:inline-flex}
+    header .hd-r{position:absolute;top:100%;left:0;right:0;width:auto;
+      display:flex!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 14px 10px!important;
+      background:rgba(255,255,255,.98);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border:0;border-top:1px solid var(--line,#eadfe4);border-bottom:1px solid var(--line,#eadfe4);
+      border-radius:0;box-shadow:0 22px 34px -24px rgba(36,28,38,.35);
+      overflow:hidden!important;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
+      transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
+    header.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto!important}
+    header .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+      font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
+    header .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
+    header .hd-r .hd-link:active{background:#fdf2f6}
+    header .hd-r .hd-cta{display:none!important}
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ══ STEP 0 · 인트로 — "결과는 이메일로" 사전 공지 ══ -->
+  <section class="step on" id="s0">
+    <div style="display:flex;justify-content:center;margin:2px 0 18px"><img src="pd_deep.webp" alt="심층 리포트" style="height:170px" onerror="this.parentNode.remove()"></div>
+    <div class="kicker">RATI DEEP · 심층 32문항</div>
+    <h1>심층 테스트</h1>
+    <p class="sub">무료 검사가 <b>유형</b>을 알려줬다면, 심층은 그 유형이 연락·썸·연애·이별에서 <b>어떻게 작동하는지</b>를 해부합니다.</p>
+    <div class="evline">
+      <span class="strike">정가 9,900원</span>
+      <span class="free">지금은 무료</span>
+      <span class="pill">오픈 이벤트 · 친구 1명 공유 시</span>
+    </div>
+
+    <div class="card notice">
+      <div class="nt">
+        <div class="ni">📮</div>
+        <div>
+          <p><b>결과는 화면에 뜨지 않아요.</b><br>
+          응답을 분석해 <b>완성된 심층 리포트를 이메일로</b> 보내드려요. 검사 시작 전에 받으실 이메일을 먼저 확인해 주세요.</p>
+        </div>
+      </div>
+      <div class="deliv">
+        <div class="d"><div class="di">📄</div><div class="dt">16페이지<br>심층 리포트</div></div>
+        <div class="d"><div class="di">📜</div><div class="dt">발급번호<br>공식 증서</div></div>
+        <div class="d"><div class="di">🖼️</div><div class="dt">공유용<br>요약 브리핑</div></div>
+      </div>
+    </div>
+
+    <div class="meta-line"><span>⏱️ 약 5분</span><span>✍️ 32문항</span><span>📬 이메일 발송</span></div>
+    <button class="cta" id="goGate">심층 테스트 시작하기</button>
+    <a class="ghost" href="https://ratilab.com/">아직 무료 검사를 안 했어요 → 먼저 하러 가기</a>
+  </section>
+
+  <!-- ══ STEP G · 공유 게이트 — 친구 1명에게 공유하면 무료 (클릭 기반 · 민수 결정 2026-08-08) ══ -->
+  <section class="step" id="sG">
+    <div class="kicker">OPEN EVENT · 공유하면 무료</div>
+    <h2>친구 1명에게 공유하면<br><em style="font-style:normal;color:var(--rosed)">9,900원 → 0원</em></h2>
+    <p class="sub">공유 한 번이면 심층 테스트가 무료로 열려요. 결과 리포트는 이메일로 보내드려요.</p>
+    <div class="card" style="text-align:center">
+      <p style="font-size:13.5px;color:var(--slate);margin-bottom:14px">공유할 곳을 골라주세요 — 보내고 오면 무료가 열려요</p>
+      <div class="sh-row" id="shareRow">
+        <button type="button" class="shb" data-ch="kakao" aria-label="카카오톡으로 공유"><i style="background:#FEE500;color:#191919"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 3.2C6.9 3.2 2.8 6.5 2.8 10.6c0 2.6 1.7 4.9 4.4 6.2-.2.7-.7 2.6-.8 3-.1.5.2.5.4.4.2-.1 2.6-1.8 3.6-2.5.5.1 1.1.1 1.6.1 5.1 0 9.2-3.3 9.2-7.4S17.1 3.2 12 3.2z"/></svg></i><span>카카오톡</span></button>
+        <button type="button" class="shb" data-ch="insta" aria-label="인스타그램으로 공유"><i style="background:linear-gradient(45deg,#F58529,#DD2A7B 55%,#8134AF);color:#fff"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></i><span>인스타</span></button>
+        <button type="button" class="shb" data-ch="x" aria-label="X로 공유"><i style="background:#111;color:#fff"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M18.9 2.2H22l-7.6 8.7L23.4 22h-7l-5.5-7.1L4.6 22H1.5l8.2-9.4L1 2.2h7.2l4.9 6.5 5.8-6.5zm-1.2 18h1.9L6.4 4.1H4.4l13.3 16.1z"/></svg></i><span>X</span></button>
+        <button type="button" class="shb" data-ch="copy" aria-label="링크 복사"><i style="background:#fff;color:var(--slate);border:1.5px solid var(--line)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9.5 14.5l5-5"/><path d="M11 7l1.2-1.2a3.6 3.6 0 015 5L17 12"/><path d="M13 17l-1.2 1.2a3.6 3.6 0 01-5-5L8 12"/></svg></i><span>링크 복사</span></button>
+      </div>
+      <div class="gate-note" id="shareDone" style="display:none;justify-content:center;background:#F0FAF6;border-color:#BFE5D8;color:#2F6B58">🎉 <span><b>공유 완료!</b> 무료 이용권이 열렸어요.</span></div>
+      <button class="cta" id="afterShare" type="button" disabled>무료로 시작하기 →</button>
+    </div>
+  </section>
+
+  <!-- ══ STEP 1 · 정보 입력 게이트 — 전부 입력해야 설문 시작 ══ -->
+  <section class="step" id="s1">
+    <div class="kicker">STEP 1 / 2 · 리포트 수신 정보</div>
+    <h2>리포트를 받을 정보를 알려주세요</h2>
+    <p class="sub">완성된 리포트가 아래 이메일로 발송돼요. 모두 입력해야 설문이 시작됩니다.</p>
+
+    <div class="card">
+      <div class="fld">
+        <label for="fEmail">이메일 <span class="req">*</span></label>
+        <input class="in" id="fEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+        <div class="help" id="emailHelp">📮 이 주소로 리포트가 발송돼요 — 오타가 나면 받을 수 없어요!</div>
+      </div>
+      <div class="fld">
+        <label for="fName">이름(닉네임) <span class="req">*</span></label>
+        <input class="in" id="fName" type="text" autocomplete="nickname" maxlength="12" placeholder="리포트 표지에 들어갈 이름">
+      </div>
+      <div class="fld">
+        <label for="fAge">나이 <span style="font-weight:600;color:var(--mut)">(숫자만 입력해주세요)</span> <span class="req">*</span></label>
+        <input class="in" id="fAge" type="number" inputmode="numeric" min="14" max="99" placeholder="예) 26">
+      </div>
+      <div class="fld">
+        <label>성별 <span class="req">*</span></label>
+        <div class="seg" id="fSex">
+          <button type="button" data-v="F">여성</button>
+          <button type="button" data-v="M">남성</button>
+          <button type="button" data-v="N">선택 안 함</button>
+        </div>
+      </div>
+      <div class="fld">
+        <label>MBTI <span class="req">*</span></label>
+        <div class="mbti" id="fMbti">
+          <button type="button">INFP</button><button type="button">INFJ</button><button type="button">INTP</button><button type="button">INTJ</button>
+          <button type="button">ISFP</button><button type="button">ISFJ</button><button type="button">ISTP</button><button type="button">ISTJ</button>
+          <button type="button">ENFP</button><button type="button">ENFJ</button><button type="button">ENTP</button><button type="button">ENTJ</button>
+          <button type="button">ESFP</button><button type="button">ESFJ</button><button type="button">ESTP</button><button type="button">ESTJ</button>
+          <button type="button" class="unk" data-v="UNKNOWN">잘 모르겠어요</button>
+        </div>
+        <div class="help">성격유형 × RATI 교차 분석(리포트 05 섹션)에 쓰여요. 모르면 "잘 모르겠어요"를 눌러주세요.</div>
+      </div>
+
+      <div class="gate-note">🔒 <span>입력하신 정보는 <b>리포트 생성과 발송에만</b> 사용돼요. 결과는 웹에 게시되지 않고 이메일로만 전달됩니다.</span></div>
+      <button class="cta" id="startQuiz" disabled>설문 시작하기</button>
+    </div>
+  </section>
+
+  <!-- ══ STEP 2 · 설문 — 기존 검사(RATI_TEST)와 동일 형식·진행. 문항 32개는 원장 v2.2 대기 슬롯 ══ -->
+  <section class="step" id="s2">
+    <div class="prog">
+      <div class="pt"><span>심층 설문</span><span><b id="pNow">1</b> / <span id="pTot">32</span></span></div>
+      <div class="pbar"><i id="pFill"></i></div>
+    </div>
+    <div class="card" id="qCard"><!-- renderQ()가 rt-qhead + rt-q + .tqo 4종 + rt-foot를 그림 --></div>
+  </section>
+
+  <!-- ══ STEP 3 · 완료 — 이메일 발송 안내 ══ -->
+  <section class="step" id="s3">
+    <div class="card">
+      <div class="done-hero">
+        <div class="big">📮</div>
+        <h2>이메일로 발송드렸어요!</h2>
+        <div class="mail" id="doneMail">you@example.com</div>
+        <p class="done-note">
+          응답 분석이 끝나는 대로 <b>16p 심층 리포트 · 증서 · 요약 브리핑</b>이 위 주소로 도착해요.<br>
+          10분 안에 안 보이면 <b>스팸함</b>을 한번 확인해 주세요.
+        </p>
+      </div>
+      <a class="ghost" href="https://ratilab.com/">RATI.lab 홈으로</a>
+    </div>
+  </section>
+
+  <div class="foot">RATI.lab · 심층 리포트는 이메일로만 전달됩니다 · 문의 ratilab.official@gmail.com</div>
+</div>
+
+<a href="https://ratilab.com/" id="backPill" style="position:fixed;left:16px;bottom:16px;z-index:80;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96));border:1px solid rgba(255,214,229,.9);border-radius:99px;padding:11px 20px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;box-shadow:0 13px 29px -14px rgba(185,58,103,.75),inset 0 1.5px 0 rgba(255,255,255,.5)">← 이전으로</a>
+
+<script>
+(function(){
+  'use strict';
+  /* ── 심층 문항 큐 — 문항 원장 v2.3 (32문항 + 모듈 인트로 4곳 E/F/H/I) · deep_questions.js에서 자동 전사 ── */
+  var QUEUE=(window.RATI_DEEP&&RATI_DEEP.queue)||[];
+  if(!QUEUE.length){document.title='문항 로드 실패';}
+  var TOTAL=QUEUE.filter(function(x){return x.type==='q'}).length;
+  var state={email:'',name:'',age:'',sex:'',mbti:'',answers:[],q:0};
+
+  function $(id){return document.getElementById(id);}
+  function show(id){['s0','sG','s1','s2','s3'].forEach(function(s){$(s).classList.toggle('on',s===id);});window.scrollTo(0,0);
+    var bp=document.getElementById('backPill');
+    if(bp){bp.style.display=(id==='s2'||id==='s3')?'none':'inline-flex';bp.dataset.step=id;}}
+
+  /* 공유 게이트(클릭 기반) — 공유 이력 있으면 정보 입력으로 직행 */
+  function shared(){try{return localStorage.getItem('rati_deep_shared')==='1'}catch(e){return false}}
+  function toGate(entry){
+    if(shared()){show('s1');RATI_GA('deep_gate_view',{entry:entry});}
+    else{show('sG');RATI_GA('deep_share_gate_view',{entry:entry});}
+  }
+  /* STEP 0 → 공유 게이트 → 정보 입력 */
+  $('goGate').addEventListener('click',function(){toGate('intro');});
+  (function(){
+    var U='https://ratilab.com/deep.html', T='RATI 심층 테스트 — 지금 무료 이벤트 중이야. 결과는 16쪽 리포트로 이메일에 온대!';
+    function toast(m){alert;/* deep엔 토스트 없음 — 채널 라벨로 안내 */}
+    function unlock(btn,label){
+      try{localStorage.setItem('rati_deep_shared','1')}catch(e){}
+      if(btn){btn.classList.add('done');if(label)btn.querySelector('span').textContent=label;}
+      document.getElementById('shareDone').style.display='flex';
+      $('afterShare').disabled=false;
+      RATI_GA('deep_share_unlock');
+    }
+    function copyTxt(ok,fail){
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(T+' '+U).then(ok,fail||ok);}
+      else ok();
+    }
+    /* 해제 타이밍: 즉시가 아니라 "보내고 돌아왔을 때" — 창 다녀오면(focus 복귀) 해제 */
+    var pendingBtn=null,pendingLabel='';
+    function armReturn(b,label){pendingBtn=b;pendingLabel=label;}
+    window.addEventListener('focus',function(){
+      if(pendingBtn){var b=pendingBtn;pendingBtn=null;setTimeout(function(){unlock(b,pendingLabel);},400);}
+    });
+    document.getElementById('shareRow').addEventListener('click',function(e){
+      var b=e.target.closest('.shb');if(!b)return;
+      var ch=b.getAttribute('data-ch');
+      RATI_GA('deep_share_click',{ch:ch});
+      if(ch==='x'){ /* 트윗 창 열림 → 다녀오면 해제 */
+        armReturn(b,'다녀왔어요 ✓');
+        window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(T)+'&url='+encodeURIComponent(U),'_blank','width=560,height=640');
+        return;
+      }
+      if(ch==='kakao'){ /* 모바일: OS 공유 시트 — 실제 공유 완료 시에만 해제 (취소하면 안 풀림) */
+        if(navigator.share){navigator.share({title:'RATI 심층 테스트',text:T,url:U}).then(function(){unlock(b,'보냈어요 ✓')}).catch(function(){/* 취소 — 해제 안 함 */});return;}
+        copyTxt(function(){b.querySelector('span').textContent='복사됨 · 카톡에 붙여넣기';setTimeout(function(){unlock(b,'복사됨 ✓');},2500);});return;
+      }
+      if(ch==='insta'){ /* 링크 복사 후 인스타 DM 새 메시지 창 → 보내고 오면 해제 */
+        copyTxt(function(){
+          b.querySelector('span').textContent='붙여넣어 보내주세요';
+          armReturn(b,'다녀왔어요 ✓');
+          window.open('https://www.instagram.com/direct/new/','_blank');
+        });return;
+      }
+      /* 링크 복사 — 붙여넣을 시간 뒤 해제 */
+      copyTxt(function(){b.querySelector('span').textContent='복사됨 · 붙여넣고 오세요';setTimeout(function(){unlock(b,'복사됨 ✓');},2500);});
+    });
+  })();
+
+  $('afterShare').addEventListener('click',function(){if(!$('afterShare').disabled){show('s1');RATI_GA('deep_gate_view',{entry:'share'});}});
+  document.getElementById('backPill').addEventListener('click',function(e){
+    var st=this.dataset.step||'s0';
+    if(st==='sG'){e.preventDefault();show('s0');}
+    else if(st==='s1'){e.preventDefault();show(shared()?'s0':'sG');}
+    /* s0: 기본 링크(홈) 그대로 */
+  });
+  /* 소개 팝업에서 넘어온 경우(?start=1): 인트로 스킵 → 공유 게이트부터 */
+  try{if(new URLSearchParams(location.search).get('start')==='1'){toGate('doc');}}catch(e){}
+
+  /* ── 게이트 검증: 전부 채워야 설문 시작 ── */
+  function emailOk(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);}
+  function gateCheck(){
+    state.email=$('fEmail').value.trim();
+    state.name=$('fName').value.trim();
+    state.age=$('fAge').value.trim();
+    var ageN=parseInt(state.age,10);
+    var ok=emailOk(state.email)&&state.name.length>0&&ageN>=14&&ageN<=99&&state.sex&&state.mbti;
+    $('startQuiz').disabled=!ok;
+    return ok;
+  }
+  ['fEmail','fName','fAge'].forEach(function(id){
+    $(id).addEventListener('input',gateCheck);
+  });
+  $('fEmail').addEventListener('blur',function(){
+    var bad=this.value.trim()&&!emailOk(this.value.trim());
+    this.classList.toggle('err',bad);
+    $('emailHelp').classList.toggle('warn',bad);
+    $('emailHelp').textContent=bad?'⚠️ 이메일 형식을 확인해 주세요 — 여기로 리포트가 발송돼요!':'📮 이 주소로 리포트가 발송돼요 — 오타가 나면 받을 수 없어요!';
+  });
+  $('fSex').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');state.sex=b.dataset.v;gateCheck();
+  });
+  $('fMbti').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');state.mbti=b.dataset.v||b.textContent.trim();gateCheck();
+  });
+
+  /* 게이트 → 설문 */
+  $('startQuiz').addEventListener('click',function(){
+    if(!gateCheck())return;
+    $('pTot').textContent=TOTAL;
+    show('s2');renderQ();
+    RATI_GA('deep_quiz_start',{mbti:state.mbti});
+  });
+
+  /* ── 설문 — 기존 검사(RATI_TEST)와 동일 진행: 선택 즉시 .on 표시 → 190ms 후 자동 다음, 이전 문항으로 답 수정 ── */
+  var busy=false;
+  function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function qIndexOf(i){var n=0;for(var k=0;k<i;k++)if(QUEUE[k].type==='q')n++;return n;} /* QUEUE 위치 → 문항 번호(0-base) */
+  function renderQ(){
+    var item=QUEUE[state.q];
+    var qn=qIndexOf(state.q)+1;
+    $('pNow').textContent=Math.min(qn,TOTAL);
+    $('pFill').style.width=(qn/TOTAL*100)+'%';
+    var html='';
+    if(item.type==='intro'){ /* 모듈 인트로 — 문항 원장 v2.3의 E/F/H/I 군 인트로 문구 그대로 */
+      html+='<div class="md-intro"><div class="mi-kicker">'+esc(item.kicker||'')+'</div><h3>'+esc(item.title||'')+'</h3></div>'
+        +'<div class="rt-foot"><button class="rt-back" id="qBack" '+(state.q===0?'disabled':'')+'>← 이전 문항 (답 수정)</button>'
+        +'<button class="tqo" id="miGo" style="width:auto;margin:0;padding:12px 26px">계속하기</button></div>';
+    }else{
+      html+='<div class="rt-qhead"><span class="rt-qno"><b>Q'+qn+'</b> / '+TOTAL+'</span>'
+        +'<span class="rt-stage">'+esc(item.stage)+'</span><span class="rt-deep">DEEP</span></div>'
+        +'<h2 class="rt-q">'+esc(item.q)+'</h2>';
+      var NUM=['①','②','③','④'];
+      item.o.forEach(function(t,k){html+='<button class="tqo" data-k="'+k+'"'+(state.answers[qn-1]===k?' style="border-color:var(--rose);background:#FEF1F6"':'')+'>'+NUM[k]+' '+esc(t)+'</button>'});
+      html+='<div class="rt-foot"><button class="rt-back" id="qBack" '+(state.q===0?'disabled':'')+'>← 이전 문항 (답 수정)</button>'
+        +'<span class="rt-hint">정답 없음 · 제일 가까운 쪽</span>'
+        +'<a class="rt-home" href="https://ratilab.com/">홈으로 나가기</a></div>';
+    }
+    $('qCard').innerHTML=html;
+    window.scrollTo(0,0);busy=false;
+    var back=$('qBack');if(back)back.addEventListener('click',function(){if(state.q>0&&!busy){state.q--;renderQ();}});
+    var go=document.getElementById('miGo');if(go)go.addEventListener('click',function(){state.q++;renderQ();});
+    $('qCard').querySelectorAll('.tqo[data-k]').forEach(function(b){
+      b.addEventListener('click',function(){pick(parseInt(b.getAttribute('data-k'),10),b);});
+    });
+  }
+  function pick(k,btn){
+    if(busy)return;busy=true;
+    btn.classList.add('on');
+    state.answers[qIndexOf(state.q)]=k;
+    RATI_GA('deep_question_answered',{q_num:qIndexOf(state.q)+1});
+    setTimeout(function(){
+      if(state.q===QUEUE.length-1){submit();}
+      else{state.q++;renderQ();}
+    },190);
+  }
+
+  /* ── 제출 — TODO: GAS doPost 연동(시트 구조 협의 후) + 리포트 파이프라인 트리거.
+         현재는 데모: 완료 화면 전환만. 실연동 시 여기서 POST 후 성공 시 show('s3'). ── */
+  function submit(){
+    /* 채점 v2.3 — 트리거·루프·각본·포커스·섹션 매핑 (22문항 v1 채점 무접촉) */
+    try{
+      var byDq={};
+      QUEUE.filter(function(x){return x.type==='q'}).forEach(function(x,i){byDq[x.dq]=state.answers[i];});
+      state.scores=RATI_DEEP.score(byDq);
+    }catch(e){}
+    try{localStorage.setItem('rati_deep_submission_'+Date.now(),JSON.stringify(state));}catch(e){} /* 백엔드 연결 전 응답 유실 방지 백업 */
+    $('doneMail').textContent=state.email;
+    show('s3');
+    RATI_GA('deep_quiz_done',{mbti:state.mbti,loop_stage:state.scores&&state.scores.loop.stage});
+    try{console.log('DEEP submit(demo)',JSON.stringify(state));}catch(e){}
+  }
+})();
+</script>
+</body>
+</html>
