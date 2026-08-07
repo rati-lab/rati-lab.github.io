@@ -1,7 +1,6 @@
-# 발송 워커 — 토큰 포함(공개 레포 커밋 금지) + 발송본 보관(고객 개인정보)
-pipeline/deep_worker.mjs
-pipeline/deep_sent_archive/
-pipeline/.deep_worker.lock
-pipeline/.dw_*.json
-pipeline/deep_worker.log
-pipeline/node_modules/
+# 내부 문서는 이 public 레포에 올리지 않는다 — 원본은 Google Drive 'RATI_공유데이터'.
+# (지분·매출·팀 내부평가 등 민감정보 포함. 문서는 Drive에서 읽는다.)
+/docs/
+CLAUDE.md
+/templates/
+/pipeline/
