@@ -30,7 +30,7 @@ window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{metho
     }
   }catch(e){}
   try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
-  window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||''; /* 카카오 JS 키 — index.html과 동일 값 */
+  window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||'669a06a6cf4d194c2facd0bc20b05783'; /* 카카오 JS 키 — index.html과 동일 값 */
   if(window.RATI_KAKAO_KEY){var __ks=document.createElement('script');__ks.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';__ks.crossOrigin='anonymous';__ks.onload=function(){try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init(window.RATI_KAKAO_KEY);}catch(e){}};document.head.appendChild(__ks);}
 </script>
 <style id="inapp-lite-css">
