@@ -4290,55 +4290,49 @@ window.RATI_TEST=(function(){
   var _shareFile=null,_shareBusy=false;
   function buildShareImage(){
     return new Promise(function(res,rej){
-      /* 스토리용: 결과 전체가 아니라 상단 유형 카드(rp-hero)만 — 세로로 긴 전체 캡처는 스토리에 부적합 */
-      var lib=window.html2canvas,target=document.querySelector('#rtBody .rp-hero')||document.getElementById('rtBody');
-      if(typeof lib!=='function'||!target){rej();return}
-      lib(target,{backgroundColor:'#FDF8FB',scale:2,useCORS:true,logging:false,
-        ignoreElements:function(el){return el.classList&&(el.classList.contains('rr-btns')||el.classList.contains('mesh')||el.classList.contains('rr-disc')||el.classList.contains('sh-wrap'));},
-        onclone:function(cdoc){
-          try{
-            var win=cdoc.defaultView||window,props=['color','backgroundColor','borderTopColor','borderRightColor','borderBottomColor','borderLeftColor','outlineColor','fill','stroke'];
-            function toRgb(v){var m=/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/.exec(v);if(!m)return null;return 'rgba('+Math.round(m[1]*255)+','+Math.round(m[2]*255)+','+Math.round(m[3]*255)+','+(m[4]!==undefined?m[4]:1)+')';}
-            var els=cdoc.querySelectorAll('*');
-            for(var i=0;i<els.length;i++){var cs=win.getComputedStyle(els[i]);
-              for(var p=0;p<props.length;p++){var v=cs[props[p]];if(v&&v.indexOf('color(')>=0){var r=toRgb(v);if(r)els[i].style[props[p]]=r;}}
-              var bi=cs.backgroundImage;if(bi&&bi.indexOf('color(')>=0){els[i].style.backgroundImage=bi.replace(/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/g,function(_,a,b,c,d){return 'rgba('+Math.round(a*255)+','+Math.round(b*255)+','+Math.round(c*255)+','+(d!==undefined?d:1)+')';});}
-            }
-            /* 공유 카드 전용: 라운드 카드 느낌 제거(풀블리드) + BETA 표기 제외 + 멘헤라 지수 배지 — 화면 결과지는 불변 */
-            var hero=cdoc.querySelector('#rtBody .rp-hero');
-            if(hero){hero.style.borderRadius='0';hero.style.margin='0';hero.style.boxShadow='none';}
-            var meta=cdoc.querySelector('#rtBody .rp-hero .rp-hmeta');
-            if(meta){meta.textContent=meta.textContent.replace(/\s*·\s*BETA\s*$/,'');}
-            var prof=cdoc.querySelector('#rtBody .rp-hero .rp-hprof');
-            if(prof)prof.parentNode.removeChild(prof);
-            var mh=cdoc.querySelector('#rtBody .mbig');
-            if(hero&&mh&&meta){
-              var wrap=cdoc.createElement('div');
-              wrap.style.cssText='text-align:center;margin:12px 0 6px';
-              var pill=cdoc.createElement('div');
-              pill.innerHTML='<span style="position:relative;z-index:2;line-height:1">멘헤라 지수 <b style="font-size:16px;font-weight:800">'+mh.textContent.trim()+'</b></span>';
-              pill.style.cssText='position:relative;z-index:1;display:inline-block;padding:10px 20px 12px;border-radius:99px;background:#ffffff;border:1px solid rgba(138,99,210,.3);font-weight:800;font-size:12.5px;letter-spacing:.4px;color:#8A63D2;line-height:1';
-              wrap.appendChild(pill);
-              meta.parentNode.insertBefore(wrap,meta);
-            }
-          }catch(e){}
-        }})
-      .then(function(cv){
-        var band=Math.round(cv.width*0.055);
-        var out=document.createElement('canvas');out.width=cv.width;out.height=cv.height+band;
-        var ctx=out.getContext('2d');
-        ctx.fillStyle='#FDF8FB';ctx.fillRect(0,0,out.width,out.height);
-        ctx.drawImage(cv,0,0);
-        ctx.fillStyle='#241C26';ctx.fillRect(0,cv.height,out.width,band);
-        ctx.fillStyle='#fff';ctx.textBaseline='middle';ctx.textAlign='center';
-        ctx.font='600 '+Math.round(band*0.36)+'px Pretendard,-apple-system,sans-serif';
-        ctx.fillText('RATI.lab — 연애는 측정된다 · ratilab.com',out.width/2,cv.height+band/2);
-        out.toBlob(function(b){
+      /* 전용 스토리 카드 — 새 리포트 표지 문법(그라데이션+오로라+메시+전신 캐릭터+명조) · 민수 지시 2026-08-08 재구성.
+         함정 준수: 텍스트 z-index 명시 / -webkit-text-fill-color 금지 / 자간 센터는 오른쪽 패딩 보정 */
+      var lib=window.html2canvas;
+      var code=window.RATI_LAST_CODE||'';
+      var heroH2=document.querySelector('#rtBody .rp-hero h2');
+      var hsub=document.querySelector('#rtBody .rp-hero .rp-hsub');
+      var mh=document.querySelector('#rtBody .mbig');
+      if(typeof lib!=='function'||!code||!heroH2){rej();return}
+      var tname=heroH2.textContent.trim();
+      var gsub=hsub?hsub.textContent.trim():'';
+      var mhTxt=mh?mh.textContent.trim():'';
+      var charUrl=(window.RATI_CHARS&&window.RATI_CHARS[code])||'';
+      var card=document.createElement('div');
+      card.style.cssText='position:fixed;left:-99999px;top:0;width:640px;padding:64px 40px 0;background:linear-gradient(170deg,#FEF8FA 0%,#FBF7FC 55%,#F7F5FD 100%);font-family:Pretendard,-apple-system,\'Apple SD Gothic Neo\',sans-serif;text-align:center;overflow:hidden';
+      var aur=document.createElement('div');
+      aur.style.cssText='position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px 420px at -80px -70px,rgba(246,168,198,.30),transparent 66%),radial-gradient(460px 440px at 720px 30px,rgba(199,169,245,.26),transparent 66%),radial-gradient(380px 360px at 50% 115%,rgba(169,222,227,.18),transparent 66%)';
+      card.appendChild(aur);
+      var meshSrc=document.querySelector('svg.mesh');
+      if(meshSrc){var mz=meshSrc.cloneNode(true);mz.removeAttribute('class');mz.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.55;pointer-events:none';card.appendChild(mz);}
+      var inner=document.createElement('div');
+      inner.style.cssText='position:relative;z-index:2';
+      inner.innerHTML=''
+        +'<div style="position:relative;z-index:2;display:inline-block;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:99px;padding:13px 22px 13px '+(22+8)+'px;letter-spacing:8px;font-weight:900;font-size:19px;color:#241C26;box-shadow:0 3px 12px rgba(120,90,120,.16)"><span style="position:relative;z-index:2">'+code.split('').join(' ')+'</span></div>'
+        +(charUrl?'<div style="margin:34px auto 4px;height:250px;position:relative"><img src="'+charUrl+'" style="height:250px;display:block;margin:0 auto"><div style="position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);width:150px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(185,58,103,.20),transparent 70%)"></div></div>':'')
+        +'<h2 style="position:relative;z-index:2;margin:26px 0 0;font-family:\'Noto Serif KR\',serif;font-weight:700;font-size:52px;letter-spacing:-1px;color:#241C26;line-height:1.25">'+tname+'</h2>'
+        +(gsub?'<div style="position:relative;z-index:2;margin-top:12px;font-family:ui-monospace,Menlo,monospace;font-size:15px;letter-spacing:3px;color:#9A8C9C;padding-left:3px">'+gsub+'</div>':'')
+        +(mhTxt?'<div style="margin:26px 0 0"><span style="position:relative;z-index:2;display:inline-block;padding:12px 24px 13px;border-radius:99px;background:#ffffff;border:1.5px solid rgba(138,99,210,.35);box-shadow:0 8px 20px -10px rgba(138,99,210,.4);font-weight:800;font-size:15px;letter-spacing:.4px;color:#8A63D2;line-height:1"><span style="position:relative;z-index:2;line-height:1">멘헤라 지수 <b style="font-size:19px;font-weight:800">'+mhTxt+'</b></span></span></div>':'')
+        +'<div style="position:relative;z-index:2;margin-top:40px;border-top:1px solid #F0DFE8;padding:20px 0 26px;font-size:14px;font-weight:700;color:#241C26">RATI<span style="color:#E85D8A">.lab</span> — 연애는 측정된다 <span style="color:#9A8C9C;font-weight:600">· ratilab.com</span></div>';
+      card.appendChild(inner);
+      document.body.appendChild(card);
+      function done(){try{document.body.removeChild(card)}catch(e){}}
+      var img=card.querySelector('img');
+      var ready=(img&&!img.complete)?new Promise(function(r){img.onload=r;img.onerror=r;setTimeout(r,1500)}):Promise.resolve();
+      ready.then(function(){
+        return lib(card,{backgroundColor:'#FDF8FB',scale:2,useCORS:true,logging:false});
+      }).then(function(cv){
+        done();
+        cv.toBlob(function(b){
           if(!b){rej();return}
           var nick=(window.RATI_PROFILE&&window.RATI_PROFILE.nick)||'result';
           res(new File([b],'RATI_'+nick+'.png',{type:'image/png'}));
         },'image/png');
-      }).catch(rej);
+      }).catch(function(e){done();rej(e)});
     });
   }
   function prepareShareImage(){
