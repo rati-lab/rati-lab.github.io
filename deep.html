@@ -11,6 +11,11 @@
   var __gaCfg={};try{if(new URLSearchParams(location.search).has('ga_debug'))__gaCfg.debug_mode=true;}catch(e){}
   gtag('config', 'G-7MT2EN429N', __gaCfg);
   window.RATI_GA=function(name,params){try{if(typeof gtag==='function')gtag('event',name,params||{});}catch(e){}};
+  // 시트 병행 기록 — index.html RATI_TRACK과 동일 형식(민수 지시 2026-08-08: 심층 퍼널 전 행동 기록)
+  window.RATI_STAT_ENDPOINT='https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec';
+  window.RATI_SID=window.RATI_SID||(function(){try{var k='rati_sid',v=localStorage.getItem(k);if(!v){v=(Math.random().toString(36).slice(2,8))+Date.now().toString(36).slice(-4);localStorage.setItem(k,v);}return v;}catch(e){return 'sid'+Date.now();}})();
+window.RATI_UTM=window.RATI_UTM||(function(){try{var p=new URLSearchParams(location.search);var u=p.get('utm_source')||p.get('utm')||p.get('utm_medium')||'';if(!u&&document.referrer){try{u=(new URL(document.referrer)).hostname;}catch(_2){}}return u||'direct';}catch(e){return '';}})();
+window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({kind:kind,ts:new Date().toISOString(),page:(location.pathname.split('/').pop()||'index')+location.hash,sid:window.RATI_SID,utm:window.RATI_UTM},data||{}))})}catch(e){}};
   // 카톡·라인 인앱 → 외부 브라우저 자동 탈출 (index.html과 동일)
   try{
     var __ua=navigator.userAgent||'';
@@ -127,12 +132,7 @@ h2{font-size:clamp(19px,5vw,22px);line-height:1.4;font-weight:800;text-wrap:bala
 .seg{display:flex;gap:8px;flex-wrap:wrap}
 .seg button{flex:1 1 auto;font:inherit;font-size:14px;font-weight:700;padding:12px 14px;border-radius:14px;cursor:pointer;
   border:1.5px solid var(--line);background:#fff;color:var(--slate);transition:all .13s}
-.seg button.on{border-color:var(--rose);background:#FEF1F6;color:var(--rosed);font-weight:800}
-.mbti{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.mbti button{font:var(--mono);font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;
-  padding:11px 4px;border-radius:12px;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--slate);transition:all .13s}
-.mbti button.on{border-color:var(--rose);background:#FEF1F6;color:var(--rosed)}
-.mbti .unk{grid-column:1/-1;font-family:inherit;letter-spacing:0}
+.seg button.on{border-color:rgba(255,214,229,.9);background:linear-gradient(145deg,rgba(242,123,163,.96),rgba(222,83,130,.94) 56%,rgba(196,58,108,.96));color:#fff;font-weight:800;box-shadow:0 10px 22px -12px rgba(185,58,103,.7),inset 0 1.5px 0 rgba(255,255,255,.5)}
 .gate-note{display:flex;gap:9px;align-items:flex-start;background:#FFFDF4;border:1px solid #EAD9AE;border-radius:14px;
   padding:12px 15px;margin-top:20px;font-size:12.5px;color:#7A6640;line-height:1.7}
 
@@ -212,10 +212,10 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
-    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)"><b>심층 TEST (유료)</b></a>
-    <a class="hd-link" href="index.html?doc=theory">원리</a>
-    <a class="hd-link" href="types.html">유형설명</a>
+    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a>
     <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
+    <a class="hd-link" href="types.html">유형설명</a>
+    <a class="hd-link" href="index.html?doc=theory">원리</a>
     <a class="hd-link" href="index.html?doc=menhera">멘헤라 지수</a>
     <a class="hd-link" href="index.html?doc=stories">사연</a>
     <a class="hd-link" href="index.html?doc=reviews">리뷰</a>
@@ -339,15 +339,15 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         </div>
       </div>
       <div class="fld">
-        <label>MBTI <span class="req">*</span></label>
-        <div class="mbti" id="fMbti">
-          <button type="button">INFP</button><button type="button">INFJ</button><button type="button">INTP</button><button type="button">INTJ</button>
-          <button type="button">ISFP</button><button type="button">ISFJ</button><button type="button">ISTP</button><button type="button">ISTJ</button>
-          <button type="button">ENFP</button><button type="button">ENFJ</button><button type="button">ENTP</button><button type="button">ENTJ</button>
-          <button type="button">ESFP</button><button type="button">ESFJ</button><button type="button">ESTP</button><button type="button">ESTJ</button>
-          <button type="button" class="unk" data-v="UNKNOWN">잘 모르겠어요</button>
-        </div>
-        <div class="help">성격유형 × RATI 교차 분석(리포트 05 섹션)에 쓰여요. 모르면 "잘 모르겠어요"를 눌러주세요.</div>
+        <label for="fMbti">MBTI <span class="req">*</span></label>
+        <select class="in" id="fMbti">
+          <option value="모름 / 비공개">모름 / 비공개</option>
+          <option>INFP</option><option>INFJ</option><option>INTP</option><option>INTJ</option>
+          <option>ISFP</option><option>ISFJ</option><option>ISTP</option><option>ISTJ</option>
+          <option>ENFP</option><option>ENFJ</option><option>ENTP</option><option>ENTJ</option>
+          <option>ESFP</option><option>ESFJ</option><option>ESTP</option><option>ESTJ</option>
+        </select>
+        <div class="help">성격유형 × RATI 교차 분석(리포트 05 섹션)에 쓰여요. 모르면 그대로 두세요.</div>
       </div>
 
       <div class="gate-note">🔒 <span>입력하신 정보는 <b>리포트 생성과 발송에만</b> 사용돼요. 결과는 웹에 게시되지 않고 이메일로만 전달됩니다.</span></div>
@@ -402,8 +402,8 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   /* 공유 게이트(클릭 기반) — 공유 이력 있으면 정보 입력으로 직행 */
   function shared(){try{return localStorage.getItem('rati_deep_shared')==='1'}catch(e){return false}}
   function toGate(entry){
-    if(shared()){show('s1');RATI_GA('deep_gate_view',{entry:entry});}
-    else{show('sG');RATI_GA('deep_share_gate_view',{entry:entry});}
+    if(shared()){show('s1');RATI_GA('deep_gate_view',{entry:entry});try{RATI_TRACK('event',{cat:'deep',label:'form_view',entry:entry});}catch(e){}}
+    else{show('sG');RATI_GA('deep_share_gate_view',{entry:entry});try{RATI_TRACK('event',{cat:'deep',label:'share_gate',entry:entry});}catch(e){}}
   }
   /* STEP 0 → 공유 게이트 → 정보 입력 */
   $('goGate').addEventListener('click',function(){toGate('intro');});
@@ -415,7 +415,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
       if(btn){btn.classList.add('done');if(label)btn.querySelector('span').textContent=label;}
       document.getElementById('shareDone').style.display='flex';
       $('afterShare').disabled=false;
-      RATI_GA('deep_share_unlock');
+      RATI_GA('deep_share_unlock');try{RATI_TRACK('event',{cat:'deep',label:'share_unlock'});}catch(e){}
     }
     function copyTxt(ok,fail){
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(T+' '+U).then(ok,fail||ok);}
@@ -430,7 +430,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     document.getElementById('shareRow').addEventListener('click',function(e){
       var b=e.target.closest('.shb');if(!b)return;
       var ch=b.getAttribute('data-ch');
-      RATI_GA('deep_share_click',{ch:ch});
+      RATI_GA('deep_share_click',{ch:ch});try{RATI_TRACK('event',{cat:'deep',label:'share_click_'+ch});}catch(e){}
       if(ch==='x'){ /* 트윗 창 열림 → 다녀오면 해제 */
         armReturn(b,'다녀왔어요 ✓');
         window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(T)+'&url='+encodeURIComponent(U),'_blank','width=560,height=640');
@@ -459,6 +459,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     else if(st==='s1'){e.preventDefault();show(shared()?'s0':'sG');}
     /* s0: 기본 링크(홈) 그대로 */
   });
+  try{RATI_TRACK('event',{cat:'deep',label:'view',entry:(new URLSearchParams(location.search).get('start')==='1'?'doc':'direct'),ref:(document.referrer||'').slice(0,80)});}catch(e){}
   /* 소개 팝업에서 넘어온 경우(?start=1): 인트로 스킵 → 공유 게이트부터 */
   try{if(new URLSearchParams(location.search).get('start')==='1'){toGate('doc');}}catch(e){}
 
@@ -487,18 +488,15 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
     b.classList.add('on');state.sex=b.dataset.v;gateCheck();
   });
-  $('fMbti').addEventListener('click',function(e){
-    var b=e.target.closest('button');if(!b)return;
-    this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
-    b.classList.add('on');state.mbti=b.dataset.v||b.textContent.trim();gateCheck();
-  });
+  state.mbti=$('fMbti').value; /* 기본 '모름 / 비공개'도 유효 — 스펙의 미입력 분기로 처리 */
+  $('fMbti').addEventListener('change',function(){state.mbti=this.value;gateCheck();});
 
   /* 게이트 → 설문 */
   $('startQuiz').addEventListener('click',function(){
     if(!gateCheck())return;
     $('pTot').textContent=TOTAL;
     show('s2');renderQ();
-    RATI_GA('deep_quiz_start',{mbti:state.mbti});
+    RATI_GA('deep_quiz_start',{mbti:state.mbti});try{RATI_TRACK('event',{cat:'deep',label:'quiz_start'});}catch(e){}
   });
 
   /* ── 설문 — 기존 검사(RATI_TEST)와 동일 진행: 선택 즉시 .on 표시 → 190ms 후 자동 다음, 이전 문항으로 답 수정 ── */
@@ -537,7 +535,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     if(busy)return;busy=true;
     btn.classList.add('on');
     state.answers[qIndexOf(state.q)]=k;
-    RATI_GA('deep_question_answered',{q_num:qIndexOf(state.q)+1});
+    RATI_GA('deep_question_answered',{q_num:qIndexOf(state.q)+1});try{var __qn=qIndexOf(state.q)+1;if(__qn===8||__qn===16||__qn===24)RATI_TRACK('event',{cat:'deep',label:'quiz_q'+__qn});}catch(e){}
     setTimeout(function(){
       if(state.q===QUEUE.length-1){submit();}
       else{state.q++;renderQ();}
@@ -556,7 +554,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     try{localStorage.setItem('rati_deep_submission_'+Date.now(),JSON.stringify(state));}catch(e){} /* 백엔드 연결 전 응답 유실 방지 백업 */
     $('doneMail').textContent=state.email;
     show('s3');
-    RATI_GA('deep_quiz_done',{mbti:state.mbti,loop_stage:state.scores&&state.scores.loop.stage});
+    RATI_GA('deep_quiz_done',{mbti:state.mbti,loop_stage:state.scores&&state.scores.loop.stage});try{RATI_TRACK('event',{cat:'deep',label:'submit',mbti:state.mbti,email_domain:(state.email.split('@')[1]||'')});}catch(e){}
     try{console.log('DEEP submit(demo)',JSON.stringify(state));}catch(e){}
   }
 })();
