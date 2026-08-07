@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7MT2EN429N"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-7MT2EN429N');
+window.RATI_GA=function(n,p){try{if(typeof gtag==='function')gtag('event',n,p||{})}catch(e){}};
+try{fetch('https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({kind:'event',cat:'free_sample',label:'view',ts:new Date().toISOString(),page:'free_sample',ref:(document.referrer||'').slice(0,80)})})}catch(e){}</script>
+
+<script>/* 카톡·라인 인앱 → 외부 브라우저 자동 탈출, 실패 시 라이트 모드 폴백 */
+try{var __ua=navigator.userAgent||'';
+if(/KAKAOTALK/i.test(__ua)){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href);}
+else if(/\bLine\//i.test(__ua)&&location.search.indexOf('openExternalBrowser')<0){location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';}
+}catch(e){}
+try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
+<style id="inapp-lite-css">
+  html.inapp-lite body::before,html.inapp-lite body::after{display:none!important}
+  html.inapp-lite body{background:#FDF8FB!important}
+  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+</style>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RATI 무료 리포트 · 자유형 (BATO) — 시안</title>
+<title>RATI 무료 리포트 · 자유형 (BATO) | RATI.lab</title>
 <style>
 /* ============ RATI 무료 리포트 재설계 시안 — 별도 상품 (22문항 기반) ============
    역할: 정체성·공유·심층 전환. 분석·처방은 심층판의 영역.
@@ -92,6 +109,11 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
 </style>
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="report_theme.css">
+<style id="pending-metrics-css">
+  /* 예시치 수치 비노출 — 실측(시트) 연동 시 이 블록 제거 (pipeline/build_free_sample.py) */
+  .sec.datalab-hide{display:none!important}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="wrap">
@@ -162,8 +184,8 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
       <polygon points="170,89 221,125 170,161 119,125"/>
       <line x1="170" y1="35" x2="170" y2="215"/><line x1="65" y1="125" x2="275" y2="125"/>
     </g>
-    <polygon points="170,78.4 233,125 170,170.9 120.6,125" fill="rgba(232,93,138,.18)" stroke="#e85d8a" stroke-width="2"/>
-    <circle cx="170" cy="78.4" r="4" fill="#fff" stroke="#e85d8a" stroke-width="2.5"/>
+    <polygon points="170,85.4 233,125 170,170.9 120.6,125" fill="rgba(232,93,138,.18)" stroke="#e85d8a" stroke-width="2"/>
+    <circle cx="170" cy="85.4" r="4" fill="#fff" stroke="#e85d8a" stroke-width="2.5"/>
     <circle cx="233" cy="125" r="4" fill="#fff" stroke="#e85d8a" stroke-width="2.5"/>
     <circle cx="170" cy="170.9" r="4" fill="#fff" stroke="#e85d8a" stroke-width="2.5"/>
     <circle cx="120.6" cy="125" r="4" fill="#fff" stroke="#e85d8a" stroke-width="2.5"/>
@@ -259,7 +281,7 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
 </section>
 
 <!-- 데이터 랩 -->
-<section class="sec">
+<section class="sec datalab-hide">
   <div class="kicker">데이터 랩 · RATI DATA LAB</div>
   <h2>숫자로 보는 자유형</h2>
   <p style="font-size:15px;margin-bottom:10px;">참여자 3,153명의 실측에서 나온 자유형의 결 <span class="chip gray">일부 예시치 · 실측 연동</span></p>
@@ -285,7 +307,7 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
     이 결과, 맞았나요? &nbsp;
     <span style="border:1px solid var(--neutral);border-radius:999px;padding:6px 14px;background:#fff;">소름 👍</span>&nbsp;
     <span style="border:1px solid var(--neutral);border-radius:999px;padding:6px 14px;background:#fff;">갸웃 🤔</span>
-    <p class="sub2" style="margin-top:8px;">지금까지 자유형의 87%가 "소름"을 눌렀어요 <span style="opacity:.6;">(예시치 · 실측 연동)</span></p>
+    <!-- 공감률 실측 연동 대기 (예시치 비노출) -->
   </div>
 </section>
 
@@ -309,7 +331,7 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
   </ul>
   <p style="text-align:center;font-size:13.5px;color:var(--deep);font-weight:700;margin-top:14px;">16개 섹션 · 처방 40+ · 읽는 데 20분 — 무료 리포트의 5배 분량</p>
   <a class="btn">심층 검사 시작하기 — 전부 새 문항</a>
-  <p class="fine">이벤트 기간 한정 무료 · 리포트는 메일로 발송 · 수신 후 환불 불가 상품입니다(무료 기간엔 해당 없음)</p>
+  <p class="fine">이벤트 기간 한정 무료(친구 1명 공유 시) · 리포트는 메일로 발송 · 수신 후 환불 불가 상품입니다(무료 기간엔 해당 없음)</p>
 </section>
 
 <!-- 사연 -->
@@ -365,9 +387,10 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
     var lg=LOGO[ch];
     if(lg){b.innerHTML=lg[2];b.style.background=lg[0];b.style.color=lg[1];b.style.display='inline-flex';b.style.alignItems='center';b.style.justifyContent='center';}
     b.setAttribute('role','button');b.setAttribute('tabindex','0');
+    b.setAttribute('aria-label',{kakao:'카카오톡으로 공유',x:'X로 공유',insta:'인스타그램으로 공유',fb:'페이스북으로 공유',copy:'링크 복사'}[ch]||'공유');
     function go(){
-      if(ch==='x'){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(T)+'&url='+encodeURIComponent(U),'_blank','width=560,height=640');return;}
-      if(ch==='fb'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(U)+'&quote='+encodeURIComponent(T),'_blank','width=560,height=640');return;}
+      if(ch==='x'){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(T)+'&url='+encodeURIComponent(U),'_blank','width=560,height=640,noopener');return;}
+      if(ch==='fb'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(U)+'&quote='+encodeURIComponent(T),'_blank','width=560,height=640,noopener');return;}
       if(ch==='kakao'){if(navigator.share){navigator.share({title:'RATI',text:T,url:U}).catch(function(){});return;}copy(T+' '+U,'링크 복사 완료 · 카톡 채팅방에 붙여넣으세요 💬');return;}
       if(ch==='insta'){copy(T+' '+U,'링크 복사 완료 · 인스타 스토리·프로필에 붙여넣으세요 📸');return;}
       copy(T+' '+U,'링크 복사 완료 ✓');
@@ -384,6 +407,18 @@ h1,h2,h3,.disp{font-family:'NanumSquareRound','Noto Sans KR','Noto Sans CJK KR',
       v.classList.add('vote-on');
       toast('선택했어요 · 집계 연동은 곧 열려요');
     });
+  });
+  /* 사연 쓰기 버튼(시안 장식) — 사이트 사연 섹션으로 연결 */
+  document.querySelectorAll('.story .sbtn').forEach(function(b){
+    b.setAttribute('role','link');b.setAttribute('tabindex','0');b.style.cursor='pointer';
+    function go(){location.href='https://ratilab.com/?doc=stories';}
+    b.addEventListener('click',go);
+    b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  });
+  /* 심층 전환 CTA — 시안 앵커(href 없음)에 실동작 바인딩: deep.html 이동 */
+  document.querySelectorAll('.cta .btn').forEach(function(b){
+    b.setAttribute('href','https://ratilab.com/deep.html');
+    b.addEventListener('click',function(){try{RATI_GA('deep_start_click',{entry:'free_report'})}catch(e){}});
   });
   /* 결과 이미지 저장 — 표지 캡처 */
   var save=document.querySelector('[data-act="save"]');
