@@ -30,6 +30,8 @@ window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{metho
     }
   }catch(e){}
   try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
+  window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||''; /* 카카오 JS 키 — index.html과 동일 값 */
+  if(window.RATI_KAKAO_KEY){var __ks=document.createElement('script');__ks.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';__ks.crossOrigin='anonymous';__ks.onload=function(){try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init(window.RATI_KAKAO_KEY);}catch(e){}};document.head.appendChild(__ks);}
 </script>
 <style id="inapp-lite-css">
   /* 인앱 라이트: GPU 장식만 끔 · 기능 불변 (index.html 규칙 계승) */
@@ -436,7 +438,15 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(T)+'&url='+encodeURIComponent(U),'_blank','width=560,height=640');
         return;
       }
-      if(ch==='kakao'){ /* 모바일: OS 공유 시트 — 실제 공유 완료 시에만 해제 (취소하면 안 풀림) */
+      if(ch==='kakao'){ /* 카카오 SDK(키 발급 시): 카톡 친구 선택창 직행 → 폴백: OS 공유 시트 */
+        if(window.Kakao&&Kakao.Share&&Kakao.isInitialized&&Kakao.isInitialized()){
+          try{
+            Kakao.Share.sendDefault({objectType:'feed',
+              content:{title:'RATI 심층 테스트 — 지금 무료',description:'32문항 심층 테스트 · 결과는 16쪽 리포트로 이메일 도착',imageUrl:'https://ratilab.com/og.png',link:{mobileWebUrl:U,webUrl:U}},
+              buttons:[{title:'나도 무료로 받기',link:{mobileWebUrl:U,webUrl:U}}]});
+            armReturn(b,'보냈어요 ✓');return;
+          }catch(e){}
+        }
         if(navigator.share){navigator.share({title:'RATI 심층 테스트',text:T,url:U}).then(function(){unlock(b,'보냈어요 ✓')}).catch(function(){/* 취소 — 해제 안 함 */});return;}
         copyTxt(function(){b.querySelector('span').textContent='복사됨 · 카톡에 붙여넣기';setTimeout(function(){unlock(b,'복사됨 ✓');},2500);});return;
       }
