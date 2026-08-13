@@ -143,7 +143,7 @@ try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(naviga
   <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
-    <a class="hd-link" href="index.html?doc=deep" hidden><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 hidden만 제거 -->
+    <a class="hd-link" href="index.html?doc=deep"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 hidden만 제거 -->
     <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
     <a class="hd-link" href="types.html">유형설명</a>
     <a class="hd-link" href="index.html?doc=theory">원리</a>
@@ -181,7 +181,12 @@ try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(naviga
       overflow:hidden!important;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
       transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
     header.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto!important}
-    header .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+        /* 닫힌 메뉴는 포커스 순서에서도 빠져야 한다 — 안 그러면 Tab 이 보이지 않는 링크 7개를 훑는다(2026-08-09 검수).
+       visibility 는 전환이 끝난 뒤에만 걸리도록 transition 을 태워 열림 애니메이션을 해치지 않는다. */
+    header .hd-r{visibility:hidden;transition:max-height .28s ease,opacity .28s ease,transform .28s ease,visibility 0s linear .28s}
+    header.nav-open .hd-r,#hd.nav-open .hd-r{visibility:visible;transition-delay:0s}
+    header .hd-r .hd-link[hidden]{display:none!important}
+    header .hd-r .hd-link:not([hidden]){display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
       font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
     header .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
     header .hd-r .hd-link:active{background:#fdf2f6}

@@ -30,7 +30,7 @@ window.RATI_TRACK=function(kind,data){try{fetch(window.RATI_STAT_ENDPOINT,{metho
     }
   }catch(e){}
   try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
-  window.RATI_DEEP_CLOSED=true; /* 심층 점검 중(원장 12유형 대기) — 재오픈 시 이 줄만 삭제 (index.html의 플래그와 세트) */
+  /* 심층 재오픈(2026-08-13) — 점검 플래그 제거됨 */
   window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||'669a06a6cf4d194c2facd0bc20b05783'; /* 카카오 JS 키 — index.html과 동일 값 */
   if(window.RATI_KAKAO_KEY){var __ks=document.createElement('script');__ks.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';__ks.crossOrigin='anonymous';__ks.onload=function(){try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init(window.RATI_KAKAO_KEY);}catch(e){}};document.head.appendChild(__ks);}
 </script>
@@ -215,7 +215,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="var h=this.closest('header'),o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
   <nav class="hd-r">
     <a class="hd-link" href="index.html?doc=tests"><b>TEST (무료)</b></a>
-    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)" hidden><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 hidden만 제거 -->
+    <a class="hd-link" href="index.html?doc=deep" style="color:var(--rosed)"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 hidden만 제거 -->
     <a class="hd-link" href="index.html?doc=gung">궁합 · 조합해설 (유료)</a>
     <a class="hd-link" href="types.html">유형설명</a>
     <a class="hd-link" href="index.html?doc=theory">원리</a>
@@ -253,7 +253,12 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
       overflow:hidden!important;max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none;
       transition:max-height .34s ease,opacity .24s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
     header.nav-open .hd-r{max-height:80vh;opacity:1;transform:translateY(0);pointer-events:auto;overflow-y:auto!important}
-    header .hd-r .hd-link{display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
+        /* 닫힌 메뉴는 포커스 순서에서도 빠져야 한다 — 안 그러면 Tab 이 보이지 않는 링크 7개를 훑는다(2026-08-09 검수).
+       visibility 는 전환이 끝난 뒤에만 걸리도록 transition 을 태워 열림 애니메이션을 해치지 않는다. */
+    header .hd-r{visibility:hidden;transition:max-height .28s ease,opacity .28s ease,transform .28s ease,visibility 0s linear .28s}
+    header.nav-open .hd-r,#hd.nav-open .hd-r{visibility:visible;transition-delay:0s}
+    header .hd-r .hd-link[hidden]{display:none!important}
+    header .hd-r .hd-link:not([hidden]){display:block!important;width:auto!important;white-space:normal!important;flex:0 0 auto!important;
       font-size:15px!important;font-weight:600;color:var(--ink,#241C26);padding:13px 14px!important;border-radius:10px}
     header .hd-r .hd-link+.hd-link{border-top:1px solid rgba(36,28,38,.06)}
     header .hd-r .hd-link:active{background:#fdf2f6}
@@ -284,9 +289,9 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         </div>
       </div>
       <div class="deliv">
-        <div class="d"><div class="di">📄</div><div class="dt">16페이지<br>심층 리포트</div></div>
-        <div class="d"><div class="di">📜</div><div class="dt">발급번호<br>공식 증서</div></div>
-        <div class="d"><div class="di">🖼️</div><div class="dt">공유용<br>요약 브리핑</div></div>
+        <div class="d"><div class="di">📄</div><div class="dt">17쪽<br>심층 리포트</div></div>
+        <div class="d"><div class="di">📜</div><div class="dt">처방 40+<br>실행 시나리오</div></div>
+        <div class="d"><div class="di">🖼️</div><div class="dt">이메일<br>PDF 발송</div></div>
       </div>
     </div>
 
@@ -390,7 +395,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         <h2>이메일로 발송드렸어요!</h2>
         <div class="mail" id="doneMail">you@example.com</div>
         <p class="done-note">
-          응답 분석이 끝나는 대로 <b>16p 심층 리포트 · 증서 · 요약 브리핑</b>이 위 주소로 도착해요.<br>
+          응답 분석이 끝나는 대로 <b>17쪽 심층 리포트 PDF</b>이 위 주소로 도착해요.<br>
           리포트 생성·발송에 <b>5분 정도 걸릴 수 있어요</b> — 5분이 지나도 안 보이면 <b>스팸함</b>을 한번 확인해 주세요.
         </p>
       </div>
@@ -435,7 +440,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
   /* STEP 0 → 공유 게이트 → 정보 입력 */
   $('goGate').addEventListener('click',function(){toGate('intro');});
   (function(){
-    var U='https://ratilab.com/deep.html', T='RATI 심층 테스트 — 지금 무료 이벤트 중이야. 결과는 16쪽 리포트로 이메일에 온대!';
+    var U='https://ratilab.com/deep.html', T='RATI 심층 테스트 — 지금 무료 이벤트 중이야. 결과는 17쪽 리포트로 이메일에 온대!';
     function toast(m){alert;/* deep엔 토스트 없음 — 채널 라벨로 안내 */}
     function unlock(btn,label){
       try{localStorage.setItem('rati_deep_shared','1')}catch(e){}
@@ -467,7 +472,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
         if(window.Kakao&&Kakao.Share&&Kakao.isInitialized&&Kakao.isInitialized()){
           try{
             Kakao.Share.sendDefault({objectType:'feed',
-              content:{title:'RATI 심층 테스트 — 지금 무료',description:'친구 1명에게 공유하면 무료 · 결과는 16쪽 리포트로 이메일 도착',imageUrl:'https://ratilab.com/og.png',link:{mobileWebUrl:U,webUrl:U}},
+              content:{title:'RATI 심층 테스트 — 지금 무료',description:'친구 1명에게 공유하면 무료 · 결과는 17쪽 리포트로 이메일 도착',imageUrl:'https://ratilab.com/og.png',link:{mobileWebUrl:U,webUrl:U}},
               buttons:[{title:'나도 무료로 받기',link:{mobileWebUrl:U,webUrl:U}}]});
             armReturn(b,'보냈어요 ✓');return;
           }catch(e){}
