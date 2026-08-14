@@ -360,7 +360,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
       <div class="fld">
         <label for="fRcode">내 RATI 유형 <span class="req">*</span></label>
         <select class="in" id="fRcode">
-          <option value="">모름 / 아직 검사 전</option>
+          <option value="">모름 — 아래 2분 무료 검사로 확인</option>
           <option value="RATI">RATI — 완벽주의형</option><option value="RATO">RATO — 품어주는형</option>
           <option value="RAKI">RAKI — 해결사형</option><option value="RAKO">RAKO — 버팀목형</option>
           <option value="RUTI">RUTI — 올인형</option><option value="RUTO">RUTO — 맞춰주는형</option>
@@ -370,7 +370,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
           <option value="BUTI">BUTI — 열정파형</option><option value="BUTO">BUTO — 직감형</option>
           <option value="BUKI">BUKI — 충전형</option><option value="BUKO">BUKO — 불꽃형</option>
         </select>
-        <div class="help" id="rcodeHelp">무료 검사 결과의 4글자 코드예요 — 유형을 고르면 내 유형 리포트가 자동 발송돼요. 기억이 안 나면 <a href="https://ratilab.com/" style="color:var(--rosed);font-weight:700">무료 검사</a>에서 다시 확인!</div>
+        <div class="help" id="rcodeHelp">무료 검사 결과의 4글자 코드예요 — 유형을 고르면 내 유형 리포트가 자동 발송돼요. 유형을 모르면 <a href="https://ratilab.com/?start=test" target="_blank" style="color:var(--rosed);font-weight:700;text-decoration:underline">2분 무료 검사</a>로 먼저 확인하고 오세요 (이 창은 그대로 열어두면 돼요)</div>
       </div>
 
       <div class="gate-note">🔒 <span>입력하신 정보는 <b>리포트 생성과 발송에만</b> 사용돼요. 결과는 웹에 게시되지 않고 이메일로만 전달됩니다.</span></div>
@@ -432,7 +432,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     if(bp){bp.style.display=(id==='s2'||id==='s3')?'none':'inline-flex';bp.dataset.step=id;}}
 
   /* 공유 게이트(클릭 기반) — 공유 이력 있으면 정보 입력으로 직행 */
-  function shared(){try{return localStorage.getItem('rati_deep_shared')==='1'}catch(e){return false}}
+  function shared(){try{return sessionStorage.getItem('rati_deep_shared')==='1'}catch(e){return false}} /* 세션 단위 — 방문할 때마다 공유해야 열림(민수 지시 2026-08-14). 기존 localStorage 영구 이력은 무시 */
   function toGate(entry){
     if(shared()){show('s1');RATI_GA('deep_gate_view',{entry:entry});try{RATI_TRACK('event',{cat:'deep',label:'form_view',entry:entry});}catch(e){}}
     else{show('sG');RATI_GA('deep_share_gate_view',{entry:entry});try{RATI_TRACK('event',{cat:'deep',label:'share_gate',entry:entry});}catch(e){}}
@@ -443,7 +443,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     var U='https://ratilab.com/deep.html', T='RATI 심층 테스트 — 지금 무료 이벤트 중이야. 결과는 17쪽 리포트로 이메일에 온대!';
     function toast(m){alert;/* deep엔 토스트 없음 — 채널 라벨로 안내 */}
     function unlock(btn,label){
-      try{localStorage.setItem('rati_deep_shared','1')}catch(e){}
+      try{sessionStorage.setItem('rati_deep_shared','1')}catch(e){}
       if(btn){btn.classList.add('done');if(label)btn.querySelector('span').textContent=label;}
       document.getElementById('shareDone').style.display='flex';
       $('afterShare').disabled=false;
@@ -510,7 +510,7 @@ a:focus-visible,button:focus-visible{outline:2.5px solid var(--rose);outline-off
     state.name=$('fName').value.trim();
     state.age=$('fAge').value.trim();
     var ageN=parseInt(state.age,10);
-    var ok=emailOk(state.email)&&state.name.length>0&&ageN>=14&&ageN<=99&&state.sex&&state.mbti;
+    var ok=emailOk(state.email)&&state.name.length>0&&ageN>=14&&ageN<=99&&state.sex&&state.mbti&&state.rcode; /* 유형 필수 — 무료 검사 없이도 유형 선택만으로 발송 가능, '모름'으론 시작 불가(2026-08-14) */
     $('startQuiz').disabled=!ok;
     return ok;
   }
