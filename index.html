@@ -4816,6 +4816,16 @@ function g2Sections(c,g,my,mode,gres,gans){
   out+=K('다음 구간 · NEXT','이 관계, 다음 구간은','<p><span class="stage">'+V.stage_icon+' '+V.stage_when+'</span></p><p>'+V.guess_forecast+'</p><p><span class="card">💌 '+V.partner_type+' 곁이 편해지는 지점 — '+V.lover_card_line+'</span></p><p><span class="warn">🪞 당신 쪽 신호도 하나 — '+V.observer_check+' 관찰이라기보다, 당신이 지쳐 있던 자리에 가까워요.</span></p><p>관찰자 시점이라 빗나가는 칸도 있어요. 여기까지가 "어떤 신호로 보이는지"라면, 궁합은 <b>"그래서 어떻게 지낼지"</b>예요.</p><p>방금 답한 문항은 다시 안 물어요 — 코드 두 개면 돼요. <span class="cta">궁합 보러 가기</span></p>');
   return out;
 }
+  /* 내 유형 직접 선택 — 무료 검사 없이도 궁합·렌즈가 나오게(민수 지시 2026-08-14).
+     무료 검사가 더 정확하다는 안내는 유지하되, 아는 사람은 바로 고를 수 있다. */
+  function mySelHtml(after){
+    var opts='<option value="">내 유형 선택…</option>';
+    for(var k in TN){opts+='<option value="'+k+'">'+k+' — '+TN[k]+'</option>'}
+    return '<div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center">'
+      +'<select class="in" style="max-width:230px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--t-line,#F0DFE8);font-size:13.5px" onchange="RATI_GUESS.setMy(this.value,\''+after+'\')">'+opts+'</select>'
+      +'</div>'
+      +'<p class="mono" style="font-size:9.5px;color:var(--mut);margin-top:8px">이미 아는 유형을 골라도 되고, 정확히 보려면 2분 무료 검사가 좋아요</p>';
+  }
   function renderTeaser(){
     step.textContent='상대 추측 · 티저';prog.style.width='100%';
     window.RATI_GUESS_MODE=mode?mode.n:'';
@@ -4852,6 +4862,7 @@ function g2Sections(c,g,my,mode,gres,gans){
       +'<p style="font-size:12.5px;color:var(--slate);margin-top:10px;word-break:keep-all">'+(mode?mode.n+' 모드 기준 · ':'')+'두 좌표를 겹치면 조합 이름·난이도·싸움 각본·대화 번역까지 나옵니다. 방금 하신 추측이 리포트에 그대로 들어가요.</p>'
       +'<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="cta" style="padding:14px 26px;font-size:14.5px" onclick="RATI_GUESS.orderPick()">궁합 리포트 주문 · 1,500원부터 →</button>'
       +'<button class="btn2" onclick="RATI_GUESS.close();RATI_TEST.open()">내 무료 검사부터 · 2분</button></div>'
+      +mySelHtml('teaser')
       +'<p class="mono" style="font-size:9px;color:var(--mut);margin-top:10px">검사가 끝나면 이 추측 결과로 다시 이어드려요 · 상대 코드·관계는 주문창에 자동 입력</p></div>';
     }
     var GRk=(mode&&mode.k)||'C';
@@ -5048,7 +5059,7 @@ function g2Sections(c,g,my,mode,gres,gans){
     var their=gres.code,my=window.RATI_LAST_CODE||null;
     var g=GG[their.slice(0,2)];
     var qs=REL[mode.k];
-    if(!my){body.innerHTML='<div class="rp-page" style="text-align:center;margin-top:30px"><p style="font-size:14px;font-weight:800">내 좌표가 필요합니다</p><p style="font-size:12.5px;color:var(--slate);margin-top:10px">궁합은 두 좌표를 겹치는 일이라, 내 무료 검사(2분)가 먼저예요.</p><div style="margin-top:16px"><button class="cta" onclick="RATI_GUESS.close();RATI_TEST.open()">내 검사부터 · 무료</button></div></div>';return}
+    if(!my){body.innerHTML='<div class="rp-page" style="text-align:center;margin-top:30px"><p style="font-size:14px;font-weight:800">내 좌표가 필요해요</p><p style="font-size:12.5px;color:var(--slate);margin-top:10px">궁합은 두 좌표를 겹치는 일이에요 — 내 유형을 고르거나, 2분 무료 검사로 확인해요.</p>'+mySelHtml('couple')+'<div style="margin-top:12px"><button class="btn2" onclick="RATI_GUESS.close();RATI_TEST.open()">2분 무료 검사로 확인 →</button></div></div>';return}
     var ct=chemType(my,their),dyn=dynName(my,their);window.__RATI_VIEW='result';try{if(window.RATI_GA)RATI_GA('couple_complete',{codes:(my||'')+'x'+their})}catch(e){}
     var title=dyn?('“'+dyn+'”'):('“'+BLOCK[(my[0]===their[0]?my[0]+my[0]:(my[0]<their[0]?my[0]+their[0]:their[0]+my[0]))]||ct.label+'”');
     if(!dyn)title='“'+ct.label+'”';
@@ -5103,7 +5114,7 @@ function g2Sections(c,g,my,mode,gres,gans){
   }
   function orderTier(){close();if(window.openOrderModal)window.openOrderModal(tier===1?'couple':(tier===2?'tier2':'tier3'))}
   document.addEventListener('keydown',function(e){var o=document.getElementById('gsOv');if(e.key==='Escape'&&o&&!o.hidden){var m1=document.getElementById('odOv');if(m1&&!m1.hidden)return;close()}});
-  return {open:open,close:close,order:order,orderPick:orderPick,proceed:proceed,orderTier:orderTier,resume:resume,saveImage:saveImage};
+  return {open:open,close:close,order:order,orderPick:orderPick,proceed:proceed,orderTier:orderTier,resume:resume,saveImage:saveImage,setMy:function(v,after){if(!/^[RB][AU][TK][IO]$/.test(v||''))return;window.RATI_LAST_CODE=v;try{if(window.RATI_GA)RATI_GA('my_type_manual',{code:v})}catch(e){}if(after==='couple'){renderCouple()}else{renderTeaser()}}};
 })();
 </script>
 <style>
