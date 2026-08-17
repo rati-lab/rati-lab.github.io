@@ -3602,7 +3602,7 @@ var qrcode = function() {
   try{var _kkBtn=document.getElementById('odKakao');if(_kkBtn)_kkBtn.style.display=PAYCFG.kakaoQR?'':'none';}catch(e){}
   function finishPay(){
     var payer=em.value.trim().split('@')[0];
-    try{RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:(cd&&cd.value?cd.value.trim():''),profile:window.RATI_PROFILE||null})}catch(e){}
+    try{var _oc=(cd&&cd.value?cd.value.trim():'');if(curKey!=='deep'&&window.RATI_GUESS_CODE)_oc=(_oc||'?')+'\u00d7'+window.RATI_GUESS_CODE;/* 궁합류는 상대 추측 코드를 함께 기록 — 2026-08-17 주문에서 상대 유형 유실되어 고객에게 되물은 사고 재발 방지 */RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:_oc,profile:window.RATI_PROFILE||null})}catch(e){}
     try{if(window.RATI_GA)RATI_GA('payment_claimed',{product:(curKey==='deep'?'deep':'couple'),tier:curKey,price:cur.amt})}catch(e){}
     // 배포 시: window.RATI_ORDER_ENDPOINT 있으면 여기서 주문정보 POST (수집서버 preorders)
     document.getElementById('odDoneMail').textContent=em.value.trim();
@@ -5105,9 +5105,9 @@ function g2Sections(c,g,my,mode,gres,gans){
     +'<ul class="rp-lockls">'
     +'<li><b>04</b> '+mode.n+' 모드 모듈 · '+(mode.k==='A'?'가능성 판독 · 다가가기 3수 · 실전 카톡 예문 · 금지 문장 3종':mode.k==='B'?'진도 설계 · 애매함을 정의로 바꾸는 순서':mode.k==='C'?'싸움의 각본 해독 · 화해 프로토콜':'선 판독 · 어디까지가 우정인가')+'</li>'
     +'<li><b>05</b> 판결 · 당신의 포커스 “'+qs[7][1][rans[7]]+'”에 <b>직접 답</b> + 4주 실행 플랜</li>'
-    +'<li><b>+</b> 공유 카드 · 4주 후 관계 문항 무료 재진단</li></ul>'
-    +'<div style="text-align:center;margin-top:20px"><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_GUESS.orderTier()">'+'주문하기 · '+(tier===1?'6,900':(tier===2?'9,900':'12,900'))+'원'+'</button></div>'
-    +'<p class="rp-p" style="font-size:10.5px;color:var(--mut);text-align:center;margin-top:12px">리포트는 고유 토큰 링크 + 표지에 구매자 이름 · 확인 후 24시간 이내 발송</p></div>'
+    +'<li><b>+</b> 4주 후 관계 문항 무료 재진단</li></ul>'
+    +'<div style="text-align:center;margin-top:20px"><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_GUESS.orderTier()">'+'주문하기 · '+(tier===1?'1,500':(tier===2?'9,900':'12,900'))+'원'+'</button></div>'
+    +'<p class="rp-p" style="font-size:10.5px;color:var(--mut);text-align:center;margin-top:12px">리포트는 PDF로 이메일 발송 · 표지에 구매자 이름 · 확인 후 24시간 이내 발송</p></div>'
     +'<div class="rr-disc">베타 미리보기입니다 · 표지·01·02·03의 구조와 개인화 슬롯을 실제 응답으로 시연합니다. 본문 프로즈·모드 모듈·판결은 정식판에서 사람이 조립합니다. 임상 진단이 아닙니다.</div>'
     +'<div class="rr-btns"><a class="cta" href="javascript:void(0)" onclick="RATI_GUESS.close();return false" style="text-decoration:none">RATI.lab 홈으로 가기</a><button class="btn2" onclick="RATI_GUESS.open()">다른 관계로 다시</button></div>';
     body.innerHTML=html;window.scrollTo(0,0);ov.scrollTop=0;
