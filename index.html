@@ -7052,10 +7052,27 @@ h1{font-size:52px;line-height:1.28}
     </div>
   </div>
 </div>
+<!-- PROMO 2 : 궁합 리포트 할인 이벤트 (심층 팝업 다음에 이어서 · 독립 '오늘 하루 보지 않기') -->
+<div id="promo2Ov" hidden>
+  <div class="promo-card" role="dialog" aria-modal="true" aria-label="궁합 리포트 할인 이벤트 안내">
+    <button class="promo-x text-action" type="button" aria-label="닫기">✕</button>
+    <div class="promo-badge" aria-hidden="true">−83%</div>
+    <img class="promo-poster" src="promo_poster_couple.webp" alt="궁합 리포트 할인 이벤트" loading="lazy" onerror="this.remove()">
+    <div class="promo-bd">
+      <p class="promo-k mono">COUPLE EVENT · RATI × RATI</p>
+      <h3 class="promo-t">우리 궁합 리포트<br><em>지금 특가!</em></h3>
+      <p class="promo-s">조합 해설 리포트 정가 <s>8,900원</s></p>
+      <p class="promo-zero"><b>지금은 1,500원</b></p>
+      <p class="promo-mail">💞 코드 두 개면 <b>질문 없이</b> 바로</p>
+      <button class="promo-cta cta" type="button">1,500원에 궁합 받기 →</button>
+      <button class="promo-today text-action" type="button">오늘 하루 보지 않기</button>
+    </div>
+  </div>
+</div>
 <style id="promo-css">
-  #promoOv{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(36,28,38,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
-  #promoOv.on{opacity:1}
-  #promoOv[hidden]{display:none}
+  #promoOv,#promo2Ov{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(36,28,38,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
+  #promoOv.on,#promo2Ov.on{opacity:1}
+  #promoOv[hidden],#promo2Ov[hidden]{display:none}
   .promo-zero{margin-top:6px}
   .promo-zero b{font-size:34px;font-weight:900;color:#B93A67;letter-spacing:-.5px;text-decoration:underline;text-decoration-thickness:4px;text-decoration-color:rgba(232,93,138,.45);text-underline-offset:7px}
   .promo-mail{margin-top:8px;font-size:13.5px;color:#5B4E58;background:#fff;border:1.5px solid rgba(232,93,138,.35);border-radius:99px;display:inline-block;padding:8px 16px}
@@ -7070,7 +7087,7 @@ h1{font-size:52px;line-height:1.28}
   /* ⚠️ overflow:hidden 을 뒤에 두면 위의 overflow-y:auto 를 덮어써서 "잘리는데 스크롤도 안 되는" 상태가 된다
      (민수 제보 2026-08-08 · 인앱 브라우저에서 CTA 버튼이 잘려 보임). 축별로 나눠 지정한다. */
   .promo-card{position:relative;width:min(340px,88vw);max-height:min(94vh,94dvh);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:linear-gradient(180deg,#E5BCBA 0%,#EFCCCB 8%,#FBE9EC 30%,#FFF7FB 60%)!important;border:1px solid rgba(232,93,138,.28)!important;border-radius:26px;padding:0 0 16px;text-align:center;box-shadow:0 40px 90px -30px rgba(36,28,38,.55)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:translateY(14px) scale(.97);transition:transform .34s cubic-bezier(.2,.8,.25,1)}
-  #promoOv.on .promo-card{transform:none}
+  #promoOv.on .promo-card,#promo2Ov.on .promo-card{transform:none}
   .promo-x{position:absolute;top:10px;right:10px;z-index:2;width:38px!important;height:38px!important;border:0;background:rgba(255,255,255,.78);border-radius:99px;font-size:15px;color:#6E6068!important;text-decoration:none!important;font-weight:400;cursor:pointer;padding:0!important;margin:0!important;display:flex!important;align-items:center;justify-content:center;line-height:1;box-shadow:0 4px 12px -6px rgba(36,28,38,.35)}
   /* 포스터 높이를 화면에 비례시켜, 낮은 뷰포트(인앱 브라우저는 주소창+툴바로 100~180px을 먹는다)에서도
      CTA·"오늘 하루 보지 않기"까지 한 화면에 들어오게 한다. cover라 비율은 유지되고 위아래만 크롭된다. */
@@ -7086,6 +7103,17 @@ h1{font-size:52px;line-height:1.28}
   .promo-s s{color:#A79AA2;font-size:11.5px}
   .promo-cta{display:block;width:100%;margin-top:18px!important;margin-bottom:0!important;padding:14px 0;font-size:14.5px;cursor:pointer}
   .promo-today{display:block;margin:8px auto 0;border:0;background:transparent;font-size:12px;color:#8A7D86;text-decoration:underline;cursor:pointer;padding:8px}
+  /* ── 2번 팝업(궁합 할인) 전용 테마: 궁합 색(보라)으로 심층 팝업과 한눈에 구분 (민수 지적 2026-09-07) ── */
+  #promo2Ov .promo-card{background:linear-gradient(180deg,#CDB9F0 0%,#DFD2F6 8%,#F1EBFB 30%,#FBF8FF 60%)!important;border:1px solid rgba(124,79,216,.3)!important}
+  #promo2Ov .promo-k{color:#7C4FD8}
+  #promo2Ov .promo-t em{color:#7C4FD8}
+  #promo2Ov .promo-zero b{color:#5B3BB3;text-decoration-color:rgba(124,79,216,.45)}
+  #promo2Ov .promo-mail{border-color:rgba(124,79,216,.4)}#promo2Ov .promo-mail b{color:#7C4FD8}
+  #promo2Ov .promo-cta{background:linear-gradient(145deg,rgba(167,130,235,.96),rgba(139,92,246,.94) 56%,rgba(114,63,215,.96))!important;color:#fff!important;border:1px solid rgba(224,211,255,.9)!important;box-shadow:0 12px 26px -13px rgba(92,46,180,.6),inset 0 1.5px 0 rgba(255,255,255,.5)!important}
+  #promo2Ov .promo-badge{position:absolute;top:10px;left:10px;z-index:2;width:52px;height:52px;border-radius:50%;background:#7C4FD8;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px rgba(92,46,180,.7);letter-spacing:-.3px;transform:rotate(-8deg);font-family:Pretendard,-apple-system,sans-serif}
+  /* 궁합 포스터는 캐릭터가 양끝에 있어 좌우 크롭 없이 전폭 표시(캔버스는 좌우 배경 확장본) — 배지·캐릭터 겹침 방지 */
+  @media (min-height:760px){#promo2Ov .promo-poster{aspect-ratio:1210/494;max-height:150px}}
+  @media (max-height:700px){#promo2Ov .promo-badge{width:44px;height:44px;font-size:12.5px}}
   /* 궁합 문서 티어가: 취소선 원가 보조 표기 */
   .gtb-price s{font-size:.62em;color:#A79AA2;font-weight:600;margin-right:5px}
 
@@ -7097,7 +7125,7 @@ h1{font-size:52px;line-height:1.28}
      인앱 브라우저는 주소창+하단툴바로 100~180px을 먹는데 vh는 그걸 안 뺀 값이라 카드가 화면을 넘친다.
      반드시 위의 .promo-* 기본 규칙보다 뒤에 둘 것 — 앞에 두면 같은 특이성끼리 원본 규칙에 덮인다. */
   @media (max-height:700px){
-    #promoOv{padding:12px}
+    #promoOv,#promo2Ov{padding:12px}
     .promo-card{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px)}
     .promo-poster{max-height:20vh;min-height:78px}
     .promo-k{margin-top:11px}
@@ -7127,29 +7155,54 @@ h1{font-size:52px;line-height:1.28}
 (function(){
   try{
     if(/[?&]doc=/.test(location.search))return;
-    var KEY='rati_promo_deep_hide';
+    var KEY='rati_promo_deep_hide',KEY2='rati_promo_couple_hide';
     var d=new Date(),ymd=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
-    try{if(localStorage.getItem(KEY)===ymd)return;}catch(e){}
-    if(window.RATI_DEEP_CLOSED)return; /* 심층 점검 중 — 프로모 자동 팝업 정지 */
-    var ov=document.getElementById('promoOv');if(!ov)return;
+    var hide1=false,hide2=false;
+    try{hide1=localStorage.getItem(KEY)===ymd;hide2=localStorage.getItem(KEY2)===ymd;}catch(e){}
+    if(window.RATI_DEEP_CLOSED)hide1=true; /* 심층 점검 중 — 심층 프로모만 정지 */
+    var ov=document.getElementById('promoOv'),ov2=document.getElementById('promo2Ov');
+    /* ── 2번 팝업: 궁합 리포트 할인 (심층 팝업이 닫힌 뒤 이어서 · 심층 CTA로 나간 경우는 이번엔 생략) ── */
+    var shown2=false;
+    function show2(){
+      if(!ov2||hide2||shown2)return;shown2=true;
+      ov2.hidden=false;requestAnimationFrame(function(){ov2.classList.add('on')});
+      try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'couple_sale'})}catch(e){}
+    }
+    function close2(){ov2.classList.remove('on');setTimeout(function(){ov2.hidden=true},280)}
+    if(ov2){
+      ov2.querySelector('.promo-x').addEventListener('click',close2);
+      ov2.querySelector('.promo-today').addEventListener('click',function(){
+        try{localStorage.setItem(KEY2,ymd)}catch(e){}
+        try{if(window.RATI_GA)RATI_GA('promo_hide_today',{promo:'couple_sale'})}catch(e){}
+        close2();
+      });
+      ov2.querySelector('.promo-cta').addEventListener('click',function(){
+        try{if(window.RATI_GA)RATI_GA('promo_click',{promo:'couple_sale'});RATI_TRACK('event',{cat:'product',label:'promo_couple_sale'})}catch(e){}
+        close2();
+        setTimeout(function(){try{RATI_GUESS.match('couple')}catch(e){}},230);
+      });
+      ov2.addEventListener('click',function(e){if(e.target===ov2)close2()});
+    }
+    /* ── 1번 팝업: 심층 무료 ── */
+    if(hide1||!ov){setTimeout(show2,700);return;}
     function close(){ov.classList.remove('on');setTimeout(function(){ov.hidden=true},280)}
     setTimeout(function(){
       ov.hidden=false;
       requestAnimationFrame(function(){ov.classList.add('on')});
       try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'deep_free'})}catch(e){}
     },700);
-    ov.querySelector('.promo-x').addEventListener('click',close);
+    ov.querySelector('.promo-x').addEventListener('click',function(){close();setTimeout(show2,420)});
     ov.querySelector('.promo-today').addEventListener('click',function(){
       try{localStorage.setItem(KEY,ymd)}catch(e){}
       try{if(window.RATI_GA)RATI_GA('promo_hide_today',{promo:'deep_free'})}catch(e){}
-      close();
+      close();setTimeout(show2,420);
     });
     ov.querySelector('.promo-cta').addEventListener('click',function(){
       try{if(window.RATI_GA)RATI_GA('promo_click',{promo:'deep_free'});RATI_TRACK('event',{cat:'deep',label:'promo_click'})}catch(e){}
       close();
       setTimeout(function(){try{RATI_DOC.open('deep')}catch(e){}},230);
     });
-    ov.addEventListener('click',function(e){if(e.target===ov)close()});
+    ov.addEventListener('click',function(e){if(e.target===ov){close();setTimeout(show2,420)}});
   }catch(e){}
 })();
 </script>
