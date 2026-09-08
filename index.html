@@ -1169,6 +1169,9 @@
       <div class="od-prod"><span id="odName">심층 리포트</span><b id="odPrice">4,900원</b></div>
       <label class="sy-lb" for="odMail">리포트 받을 이메일 <i>*</i></label>
       <input id="odMail" type="email" placeholder="rati123@naver.com">
+      <label class="sy-lb" for="odMail2">이메일 한 번 더 <i>*</i></label>
+      <input id="odMail2" type="email" placeholder="같은 주소를 다시 입력 — 오타면 리포트가 못 가요" autocomplete="off">
+      <div id="odPairSum" class="od-pair" hidden></div>
       <p class="sy-fine mono" id="odCodeNote" hidden style="color:var(--rosed);margin-top:7px;letter-spacing:.3px"></p>
       <div class="sy-row" id="odCodeRow">
         <div><label class="sy-lb" for="odCode">내 유형 코드 <span class="sy-opt">(자동)</span></label><input id="odCode" type="text" maxlength="4" placeholder="검사하면 자동으로 붙어요" style="text-transform:uppercase"></div>
@@ -3546,18 +3549,22 @@ var qrcode = function() {
     document.getElementById('odName').textContent=cur.n;
     document.getElementById('odPrice').textContent=fmt(cur.amt)+'원';
     var isMatch=(key==='couple'||key==='tier2');
+    var fromMatch=isMatch&&!!window.__MATCH_OPEN; /* 입력형 궁합에서 넘어옴 — 코드·관계·성격유형은 이미 골랐으니 결제 정보만 */
     mateW.hidden=!isMatch;
     var rlW=document.getElementById('odRelWrap');
-    if(rlW){rlW.hidden=!isMatch;
+    if(rlW){rlW.hidden=!isMatch||fromMatch;
       if(isMatch && window.RATI_GUESS_MODE && !rlW.querySelector('.od-rel .on')){
         rlW.querySelectorAll('.od-rel button').forEach(function(b){if(b.getAttribute('data-rel')===window.RATI_GUESS_MODE)b.classList.add('on')});}}
     var mbW=document.getElementById('odMbtiWrap');
-    if(mbW)mbW.hidden=!(key==='tier2');
+    if(mbW)mbW.hidden=!(key==='tier2')||fromMatch;
     if(!cd.value && window.RATI_LAST_CODE) cd.value=window.RATI_LAST_CODE;
     var mt=document.getElementById('odMate');
     if(mt && !mt.value && window.RATI_GUESS_CODE) mt.value=window.RATI_GUESS_CODE;
     var ccRow=document.getElementById('odCodeRow'),ccNote=document.getElementById('odCodeNote');
-    if(ccRow){var autoHide=(!isMatch && !!cd.value.trim());ccRow.style.display=autoHide?'none':'';
+    var ps=document.getElementById('odPairSum');
+    if(ps){ps.hidden=!fromMatch;if(fromMatch){var M=window.__MATCH_OPEN,_pm=document.getElementById('odMate'),_a=document.getElementById('odMyM'),_b=document.getElementById('odThM');
+      ps.innerHTML='<b>'+(M.myName?M.myName+' ':'')+cd.value.trim().toUpperCase()+' × '+(M.thName?M.thName+' ':'')+(_pm?_pm.value.trim().toUpperCase():'')+'</b>'+((_a&&_a.value)?'<span>성격유형 '+_a.value.toUpperCase()+' × '+(_b&&_b.value?_b.value.toUpperCase():'-')+(M.sub?' (상대 미입력 → 내 유형 대입)':'')+'</span>':'')+'<a href="javascript:void(0)" onclick="document.getElementById(\'odClose\').click();setTimeout(function(){RATI_GUESS.match()},300);return false">조합 바꾸기 →</a>';}}
+    if(ccRow){var autoHide=(!isMatch && !!cd.value.trim())||fromMatch;ccRow.style.display=autoHide?'none':'';
       if(ccNote){ccNote.hidden=!autoHide;if(autoHide)ccNote.textContent='✓ 내 유형 '+cd.value.trim().toUpperCase()+' · 결과에서 자동 첨부돼요. 이메일만 확인하면 끝!';}}
     if(mbW && !mbW.hidden && window.RATI_MBTI){var m1=document.getElementById('odMyM'),m2=document.getElementById('odThM');
       if(m1&&!m1.value)m1.value=window.RATI_MBTI.my||'';if(m2&&!m2.value)m2.value=window.RATI_MBTI.th||'';}
@@ -3565,11 +3572,13 @@ var qrcode = function() {
     requestAnimationFrame(function(){ov.classList.add('on')});}
   window.openOrderModal=function(k){show(k)};
   function hide(){ov.classList.remove('on');document.body.style.overflow='';
-    try{['odCode','odMate','odMyM','odThM'].forEach(function(id){var x=document.getElementById(id);if(x)x.value=''});window.__MATCH_OPEN=null;}catch(e){} /* 잔존값이 다음 주문(특히 심층)에 섞이지 않게 */
+    try{['odCode','odMate','odMyM','odThM'].forEach(function(id){var x=document.getElementById(id);if(x)x.value=''});var _ps=document.getElementById('odPairSum');if(_ps)_ps.hidden=true;window.__MATCH_OPEN=null;}catch(e){} /* 잔존값이 다음 주문(특히 심층)에 섞이지 않게 */
     setTimeout(function(){ov.hidden=true;frm.hidden=false;done.hidden=true},260)}
   function valid(){
     var e=em.value.trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='리포트 받을 이메일만 정확히 적어주세요 · 나머지는 자동입니다.';er.hidden=false;em.focus();return false}
+    var em2=document.getElementById('odMail2'),e2=em2?em2.value.trim():e;
+    if(e2.toLowerCase()!==e.toLowerCase()){er.textContent='이메일 두 칸이 서로 달라요 — 오타면 리포트가 못 가요. 다시 확인해주세요.';er.hidden=false;if(em2)em2.focus();return false}
     var c=cd.value.trim().toUpperCase();
     if(c && !/^[RB][AU][TK][IO]$/.test(c)){er.textContent='유형 코드 형식이 맞지 않아요 · 예: RUTI. 모르면 비워두세요(검사 후 자동).';er.hidden=false;cd.focus();return false}
     var _mt=document.getElementById('odMate'),_mv=(_mt&&_mt.value?_mt.value.trim().toUpperCase():'');
@@ -3601,7 +3610,7 @@ var qrcode = function() {
     try{RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:_oc,profile:_pf})}catch(e){}
     // 입력형 궁합 주문 기록(코드 출처·성격유형·대입 여부) — 기존 couple_sit 규격 그대로 · 값은 결제 시점의 주문창 기준 · 한 번만
     try{var M=window.__MATCH_OPEN;if(M&&curKey!=='deep'&&window.RATI_ORDER_ENDPOINT){window.__MATCH_OPEN=null;
-      var _rb=document.querySelector('#odRelWrap .od-rel .on'),_md=(_rb&&_rb.getAttribute('data-rel'))||'';
+      var _rb=document.querySelector('#odRelWrap .od-rel .on'),_md=(_rb&&_rb.getAttribute('data-rel'))||'연애';
       var _sub=!!(M.sub&&_thM&&_thM===M.subVal&&_thM===_myM);
       var _ans=[{theme:'코드',q:'내 RATI × 상대 RATI',pick:(_oc||'?')+' ('+M.src+')'},{theme:'성격유형',q:'내 성격유형 × 상대 성격유형',pick:(_myM||'미입력')+' × '+(_thM||'미입력')+(_sub?' (상대 미입력 → 내 성격유형 대입)':'')}];
       fetch(window.RATI_ORDER_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},body:JSON.stringify({kind:'couple_sit',product:curKey,mode:_md,sid:window.RATI_SID,utm:window.RATI_UTM,answers:_ans,profile:_pf})})}}catch(e){}
@@ -4936,13 +4945,12 @@ function g2Sections(c,g,my,mode,gres,gans){
       +'<span class="op-tag mono">'+t.tag+'</span>'
       +'<span class="op-head"><b>'+t.t+'</b><i class="mono">'+t.p+'</i></span>'
       +'<span class="op-d">'+t.d+'</span>'
-      +'<span class="op-go mono">이 구성으로 주문 · 입력창 열기 →</span></button>';
+      +'<span class="op-go mono">이 구성으로 계속 →</span></button>';
     });
     html+='<div class="rt-foot"><button class="rt-back" id="opBack">← 추측 결과로</button><span class="rt-hint">상대 코드 · 관계는 주문창에 자동 입력됩니다</span></div>';
     body.innerHTML=html;window.scrollTo(0,0);ov.scrollTop=0;
     body.querySelectorAll('.op-card').forEach(function(b){b.addEventListener('click',function(){
-      var k=b.getAttribute('data-k');close();
-      setTimeout(function(){if(window.openOrderModal)window.openOrderModal(k)},240);})});
+      mProd=b.getAttribute('data-k');renderMatchForm();})});
     var bk=document.getElementById('opBack');if(bk)bk.addEventListener('click',function(){renderTeaser()});
   }
   function orderPick(){el();if(!(gres&&gres.code)){open();return false}ov.hidden=false;document.body.style.overflow='hidden';renderOrderPick();return false}
@@ -5130,7 +5138,7 @@ function g2Sections(c,g,my,mode,gres,gans){
   function matchOrder(k){
     var my=mMy||window.RATI_LAST_CODE,their=gres.code;
     // 주문창에 '입력형 궁합에서 열림' 표시 — 실제 기록은 결제 시점의 주문창 값으로 만든다(수정한 코드·성격유형 반영)
-    window.__MATCH_OPEN={src:(gres.exact?'상대 실측':(gres.conf?'추측 검사':'구매자 입력')),sub:mSub,subVal:thM};
+    window.__MATCH_OPEN={src:(gres.exact?'상대 실측':(gres.conf?'추측 검사':'구매자 입력')),sub:mSub,subVal:thM,myName:TN[my]||'',thName:TN[their]||''};
     try{var q=function(id){return document.getElementById(id)};
       if(q('odCode'))q('odCode').value=my;if(q('odMate'))q('odMate').value=their;
       if(q('odMyM'))q('odMyM').value=myM;if(q('odThM'))q('odThM').value=thM;
@@ -6202,6 +6210,11 @@ if(document.readyState!=='loading')setTimeout(go,30);else window.addEventListene
   -webkit-backdrop-filter:blur(14px) saturate(125%);
   backdrop-filter:blur(14px) saturate(125%);
 }
+/* 모달(주문·문의 등) 패널은 불투명 — blur가 안 먹는 폰(인앱·삼성·네이버)에서 뒤 페이지 글자가 비쳐 읽기 불가했던 문제(2026-09-07 스크린샷) */
+.sy-ov .sy-md{background:linear-gradient(170deg,#FFFDFE,#FDF6F9)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.sy-md .od-prod{background:#FCEDF3!important}.sy-md .od-info{background:#F8F4FA!important}
+.od-pair{margin-top:14px;padding:12px 14px;border:1.5px solid rgba(232,93,138,.35);border-radius:12px;background:#FEF4F8;font-size:13px;line-height:1.6;word-break:keep-all}
+.od-pair b{color:var(--ink)}.od-pair span{display:block;font-size:11.5px;color:var(--slate)}.od-pair a{font-size:11.5px;color:var(--rosed);font-weight:700;text-decoration:underline}
 /* WHY 3문단은 이전 디자인 유지 · 박스 없이 얇은 분홍 구분선 */
 .why-c{
   background:transparent!important;
