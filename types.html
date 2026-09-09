@@ -10,14 +10,42 @@ if(/KAKAOTALK/i.test(__ua)){location.href='kakaotalk://web/openExternal?url='+en
 else if(/\bLine\//i.test(__ua)&&location.search.indexOf('openExternalBrowser')<0){location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';}
 else if(/Android/i.test(__ua)&&/Instagram|FBAN|FBAV|NAVER\(inapp|DaumApps|Twitter/i.test(__ua)){try{if(!sessionStorage.getItem('extEsc')){sessionStorage.setItem('extEsc','1');location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';}}catch(e2){}}
 }catch(e){}
-try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
+try{var __iu=navigator.userAgent||'';
+if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(__iu)){var __ir=document.documentElement;__ir.classList.add('inapp-lite');
+if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.add('inapp-heavy');}}catch(e){}</script>
 <style id="inapp-lite-css">
-  html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
-  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  /* 인앱 공통(네이버 포함): backdrop-filter만 솔리드 대체 · 장식·리빌 유지 */
+  html.inapp-lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
-  /* 리빌이 애니메이션 의존(.tcreveal pop 등)이라 animation:none 시 opacity:0에 갇힘 → 라이트에선 전부 즉시 표시 */
-  html.inapp-lite .reveal,html.inapp-lite .tcard.tcreveal{opacity:1!important;transform:none!important;translate:0 0!important;scale:1!important}
+  /* 강라이트(카톡 계열): GPU 장식·애니메이션 정지 + 애니메이션 의존 리빌 즉시 표시 */
+  html.inapp-heavy .mesh,html.inapp-heavy .aurora{display:none!important}
+  html.inapp-heavy *{animation:none!important;transition:none!important}
+  html.inapp-heavy .reveal,html.inapp-heavy .tcard.tcreveal{opacity:1!important;transform:none!important;translate:0 0!important;scale:1!important}
 </style>
+<script id="inapp-reveal-guard">
+/* 인앱 웹뷰에서 IntersectionObserver가 안 돌면 리빌 요소가 opacity:0에 갇힘(네이버 인앱 그리드 실종 원인)
+   → 뷰포트에 들어온 것만 강제 표시. 관찰자와 공존·중복 무해, 일반 브라우저에선 실행 안 됨 */
+(function(){
+  try{
+    var R=document.documentElement;
+    if(!R.classList.contains('inapp-lite'))return;
+    var t=0;
+    function vis(el){var r=el.getBoundingClientRect(),h=innerHeight||0;return r.top<h*1.05&&r.bottom>-h*0.2;}
+    function sweep(){
+      try{
+        var a=document.querySelectorAll('.reveal:not(.in),.tcard.tcreveal:not(.in)');
+        for(var i=0;i<a.length;i++)if(vis(a[i]))a[i].classList.add('in');
+      }catch(e){}
+    }
+    function q(){if(t)return;t=setTimeout(function(){t=0;sweep()},160);}
+    addEventListener('DOMContentLoaded',function(){sweep();setTimeout(sweep,700);setTimeout(sweep,1800);});
+    addEventListener('load',sweep);
+    addEventListener('scroll',q,{passive:true});
+    addEventListener('resize',q,{passive:true});
+  }catch(e){}
+})();
+</script>
+
 <meta name="description" content="RATI 16가지 연애 애착 유형 — 4그룹(확신·낭만·여유·반전) 좌표로 보는 나와 그 사람의 연애 방식.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="16가지 연애 유형 · RATI.lab">

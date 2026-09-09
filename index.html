@@ -26,21 +26,54 @@
       } }catch(e2){}
     }
   }catch(e){}
-  // 인앱 브라우저(카톡·인스타·네이버 등) 라이트 모드 · WKWebView 메모리/GPU 한도로 인한 크래시-리로드 루프 방지
-  try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}
+  // 인앱 브라우저 라이트 모드 2단계 · 공통(inapp-lite)=backdrop-filter만 대체, 강라이트(inapp-heavy)=장식·애니메이션까지 정지
+  // 네이버 인앱은 크래시 이력이 없어 공통만 적용(장식·스크롤 리빌 유지) · 카톡 계열은 WKWebView 크래시-리로드 이력으로 강라이트 유지
+  try{var __iu=navigator.userAgent||'';
+    if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(__iu)){
+      var __ir=document.documentElement;__ir.classList.add('inapp-lite');
+      if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.add('inapp-heavy');
+    }}catch(e){}
 </script>
 <style id="inapp-lite-css">
-  /* 인앱 라이트 모드: GPU 무거운 장식만 끔 · 기능·레이아웃 불변, 일반 브라우저 영향 없음 */
-  html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
-  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  /* 인앱 공통(네이버 포함): backdrop-filter만 솔리드로 대체 · 장식·애니메이션·스크롤 리빌은 그대로 */
+  html.inapp-lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
   html.inapp-lite .rt-ov{background:#FDF8FB}
   html.inapp-lite #hd .hd-r,html.inapp-lite #dtOv .rt-bar .hd-r{background:#fff}
-  /* 웹뷰에서 IO/rAF 리빌이 안 돌면 본문이 op .08/0에 갇힘 → 라이트에선 스크롤 리빌 전부 즉시 표시 */
-  html.inapp-lite .toss-motion.toss-hidden{opacity:1!important;translate:none!important;scale:1!important;filter:none!important}
-  html.inapp-lite .rv{opacity:1!important;transform:none!important}
-  html.inapp-lite .sec{opacity:1!important;transform:none!important}
+  /* 강라이트(카톡·인스타·페북·라인·다음): WKWebView 크래시-리로드 이력 → GPU 장식·애니메이션 정지 */
+  html.inapp-heavy .mesh,html.inapp-heavy .aurora{display:none!important}
+  html.inapp-heavy *{animation:none!important;transition:none!important}
+  /* animation/transition을 끄면 리빌이 op .08/0에 갇히므로 강라이트에서만 즉시 표시 */
+  html.inapp-heavy .toss-motion.toss-hidden{opacity:1!important;translate:none!important;scale:1!important;filter:none!important}
+  html.inapp-heavy .rv{opacity:1!important;transform:none!important}
+  html.inapp-heavy .sec{opacity:1!important;transform:none!important}
 </style>
+<script id="inapp-reveal-guard">
+/* 인앱 웹뷰에서 IntersectionObserver가 안 돌면 리빌 요소가 opacity:0에 갇힘(네이버 인앱 그리드 실종 원인)
+   → 뷰포트에 들어온 것만 강제 표시. 관찰자와 공존·중복 무해, 일반 브라우저에선 실행 안 됨 */
+(function(){
+  try{
+    var R=document.documentElement;
+    if(!R.classList.contains('inapp-lite'))return;
+    var t=0;
+    function vis(el){var r=el.getBoundingClientRect(),h=innerHeight||0;return r.top<h*1.05&&r.bottom>-h*0.2;}
+    function sweep(){
+      try{
+        var a=document.querySelectorAll('.rv:not(.in)');
+        for(var i=0;i<a.length;i++)if(vis(a[i]))a[i].classList.add('in');
+        var b=document.querySelectorAll('.toss-motion.toss-hidden');
+        for(var j=0;j<b.length;j++)if(vis(b[j]))b[j].classList.remove('toss-hidden');
+      }catch(e){}
+    }
+    function q(){if(t)return;t=setTimeout(function(){t=0;sweep()},160);}
+    addEventListener('DOMContentLoaded',function(){sweep();setTimeout(sweep,700);setTimeout(sweep,1800);});
+    addEventListener('load',sweep);
+    addEventListener('scroll',q,{passive:true});
+    addEventListener('resize',q,{passive:true});
+  }catch(e){}
+})();
+</script>
+
 <style id="price-doc-only-css">
   /* 헤더 문서·히어로 버튼과 중복인 블록은 랜딩 스크롤에서 제외 · 리포트(가격)=헤더 '리포트', 근본있게(theory)=헤더 '원리', 무료검사 2종 카드=히어로 버튼 2개 */
   #price,#theory,#stories,#menhera,#order,div.tests-band{display:none!important}

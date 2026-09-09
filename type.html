@@ -10,11 +10,14 @@ if(/KAKAOTALK/i.test(__ua)){location.href='kakaotalk://web/openExternal?url='+en
 else if(/\bLine\//i.test(__ua)&&location.search.indexOf('openExternalBrowser')<0){location.href=location.href+(location.search?'&':'?')+'openExternalBrowser=1';}
 else if(/Android/i.test(__ua)&&/Instagram|FBAN|FBAV|NAVER\(inapp|DaumApps|Twitter/i.test(__ua)){try{if(!sessionStorage.getItem('extEsc')){sessionStorage.setItem('extEsc','1');location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';}}catch(e2){}}
 }catch(e){}
-try{if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(navigator.userAgent))document.documentElement.classList.add('inapp-lite');}catch(e){}</script>
+try{var __iu=navigator.userAgent||'';
+if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps/i.test(__iu)){var __ir=document.documentElement;__ir.classList.add('inapp-lite');
+if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.add('inapp-heavy');}}catch(e){}</script>
 <style id="inapp-lite-css">
-  html.inapp-lite .mesh,html.inapp-lite .aurora{display:none!important}
-  html.inapp-lite *{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  html.inapp-lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   html.inapp-lite header.scrolled{background:rgba(255,255,255,.97)}
+  html.inapp-heavy .mesh,html.inapp-heavy .aurora{display:none!important}
+  html.inapp-heavy *{animation:none!important;transition:none!important}
 </style>
 <meta name="description" content="RATI 16가지 연애 애착 유형 — 4그룹(확신·낭만·여유·반전) 좌표로 보는 나와 그 사람의 연애 방식.">
 <meta property="og:type" content="website">
