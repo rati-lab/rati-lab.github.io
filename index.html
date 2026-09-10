@@ -171,7 +171,7 @@
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RATI.lab | 연애 애착 유형 검사 · 연애는 측정된다</title>
-<meta name="description" content="새벽 2시의 '자?'부터 잠수이별까지, 실제 상황 22개로 판정하는 연애 애착 유형. 4축·16유형·멘헤라 지수까지 무료.">
+<meta name="description" content="성인 애착이론 기반 심리 측정 콘텐츠. 새벽 2시의 '자?'부터 잠수이별까지, 실제 상황 22개로 판정하는 연애 애착 유형. 4축·16유형·멘헤라 지수까지 무료.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="RATI | 연애는 측정된다">
 <meta property="og:description" content="실제 상황 22개로 판정하는 나의 연애 유형. 4축·16유형·멘헤라 지수까지 무료.">
@@ -886,6 +886,50 @@
   @media (max-width:860px){.feat-grid,.free-row{grid-template-columns:1fr}}
 </style>
 <!-- BUY -->
+
+<!-- 서비스 성격 고지 · PG 업종 재분류용 · 텍스트(크롤러 판독) -->
+<section class="brand-section" id="service-nature">
+  <div class="wrap">
+    <div class="section-head rv">
+      <span class="section-kicker">WHAT RATI IS</span>
+      <h2 class="section-title">RATI는 <span class="title-accent">어떤 서비스</span>인가</h2>
+      <p class="section-body">RATI는 성인 애착이론(adult attachment theory)에 기반한 심리 측정 콘텐츠 서비스입니다. 응답자의 실제 응답 데이터를 기준으로 관계에서의 행동 경향을 4개 축으로 측정하고, 그 결과를 해석한 디지털 리포트를 제공합니다.</p>
+    </div>
+    <div class="sn-grid rv">
+      <article class="sn-card">
+        <h3>이론적 근거</h3>
+        <p class="sn-ref">Bowlby(1969) · Ainsworth et al.(1978) · Hazan &amp; Shaver(1987) · Bartholomew &amp; Horowitz(1991) · Brennan, Clark &amp; Shaver(1998, ECR) · Christensen &amp; Heavey(1990) · Gottman(1994)</p>
+      </article>
+      <article class="sn-card">
+        <h3>본 서비스가 아닌 것</h3>
+        <ul>
+          <li>운세·점술·사주 서비스가 아닙니다. 확률이나 운명을 예측하지 않습니다.</li>
+          <li>포인트·사이버머니 충전 방식이 아닙니다. 각 리포트를 개별 상품으로 직접 판매합니다.</li>
+          <li>만남 주선·매칭·중개 서비스가 아닙니다. 이용자 간 연결 기능이 없습니다.</li>
+          <li>의학적·심리학적 진단을 대체하지 않습니다.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+<style id="service-nature-css">
+  #service-nature{padding-bottom:96px}
+  .sn-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:44px}
+  .sn-card{position:relative;padding:6px 34px}
+  .sn-card+.sn-card:before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(transparent,rgba(232,93,138,.38),transparent)}
+  .sn-card h3{font-family:var(--title-font);font-size:18px;font-weight:700;line-height:1.5;letter-spacing:-.03em;color:var(--ink)}
+  .sn-card p,.sn-card li{margin-top:12px;color:var(--slate);font-family:var(--body-font);font-size:var(--body-size);font-weight:var(--body-weight);line-height:var(--body-leading);letter-spacing:var(--body-tracking);word-break:keep-all}
+  .sn-card p.sn-ref{font-family:var(--mono);font-size:12.5px;line-height:1.9;letter-spacing:0}
+  .sn-card ul{list-style:none;margin:0;padding:0}
+  .sn-card li{position:relative;padding-left:16px}
+  .sn-card li:before{content:"·";position:absolute;left:2px;top:12px;color:var(--rosed);font-weight:800}
+  @media(max-width:860px){
+    #service-nature{padding-bottom:72px}
+    .sn-grid{grid-template-columns:1fr;margin-top:30px}
+    .sn-card{padding:22px 10px}
+    .sn-card+.sn-card:before{left:12%;right:12%;top:0;bottom:auto;width:auto;height:1px;background:linear-gradient(90deg,transparent,rgba(232,93,138,.38),transparent)}
+  }
+</style>
 
 <footer>
   <div class="wrap">
@@ -5042,7 +5086,6 @@ function g2Sections(c,g,my,mode,gres,gans){
     +'<h2 class="rt-q" style="min-height:auto;margin-top:10px">리포트 깊이를 고르세요</h2>'
     +'<button class="tqo" data-t="1"><b>RATI × RATI</b> · 1,500원<br><span style="font-size:11px;color:var(--mut)">두 좌표의 궁합 · 관계 문항 8개 반영 · 확인 후 24시간 이내</span></button>'
     +'<button class="tqo" data-t="2"><b>RATI+성격유형 × RATI+성격유형</b> · 9,900원<br><span style="font-size:11px;color:var(--mut)">두 사람의 성격유형(MBTI)을 문장 레벨로 엮은 통합 합성 · 24시간 이내</span></button>'
-    +'<button class="tqo" data-t="3"><b>RATI+성격유형+사주 × RATI+성격유형+사주</b> · 12,900원<br><span style="font-size:11px;color:var(--mut)">3레이어 통합 · 24시간 이내 · 사주는 "운명론적 관점, 과학적 근거와 무관한 참고용 해석"</span></button>'
     +'<div class="rt-foot"><button class="rt-back" onclick="RATI_GUESS.open()">← 처음부터</button><span class="rt-hint">문항 몇 개 더 풀수록 리포트가 세밀해집니다</span></div>';
     ov.scrollTop=0;
     body.querySelectorAll('.tqo').forEach(function(b){b.addEventListener('click',function(){
@@ -5068,19 +5111,11 @@ function g2Sections(c,g,my,mode,gres,gans){
     step.textContent='궁합 · 추가 정보';prog.style.width='74%';
     var inp='style="text-transform:uppercase;width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:14px"';
     var dinp='style="width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;font:inherit;font-size:14px;background:#fff"';
-    var saju = tier===3 ? ('<div style="border-top:1px dashed var(--line);margin-top:20px;padding-top:16px">'
-      +'<p class="mono" style="font-size:9.5px;letter-spacing:1px;color:#7C4FD8;margin-bottom:4px">TIER ③ · SAJU LAYER</p>'
-      +'<p style="font-size:11px;color:var(--mut);margin-bottom:12px;word-break:keep-all">사주는 운명론적 관점으로, 과학적 근거와 무관한 참고용 해석입니다. <b style="color:var(--rosed)">상대 생일을 몰라도 됩니다</b> · 비워두면 내 사주만으로 진행되고, 상대 쪽은 RATI·성격유형 레이어가 커버해요.</p>'
-      +'<div class="sy-row"><div><label class="sy-lb">나의 생년월일</label><input id="gsMyD" type="date" '+dinp+'></div>'
-      +'<div><label class="sy-lb">태어난 시간</label><select id="gsMyH" '+dinp+'><option value="">모름</option><option>자시 23~01</option><option>축시 01~03</option><option>인시 03~05</option><option>묘시 05~07</option><option>진시 07~09</option><option>사시 09~11</option><option>오시 11~13</option><option>미시 13~15</option><option>신시 15~17</option><option>유시 17~19</option><option>술시 19~21</option><option>해시 21~23</option></select></div></div>'
-      +'<div class="sy-row"><div><label class="sy-lb">상대 생년월일 (선택)</label><input id="gsThD" type="date" '+dinp+'></div>'
-      +'<div><label class="sy-lb">상대 태어난 시간</label><select id="gsThH" '+dinp+'><option value="">모름</option><option>자시</option><option>축시</option><option>인시</option><option>묘시</option><option>진시</option><option>사시</option><option>오시</option><option>미시</option><option>신시</option><option>유시</option><option>술시</option><option>해시</option></select></div></div></div>') : '';
-    body.innerHTML='<p class="eyebrow" style="letter-spacing:3px">'+(tier===3?'RATI+성격유형+사주 × RATI+성격유형+사주':'RATI+성격유형 × RATI+성격유형')+'</p>'
+    body.innerHTML='<p class="eyebrow" style="letter-spacing:3px">'+'RATI+성격유형 × RATI+성격유형'+'</p>'
     +'<h2 class="rt-q" style="min-height:auto">두 사람의 정보를<br>알려주세요</h2>'
     +'<p style="font-size:11.5px;color:var(--mut);margin-bottom:16px">모르면 비워도 됩니다 · 정식판에선 상대 미검사 시 성격유형 예측판을 제공합니다.</p>'
     +'<label class="sy-lb">나의 성격유형</label><input id="gmMy" maxlength="4" placeholder="예: ENFP" '+inp+'>'
     +'<label class="sy-lb">상대의 성격유형 (선택)</label><input id="gmTh" maxlength="4" placeholder="모르면 비워두세요" '+inp+'>'
-    +saju
     +'<div class="sy-err mono" id="gmErr" hidden></div>'
     +'<div style="margin-top:18px"><button class="cta" id="gmGo" style="padding:14px 28px;font-size:14.5px">리포트 미리보기 →</button></div>';
     ov.scrollTop=0;
@@ -5090,7 +5125,6 @@ function g2Sections(c,g,my,mode,gres,gans){
       if(a&&!re.test(a)){er.textContent='내 성격유형 4글자를 확인해주세요 · 예: ENFP';er.hidden=false;return}
       if(b&&!re.test(b)){er.textContent='상대 성격유형 4글자를 확인해주세요 · 모르면 비워두세요';er.hidden=false;return}
       myM=a;thM=b;window.RATI_MBTI={my:a,th:b};
-      if(tier===3){var d=document.getElementById('gsMyD');window.RATI_SAJU={myD:d?d.value:'',myH:(document.getElementById('gsMyH')||{}).value||'',thD:(document.getElementById('gsThD')||{}).value||'',thH:(document.getElementById('gsThH')||{}).value||''}}
       renderCouple()});
   }
   // ── 입력형 궁합(질문 없음): 내 RATI·성격유형 + 상대 RATI·성격유형(공란→내 성격유형 대입) → 결과 → 리포트 주문 ──
@@ -5229,7 +5263,7 @@ function g2Sections(c,g,my,mode,gres,gans){
     +'<div class="rp-page"><div class="rp-hd"><span>02</span><span>언어 해독</span></div><div class="rp-t">'+TN[their]+' 사용설명서 · 첫 장</div>'
     +'<p class="rp-p" style="font-family:var(--serif)">“'+TL[their]+'”</p>'
     +'<p class="rp-p">'+GG[their.slice(0,2)][0]+' 그룹의 결 · '+(gres.exact?'상대 실측 코드 기준입니다.':'당신이 관찰한 행동 기준의 추정입니다(확신도 상시 표기).')+'</p>'
-    +'<div class="rp-note">💬 <b>당신의 헷갈림:</b> “'+qs[5][1][rans[5]]+'” · 정식판은 이 질문에 <b>첫 카드로</b> 답합니다. 유형 사용설명서 전문 + 헷갈리는 행동 번역 포함.'+(tier>=2?'<br>🧩 <b>성격유형 통합('+(myM||'?')+'×'+(thM||'?')+'):</b> 문장 레벨 통합 합성은 정식판에서 렌더됩니다.':'')+(tier===3?'<br>🔮 <b>사주 레이어:</b> '+((window.RATI_SAJU&&window.RATI_SAJU.thD)?'두 사람의 생년월일 기준 3레이어 통합 장이 정식판에 추가됩니다':'상대 생일 미입력 · <b>내 사주만으로 진행</b>합니다. 사주 장은 내 기질·흐름 중심으로 읽고, 상대 쪽은 RATI·성격유형이 커버해요 (나중에 알게 되면 무료 반영)')+' · 운명론적 관점, 과학적 근거와 무관한 참고용 해석.':'')+'</div></div>'
+    +'<div class="rp-note">💬 <b>당신의 헷갈림:</b> “'+qs[5][1][rans[5]]+'” · 정식판은 이 질문에 <b>첫 카드로</b> 답합니다. 유형 사용설명서 전문 + 헷갈리는 행동 번역 포함.'+(tier>=2?'<br>🧩 <b>성격유형 통합('+(myM||'?')+'×'+(thM||'?')+'):</b> 문장 레벨 통합 합성은 정식판에서 렌더됩니다.':'')+'</div></div>'
     /* 03 */
     +'<div class="rp-page"><div class="rp-hd"><span>03</span><span>케미 정밀</span></div><div class="rp-t">축 4블록 · 두 사람이 겹치는 곳</div>'
     +'<div class="rz-grid" style="grid-template-columns:1fr">'+chemi+'</div>'
