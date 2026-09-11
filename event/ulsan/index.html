@@ -159,7 +159,9 @@ if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.ad
     $('rAx').innerHTML=code.split('').map(function(L){return '<div><b>'+L+'</b><span>'+POLE[L]+'</span></div>'}).join('');
     $('rWho').innerHTML=nick?'<b>'+esc(nick)+'</b>님의 축제 RATI':'나의 축제 RATI';
     show('sResult');
-    if(!sent){sent=true;track('event',{cat:'ulsan_fest',label:(code+' · '+(nick||'-')).slice(0,40)});}
+    if(!sent){sent=true;track('event',{cat:'ulsan_fest',label:(code+' · '+(nick||'-')).slice(0,40)});
+      /* 사이트 참여 집계(총 참여 n명 · 유형 카운트)에 포함 — 정식 검사 완료와 같은 ?code= 핑 */
+      try{if(location.hostname==='ratilab.com')fetch(ENDPOINT+'?code='+code,{mode:'no-cors',cache:'no-store'})}catch(e){}}
   }
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 
