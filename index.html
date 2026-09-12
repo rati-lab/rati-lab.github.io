@@ -364,6 +364,7 @@
 .review-quote::before{content:'“'}
 .review-quote::after{content:'”'}
 </style>
+<script src="https://cdn.portone.io/v2/browser-sdk.js" defer></script><!-- 포트원 V2 SDK · KCP 결제창 · 2026-09-12 -->
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
@@ -809,7 +810,7 @@
       <div class="eyebrow" style="display:block;text-align:center">REPORTS — 심층 · 궁합</div>
       <h2 class="sec-t">측정은 무료로,<br><span style="color:var(--rosed)">해결은 리포트로.</span></h2>
       <p class="sec-s">유형을 아는 건 시작입니다. 리포트는 당신 상황에 맞춘 해석과 <b>실행 가능한 처방</b>까지 냅니다.</p>
-      <p style="text-align:center;margin-top:12px"><span class="mono" style="font-size:10px;letter-spacing:.8px;color:var(--slate);background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:99px;padding:7px 16px">런칭 기념가로 제공 중 · 지금은 토스 송금(계좌이체)으로 결제</span></p>
+      <p style="text-align:center;margin-top:12px"><span class="mono" style="font-size:10px;letter-spacing:.8px;color:var(--slate);background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:99px;padding:7px 16px">런칭 기념가로 제공 중 · 카드 결제(KCP) · 계좌이체</span></p>
     </div>
     <div class="pline-grid">
       <div class="pline rv">
@@ -945,7 +946,7 @@
     <div class="f-legal">
       <a class="f-dt f-mail" href="terms.html">이용약관</a>
       <details class="f-dt"><summary>개인정보처리방침</summary>
-        <div class="f-dt-b">시행 2026-07-14 (최종 수정 2026-09-07) · <b>수집 항목</b>: ①사전예약: 이메일·희망 상품(선택) ②주문·결제: 입금자명·주문 이메일·선택 상품·입금 내역 ③검사 응답: 닉네임·나이·성별·성격유형(본인 입력)·검사 응답과 결과 ④문의·사연·후기·문항 제안: 작성 텍스트와 답장용 이메일(선택) · <b>이용 목적</b>: 리포트 제작·발송, 주문 처리·문의 응대, 서비스 통계·개선 · <b>보유·파기</b>: 사전예약 이메일은 발송 후 지체 없이 파기 · 주문·결제 기록 5년, 문의·후기 기록 3년(관련 법령) · 익명 통계는 목적 달성 시까지 · <b>위탁</b>: Google LLC(클라우드 저장) · 제3자 제공 없음 · <b>권리</b>: drkms104@naver.com으로 열람·삭제 요청 가능.</div>
+        <div class="f-dt-b">시행 2026-07-14 (최종 수정 2026-09-07) · <b>수집 항목</b>: ①사전예약: 이메일·희망 상품(선택) ②주문·결제: 입금자명·주문 이메일·선택 상품·입금 내역·카드 결제 승인 정보(결제사 거래번호·승인 금액) ③검사 응답: 닉네임·나이·성별·성격유형(본인 입력)·검사 응답과 결과 ④문의·사연·후기·문항 제안: 작성 텍스트와 답장용 이메일(선택) · <b>이용 목적</b>: 리포트 제작·발송, 주문 처리·문의 응대, 서비스 통계·개선 · <b>보유·파기</b>: 사전예약 이메일은 발송 후 지체 없이 파기 · 주문·결제 기록 5년, 문의·후기 기록 3년(관련 법령) · 익명 통계는 목적 달성 시까지 · <b>위탁</b>: Google LLC(클라우드 저장) · (주)포트원·NHN KCP(주)(카드 결제 처리 — 카드번호는 결제대행사에서만 처리하며 회사는 저장하지 않음) · 제3자 제공 없음 · <b>권리</b>: drkms104@naver.com으로 열람·삭제 요청 가능.</div>
       </details>
       <details class="f-dt"><summary>환불규정</summary>
         <div class="f-dt-b">대상: 심층·커플·세트(디지털 콘텐츠) · <b>발송 전</b>: 사유 없이 전액 환불 · <b>발송 후</b>: 열람 즉시 가치가 소비되는 콘텐츠 특성상 환불 불가 · <b>예외(환불/재발송)</b>: 입금 확인 후 24시간(영업일) 초과 미도착, 다른 유형 리포트 발송, 파일 손상 · <b>방법</b>: drkms104@naver.com으로 입금자명과 함께 요청, 3영업일 내 처리.</div>
@@ -954,7 +955,8 @@
     </div>
     <div class="f-biz mono">상호 라티랩 · 대표 김민수 · 사업자등록번호 359-19-03027<br>
       경상남도 양산시 신덕계2길 15, 1001동 1504호<br>
-      전화 010-3922-1280 · 이메일 drkms104@naver.com</div>
+      전화 010-3922-1280 · 이메일 drkms104@naver.com<br>
+      통신판매업 신고: 면제 (부가가치세법상 간이과세자)</div>
     <div class="f-cr mono">© 2026 RATI Lab. All rights reserved. · ratilab.com</div>
   </div>
 </footer>
@@ -1274,33 +1276,65 @@
         <div><label class="sy-lb">나의 성격유형</label><input id="odMyM" type="text" maxlength="4" placeholder="예: ENFP" style="text-transform:uppercase"></div>
         <div><label class="sy-lb">상대 성격유형 <span class="sy-opt">(선택)</span></label><input id="odThM" type="text" maxlength="4" placeholder="모르면 비워두세요" style="text-transform:uppercase"></div>
       </div></div>
-      <div class="od-info">
-        <p>· 입금자명은 <b>이메일 앞부분</b>으로 해주세요. 예) rati123@naver.com → <b>rati123</b></p>
-        <p>· 금액으로 상품을 구분합니다. (1,500 궁합 · 9,900 +성격유형 — 심층은 무료 이벤트 중) 따로 메일을 보내지 않아도 됩니다.</p>
-        <p>· 입금 확인 후 <b>24시간 이내</b> 이메일 도착 · 발송 전엔 <b>전액 환불</b></p>
+      <div class="od-info" id="odInfo">
+        <p>· 결제 후 <b>24시간 이내</b> 이메일로 리포트 도착 · 발송 전엔 <b>전액 환불</b></p>
+        <p>· 카드 결제는 <b>NHN KCP 안전결제창</b>에서 진행되며 카드 정보는 저희에게 저장되지 않아요.</p>
       </div>
+      <label class="od-agree" id="odAgreeWrap"><input type="checkbox" id="odAgree"><span>리포트가 이메일로 <b>발송(제공 개시)</b>된 뒤에는 디지털 콘텐츠 특성상 청약철회가 제한된다는 점을 확인했어요. 발송 전엔 전액 환불됩니다. <i>(전자상거래법 §17②)</i></span></label>
       <div class="sy-err mono" id="odErr" hidden></div>
       <div class="sy-btns">
-        <button class="cta" type="button" id="odPay" style="padding:13px 20px;font-size:13.5px">토스로 결제하기</button>
-        <button class="cta" type="button" id="odKakao" style="padding:13px 20px;font-size:13.5px;background:linear-gradient(160deg,#FEE500,#F5D800);color:#241C26;box-shadow:0 12px 28px rgba(245,216,0,.35),inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -3px 6px rgba(160,140,0,.25)">카카오페이로 결제하기</button>
-        <button class="btn2" type="button" id="odCopy">계좌·금액 복사</button>
+        <button class="cta" type="button" id="odPay" style="padding:13px 20px;font-size:13.5px" disabled>카드로 결제하기</button>
+        <button class="btn2" type="button" id="odTransferToggle">계좌이체로 결제</button>
       </div>
-      <p class="sy-fine mono">모바일에서는 앱이 바로 열리고, PC에서는 스캔용 QR이 표시됩니다. 토스뱅크 <b>1000-4209-8680</b> (김민수)</p>
-      <div id="odQrPanel" hidden>
-        <div class="od-qr-box">
-          <div id="odQr"></div>
-          <div class="od-qr-txt"><b id="odQrTitle">휴대폰 카메라로 스캔하세요</b><p id="odQrDesc">토스 앱이 <b>금액·계좌가 채워진 송금 화면</b>으로 바로 열립니다.</p>
-          <p class="mono" style="font-size:9.5px;color:var(--mut);margin-top:8px" id="odQrAmt"></p></div>
+      <p class="sy-fine mono" id="odPayNote">신용·체크카드 결제 · KCP 결제창이 열려요. 모바일은 결제 후 이 페이지로 자동 복귀합니다.</p>
+      <div id="odTransfer" hidden>
+        <div class="od-info" style="margin-top:12px">
+          <p>· 토스뱅크 <b>1000-4209-8680</b> (김민수) · 입금자명은 <b>이메일 앞부분</b>으로 해주세요. 예) rati123@naver.com → <b>rati123</b></p>
+          <p>· 금액으로 상품을 구분합니다. 따로 메일을 보내지 않아도 됩니다.</p>
         </div>
-        <div class="sy-btns"><button class="cta" type="button" id="odPaid" style="padding:13px 24px;font-size:13.5px">입금 완료했어요</button></div>
+        <div class="sy-btns">
+          <button class="cta" type="button" id="odToss" style="padding:13px 20px;font-size:13.5px">토스로 송금하기</button>
+          <button class="btn2" type="button" id="odCopy">계좌·금액 복사</button>
+        </div>
+        <p class="sy-fine mono">모바일에서는 토스 앱이 바로 열리고, PC에서는 스캔용 QR이 표시됩니다.</p>
+        <div id="odQrPanel" hidden>
+          <div class="od-qr-box">
+            <div id="odQr"></div>
+            <div class="od-qr-txt"><b id="odQrTitle">휴대폰 카메라로 스캔하세요</b><p id="odQrDesc">토스 앱이 <b>금액·계좌가 채워진 송금 화면</b>으로 바로 열립니다.</p>
+            <p class="mono" style="font-size:9.5px;color:var(--mut);margin-top:8px" id="odQrAmt"></p></div>
+          </div>
+          <div class="sy-btns"><button class="cta" type="button" id="odPaid" style="padding:13px 24px;font-size:13.5px">입금 완료했어요</button></div>
+        </div>
       </div>
     </div>
     <div id="odDone" hidden>
       <div class="sy-done-emo">🧾</div>
-      <h3>주문 정보가 접수됐어요</h3>
-      <p class="sy-sub" style="text-align:center;margin-top:10px">입금이 확인되면 24시간 안에<br><b id="odDoneMail">이메일</b>로 리포트가 도착합니다.</p>
-      <p class="sy-fine mono" style="margin-top:14px;text-align:center">입금자명: <b id="odDoneName">-</b> · 금액: <b id="odDoneAmt">-</b> · 발송 전 전액 환불 가능</p>
+      <h3 id="odDoneTitle">주문 정보가 접수됐어요</h3>
+      <p class="sy-sub" style="text-align:center;margin-top:10px" id="odDoneSub">입금이 확인되면 24시간 안에<br><b id="odDoneMail">이메일</b>로 리포트가 도착합니다.</p>
+      <p class="sy-fine mono" style="margin-top:14px;text-align:center" id="odDoneFine">입금자명: <b id="odDoneName">-</b> · 금액: <b id="odDoneAmt">-</b> · 발송 전 전액 환불 가능</p>
       <div class="sy-btns" style="justify-content:center"><button class="btn2" type="button" id="odDoneClose">닫기</button></div>
+    </div>
+    <div id="odPgWait" hidden>
+      <div class="sy-done-emo">⏳</div>
+      <h3>결제를 확인하고 있어요</h3>
+      <p class="sy-sub" style="text-align:center;margin-top:10px">잠시만요 · 결제사(KCP)에서 승인 내역을 확인하는 중입니다.<br>이 창을 닫지 마세요.</p>
+    </div>
+    <div id="odPgDone" hidden>
+      <div class="sy-done-emo">💳</div>
+      <h3>결제가 완료됐어요</h3>
+      <p class="sy-sub" style="text-align:center;margin-top:10px">24시간 안에<br><b id="odPgMail">이메일</b>로 리포트가 도착합니다.</p>
+      <div class="od-orderno mono"><span>주문번호</span><b id="odPgNo">-</b><button class="btn2" type="button" id="odPgCopy">복사</button></div>
+      <p class="sy-fine mono" style="margin-top:12px;text-align:center">상품 <b id="odPgProd">-</b> · 결제 <b id="odPgAmt">-</b> · 발송 전 전액 환불 가능<br>문의·환불: drkms104@naver.com (주문번호를 함께 적어주세요)</p>
+      <div class="sy-btns" style="justify-content:center"><button class="btn2" type="button" id="odPgClose">닫기</button></div>
+    </div>
+    <div id="odPgPend" hidden>
+      <div class="sy-done-emo">🧐</div>
+      <h3>결제 확인이 지연되고 있어요</h3>
+      <p class="sy-sub" style="text-align:center;margin-top:10px">카드 승인은 됐는데 주문 기록 확인이 아직이에요.<br>보통 몇 분 안에 자동으로 정리됩니다 · 이중 결제되지 않아요.</p>
+      <div class="od-orderno mono"><span>주문번호</span><b id="odPendNo">-</b><button class="btn2" type="button" id="odPendCopy">복사</button></div>
+      <p class="sy-fine mono" style="margin-top:12px;text-align:center" id="odPendWhy"></p>
+      <p class="sy-fine mono" style="text-align:center">계속 이 화면이면 주문번호와 함께 drkms104@naver.com 으로 알려주세요 · 확인 즉시 리포트 발송 또는 전액 환불</p>
+      <div class="sy-btns" style="justify-content:center"><button class="cta" type="button" id="odPendRetry" style="padding:12px 20px;font-size:13px">다시 확인</button><button class="btn2" type="button" id="odPendClose">닫기</button></div>
     </div>
   </div>
 </div>
@@ -1310,6 +1344,13 @@
   .od-info{background:#F8F4FA;border:1px solid #EADFF0;border-radius:12px;padding:12px 15px;margin-top:16px}
   .od-info p{font-size:11.5px;color:var(--slate);line-height:1.7;word-break:keep-all}
   .od-info b{color:var(--rosed)}
+  .od-agree{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-size:11.5px;line-height:1.6;color:var(--slate);word-break:keep-all}
+  .od-agree input{margin-top:3px;width:16px;height:16px;flex:0 0 auto;accent-color:var(--rosed);cursor:pointer}
+  .od-agree b{color:var(--rosed)} .od-agree i{font-style:normal;color:var(--mut)}
+  .od-orderno{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px;padding:12px 14px;background:#FCEDF3;border:1px solid #F2A6C2;border-radius:12px;font-size:12px}
+  .od-orderno span{color:var(--mut)} .od-orderno b{font-size:14px;letter-spacing:.3px;color:var(--rosed);word-break:break-all}
+  .od-orderno .btn2{width:auto;flex:0 0 auto;padding:6px 12px;font-size:11px}
+  #odPay:disabled,#odToss:disabled{opacity:.45!important;cursor:not-allowed!important;filter:saturate(.6)}
   .od-qr-box{display:flex;gap:18px;align-items:center;background:#fff;border:1.5px solid var(--rose);border-radius:14px;padding:16px 18px;margin-top:16px}
   .od-qr-box #odQr svg{display:block;width:132px;height:132px}
   .od-qr-txt b{font-size:13px}
@@ -3620,11 +3661,30 @@ var qrcode = function() {
 (function(){
   var ov=document.getElementById('odOv'); if(!ov) return;
   var PRODUCTS={deep:{n:'심층 리포트 (17쪽)',amt:0}/* 오픈 이벤트 0원 — 정가 9,900 (2026-08-13) */,couple:{n:'RATI × RATI',amt:1500}/* 특가 2026-08-14 민수 지시 · 원가 8,900 */,tier2:{n:'RATI+성격유형 × RATI+성격유형',amt:9900}};
+  /* ⚠️ 금액은 Apps Script(portone_pay.gs)의 PRODUCTS_SERVER 와 반드시 동일 — 다르면 결제 검증이 amount_mismatch 로 막힌다(의도된 안전장치) */
+  // 결제 설정 · storeId/channelKey 는 포트원 공개 식별값(비밀 아님) · transfer=false 면 계좌이체 보조 결제 숨김(카드사 등록 완료 후)
+  var PAYCFG={storeId:'store-d8ff884b-5c30-404a-af7f-2e2dd15ff83b',channelKey:'channel-key-30381a63-7fd0-48ac-8921-02f0b08a757b',transfer:true};
   var cur=PRODUCTS.deep,curKey='deep';
   var frm=document.getElementById('odForm'),done=document.getElementById('odDone'),
       em=document.getElementById('odMail'),cd=document.getElementById('odCode'),
       mateW=document.getElementById('odMateWrap'),er=document.getElementById('odErr');
+  var pgWait=document.getElementById('odPgWait'),pgDone=document.getElementById('odPgDone'),pgPend=document.getElementById('odPgPend');
+  var agree=document.getElementById('odAgree'),agreeW=document.getElementById('odAgreeWrap'),payBtn=document.getElementById('odPay'),
+      trToggle=document.getElementById('odTransferToggle'),trBox=document.getElementById('odTransfer'),payNote=document.getElementById('odPayNote'),odInfo=document.getElementById('odInfo');
   function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+  function panels(which){frm.hidden=which!=='form';done.hidden=which!=='done';pgWait.hidden=which!=='wait';pgDone.hidden=which!=='pgdone';pgPend.hidden=which!=='pend';}
+  function isFree(){return !(cur.amt>0)}
+  var paying=false; /* 결제창 열린 동안 true — 버튼 재활성·창 닫힘 방지 */
+  function syncPayUI(){
+    var free=isFree();
+    agreeW.hidden=free; trToggle.hidden=free||!PAYCFG.transfer; payNote.hidden=free; odInfo.hidden=free;
+    payBtn.textContent=free?'무료로 신청하기':'카드로 결제하기 · '+fmt(cur.amt)+'원';
+    payBtn.disabled=paying||(!free&&!agree.checked);
+    var tossB=document.getElementById('odToss'); if(tossB)tossB.disabled=paying||!agree.checked;
+    trToggle.disabled=paying;
+    if(free){trBox.hidden=true;}
+  }
+  agree.addEventListener('change',syncPayUI);
   function show(key){cur=PRODUCTS[key]||PRODUCTS.deep;curKey=(PRODUCTS[key]?key:'deep');try{if(window.RATI_GA)RATI_GA('product_click',{product:(key==='deep'?'deep':'couple'),tier:key,price:cur.amt})}catch(e){}
     document.getElementById('odName').textContent=cur.n;
     document.getElementById('odPrice').textContent=fmt(cur.amt)+'원';
@@ -3648,12 +3708,15 @@ var qrcode = function() {
       if(ccNote){ccNote.hidden=!autoHide;if(autoHide)ccNote.textContent='✓ 내 유형 '+cd.value.trim().toUpperCase()+' · 결과에서 자동 첨부돼요. 이메일만 확인하면 끝!';}}
     if(mbW && !mbW.hidden && window.RATI_MBTI){var m1=document.getElementById('odMyM'),m2=document.getElementById('odThM');
       if(m1&&!m1.value)m1.value=window.RATI_MBTI.my||'';if(m2&&!m2.value)m2.value=window.RATI_MBTI.th||'';}
+    agree.checked=false; trBox.hidden=true; er.hidden=true; var _qp=document.getElementById('odQrPanel'); if(_qp)_qp.hidden=true;
+    syncPayUI(); panels('form');
     ov.hidden=false;document.body.style.overflow='hidden';
     requestAnimationFrame(function(){ov.classList.add('on')});}
   window.openOrderModal=function(k){show(k)};
-  function hide(){ov.classList.remove('on');document.body.style.overflow='';
+  function hide(){if(paying||!pgWait.hidden)return; /* 결제·검증 중엔 닫지 않음 */
+    ov.classList.remove('on');document.body.style.overflow='';
     try{['odCode','odMate','odMyM','odThM'].forEach(function(id){var x=document.getElementById(id);if(x)x.value=''});var _ps=document.getElementById('odPairSum');if(_ps)_ps.hidden=true;window.__MATCH_OPEN=null;}catch(e){} /* 잔존값이 다음 주문(특히 심층)에 섞이지 않게 */
-    setTimeout(function(){ov.hidden=true;frm.hidden=false;done.hidden=true},260)}
+    setTimeout(function(){ov.hidden=true;panels('form')},260)}
   function valid(){
     var e=em.value.trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='리포트 받을 이메일만 정확히 적어주세요 · 나머지는 자동입니다.';er.hidden=false;em.focus();return false}
@@ -3665,6 +3728,7 @@ var qrcode = function() {
     if(_mt && !mateW.hidden && _mv && !/^[RB][AU][TK][IO]$/.test(_mv)){er.textContent='상대 유형 코드 형식이 맞지 않아요 · 예: BATO. 모르면 비워두세요.';er.hidden=false;_mt.focus();return false}
     var rw=document.getElementById('odRelWrap');
     if(rw && !rw.hidden && !rw.querySelector('.od-rel .on')){er.textContent='두 사람 관계를 골라주세요 · 짝사랑·썸·연애·친구에 따라 리포트 관점이 완전히 달라져요.';er.hidden=false;return false}
+    if(!isFree() && !agree.checked){er.textContent='청약철회 안내를 확인하고 체크해주세요 · 발송 전엔 언제든 전액 환불됩니다.';er.hidden=false;return false}
     er.hidden=true;return true}
   document.querySelectorAll('[data-order]').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-order');if((k==='couple'||k==='tier2')&&window.RATI_GUESS&&RATI_GUESS.match){RATI_GUESS.match(k);}else{show(k);}})});
   (function(){var rw=document.getElementById('odRelWrap');if(!rw)return;
@@ -3674,32 +3738,47 @@ var qrcode = function() {
     if(gg)gg.addEventListener('click',function(){hide();setTimeout(function(){if(window.RATI_GUESS)RATI_GUESS.open()},290)});})();
   document.getElementById('odClose').addEventListener('click',hide);
   document.getElementById('odDoneClose').addEventListener('click',hide);
-  ov.addEventListener('click',function(e){if(e.target===ov)hide()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ov.hidden)hide()});
-  // 결제 설정 · kakaoQR = 카카오페이 앱에서 만든 내 송금 QR 링크 (금액은 코드로 프리셋). 채우면 카카오페이 버튼 자동 노출.
-  var PAYCFG={kakaoQR:''};
-  // 카카오페이 QR 미설정 시 버튼 숨김 · '준비 중' 깨진 인상 방지, 토스만 노출. QR 채우면 자동으로 다시 보임.
-  try{var _kkBtn=document.getElementById('odKakao');if(_kkBtn)_kkBtn.style.display=PAYCFG.kakaoQR?'':'none';}catch(e){}
-  function finishPay(){
-    var payer=em.value.trim().split('@')[0];
+  document.getElementById('odPgClose').addEventListener('click',hide);
+  document.getElementById('odPendClose').addEventListener('click',hide);
+  ov.addEventListener('click',function(e){if(e.target===ov&&pgWait.hidden)hide()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ov.hidden&&pgWait.hidden)hide()});
+  /* 주문 데이터 조립 — 계좌이체(order 기록)와 카드결제(pay_verify)가 같은 값을 쓴다 */
+  function orderData(){
+    var email=em.value.trim(),payer=email.split('@')[0];
     var _oc=(cd&&cd.value?cd.value.trim().toUpperCase():'');
     var _mt=document.getElementById('odMate'),_tc=((_mt&&_mt.value)?_mt.value.trim().toUpperCase():'')||window.RATI_GUESS_CODE||'';
-    if(curKey!=='deep'&&_tc)_oc=(_oc||'?')+'\u00d7'+_tc;/* 궁합류는 상대 코드를 함께 기록 — 2026-08-17 주문에서 상대 유형 유실되어 고객에게 되물은 사고 재발 방지 · 주문창에서 고친 값 우선 */
+    if(curKey!=='deep'&&_tc)_oc=(_oc||'?')+'×'+_tc;/* 궁합류는 상대 코드를 함께 기록 — 2026-08-17 주문에서 상대 유형 유실되어 고객에게 되물은 사고 재발 방지 · 주문창에서 고친 값 우선 */
     var _m1=document.getElementById('odMyM'),_m2=document.getElementById('odThM'),_myM=(_m1&&_m1.value?_m1.value.trim().toUpperCase():''),_thM=(_m2&&_m2.value?_m2.value.trim().toUpperCase():'');
     var _pf=window.RATI_PROFILE||(_myM?{nick:'',gender:'',age:'',mbti:_myM}:null);
-    try{RATI_TRACK('order',{product:cur.n,amt:cur.amt,email:em.value.trim(),payer:payer,code:_oc,profile:_pf})}catch(e){}
-    // 입력형 궁합 주문 기록(코드 출처·성격유형·대입 여부) — 기존 couple_sit 규격 그대로 · 값은 결제 시점의 주문창 기준 · 한 번만
-    try{var M=window.__MATCH_OPEN;if(M&&curKey!=='deep'&&window.RATI_ORDER_ENDPOINT){window.__MATCH_OPEN=null;
-      var _rb=document.querySelector('#odRelWrap .od-rel .on'),_md=(_rb&&_rb.getAttribute('data-rel'))||'연애';
-      var _sub=!!(M.sub&&_thM&&_thM===M.subVal&&_thM===_myM);
-      var _ans=[{theme:'코드',q:'내 RATI × 상대 RATI',pick:(_oc||'?')+' ('+M.src+')'},{theme:'성격유형',q:'내 성격유형 × 상대 성격유형',pick:(_myM||'미입력')+' × '+(_thM||'미입력')+(_sub?' (상대 미입력 → 내 성격유형 대입)':'')}];
-      fetch(window.RATI_ORDER_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},body:JSON.stringify({kind:'couple_sit',product:curKey,mode:_md,sid:window.RATI_SID,utm:window.RATI_UTM,answers:_ans,profile:_pf})})}}catch(e){}
-    try{if(window.RATI_GA)RATI_GA('payment_claimed',{product:(curKey==='deep'?'deep':'couple'),tier:curKey,price:cur.amt})}catch(e){}
-    // 배포 시: window.RATI_ORDER_ENDPOINT 있으면 여기서 주문정보 POST (수집서버 preorders)
-    document.getElementById('odDoneMail').textContent=em.value.trim();
-    document.getElementById('odDoneName').textContent=payer;
+    var _rb=document.querySelector('#odRelWrap .od-rel .on'),_md=(_rb&&_rb.getAttribute('data-rel'))||'';
+    var d={pkey:curKey,product:cur.n,amt:cur.amt,email:email,payer:payer,code:_oc,profile:_pf,myM:_myM,thM:_thM,mode:_md,
+            sid:window.RATI_SID||'',utm:window.RATI_UTM||'',page:(location.pathname.split('/').pop()||'index')};
+    d.sit=coupleSit(d); return d;
+  }
+  /* 입력형 궁합 주문 기록(코드 출처·성격유형·대입 여부) — 기존 couple_sit 규격 그대로 · 값은 결제 버튼 시점의 주문창 기준 · 한 번만
+     카드결제는 모바일 리다이렉트로 페이지가 새로 뜨므로, 버튼 시점에 payload 를 만들어 주문 데이터(d.sit)에 실어 보관한다 */
+  function coupleSit(d){
+    try{var M=window.__MATCH_OPEN;if(!M||d.pkey==='deep')return null;
+      var _sub=!!(M.sub&&d.thM&&d.thM===M.subVal&&d.thM===d.myM);
+      var _ans=[{theme:'코드',q:'내 RATI × 상대 RATI',pick:(d.code||'?')+' ('+M.src+')'},{theme:'성격유형',q:'내 성격유형 × 상대 성격유형',pick:(d.myM||'미입력')+' × '+(d.thM||'미입력')+(_sub?' (상대 미입력 → 내 성격유형 대입)':'')}];
+      return {kind:'couple_sit',product:d.pkey,mode:d.mode||'연애',sid:window.RATI_SID,utm:window.RATI_UTM,answers:_ans,profile:d.profile};}catch(e){return null}
+  }
+  function logCoupleSit(d){
+    try{if(!d||!d.sit||d.sitSent||!window.RATI_ORDER_ENDPOINT)return;d.sitSent=true;window.__MATCH_OPEN=null;
+      fetch(window.RATI_ORDER_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},body:JSON.stringify(d.sit)})}catch(e){}
+  }
+  /* ── 계좌이체(토스 송금) 경로 · 기존 흐름 그대로: 입금 완료 클릭 시 order 기록 → 운영자가 입금 확인 후 발송 ── */
+  function finishPay(){
+    var d=orderData();
+    try{RATI_TRACK('order',{product:d.product,amt:d.amt,email:d.email,payer:d.payer,code:d.code,profile:d.profile})}catch(e){}
+    logCoupleSit(d);
+    try{if(window.RATI_GA)RATI_GA('payment_claimed',{product:(curKey==='deep'?'deep':'couple'),tier:curKey,price:cur.amt,method:isFree()?'free':'transfer'})}catch(e){}
+    document.getElementById('odDoneTitle').textContent=isFree()?'신청이 접수됐어요':'주문 정보가 접수됐어요';
+    var _sub=document.getElementById('odDoneSub');_sub.textContent='';_sub.appendChild(document.createTextNode(isFree()?'24시간 안에':'입금이 확인되면 24시간 안에'));_sub.appendChild(document.createElement('br'));var _bm=document.createElement('b');_bm.textContent=d.email;_sub.appendChild(_bm);_sub.appendChild(document.createTextNode('로 리포트가 도착합니다.'));
+    document.getElementById('odDoneFine').hidden=isFree();
+    document.getElementById('odDoneName').textContent=d.payer;
     document.getElementById('odDoneAmt').textContent=fmt(cur.amt)+'원';
-    frm.hidden=true;done.hidden=false;
+    panels('done');
   }
   var qrPanel=document.getElementById('odQrPanel');
   function tossLink(){return 'supertoss://send?amount='+cur.amt+'&bank='+encodeURIComponent('토스뱅크')+'&accountNo=100042098680&origin=qr'}
@@ -3712,7 +3791,9 @@ var qrcode = function() {
     qrPanel.hidden=false;er.hidden=true;
     qrPanel.scrollIntoView({block:'nearest'});
   }
-  document.getElementById('odPay').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'toss'})}catch(e){}
+  trToggle.addEventListener('click',function(){trBox.hidden=!trBox.hidden;try{if(window.RATI_GA&&!trBox.hidden)RATI_GA('payment_method_click',{method:'transfer_open'})}catch(e){}
+    if(!trBox.hidden)trBox.scrollIntoView({block:'nearest'});});
+  document.getElementById('odToss').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'toss'})}catch(e){}
     if(!valid())return;
     if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
       location.href=tossLink();
@@ -3721,14 +3802,6 @@ var qrcode = function() {
       showQr(tossLink(),'휴대폰 카메라로 스캔하세요','토스 앱이 <b>금액·계좌가 채워진 송금 화면</b>으로 바로 열립니다. 입금자명은 <b>이메일 앞부분</b>으로!');
     }
   });
-  document.getElementById('odKakao').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'kakaopay'})}catch(e){}
-    if(!valid())return;
-    if(PAYCFG.kakaoQR){
-      if(/Android|iPhone|iPad/i.test(navigator.userAgent)){ location.href=PAYCFG.kakaoQR; finishPay(); }
-      else showQr(PAYCFG.kakaoQR,'휴대폰 카메라로 스캔하세요','카카오페이 송금 화면으로 바로 연결됩니다.');
-    }
-    else { er.textContent='카카오페이 연결을 준비 중이에요 · 지금은 토스 QR 또는 계좌 복사를 이용해주세요.'; er.hidden=false; }
-  });
   document.getElementById('odPaid').addEventListener('click',function(){finishPay()});
   document.getElementById('odCopy').addEventListener('click',function(){try{if(window.RATI_GA)RATI_GA('account_copy',{})}catch(e){}
     var t=this,txt='토스뱅크 1000-4209-8680 김민수 · '+cur.n+' '+fmt(cur.amt)+'원 · 입금자명: '+(em.value.trim()?em.value.trim().split('@')[0]:'이메일 앞부분');
@@ -3736,6 +3809,91 @@ var qrcode = function() {
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok)}else{
       var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(ta)}
   });
+  /* ── 카드 결제(포트원 V2 × NHN KCP) ──
+     브라우저: 결제창 → paymentId → Apps Script pay_verify (포트원 API로 금액·상태 재검증 후 preorders 기록)
+     모바일은 결제 후 ?pay_return=1&paymentId=… 로 복귀 → 아래 payReturn() 이 이어받는다.
+     금액은 클라이언트 값을 믿지 않는다 — 서버가 포트원 조회값과 PRODUCTS_SERVER 를 대조한다. */
+  var PAY_KEY='rati_pay_';
+  function saveOrder(pid,d){var s=JSON.stringify(d);try{sessionStorage.setItem(PAY_KEY+pid,s)}catch(e){}try{localStorage.setItem(PAY_KEY+pid,s)}catch(e){}}
+  function loadOrder(pid){var s=null;try{s=sessionStorage.getItem(PAY_KEY+pid)}catch(e){}if(!s){try{s=localStorage.getItem(PAY_KEY+pid)}catch(e){}}try{return s?JSON.parse(s):null}catch(e){return null}}
+  function dropOrder(pid){try{sessionStorage.removeItem(PAY_KEY+pid)}catch(e){}try{localStorage.removeItem(PAY_KEY+pid)}catch(e){}}
+  function newPaymentId(){return 'rati-'+curKey+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} /* 영숫자·하이픈만 · 40자 이내 · 상품키 포함(서버 대조용) */
+  function copyBtn(btn,text){btn.addEventListener('click',function(){var t=btn;function ok(){t.textContent='복사됨 ✓';setTimeout(function(){t.textContent='복사'},1800)}
+    var v=text();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(ok)}else{var ta=document.createElement('textarea');ta.value=v;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(ta)}})}
+  copyBtn(document.getElementById('odPgCopy'),function(){return document.getElementById('odPgNo').textContent});
+  copyBtn(document.getElementById('odPendCopy'),function(){return document.getElementById('odPendNo').textContent});
+  function openStatus(){ov.hidden=false;document.body.style.overflow='hidden';requestAnimationFrame(function(){ov.classList.add('on')})}
+  function showPgDone(pid,d,j){
+    document.getElementById('odPgMail').textContent=(d&&d.email)||(j&&j.email)||'이메일';
+    document.getElementById('odPgNo').textContent=(j&&j.orderNo)||pid;
+    document.getElementById('odPgProd').textContent=(j&&j.product)||(d&&d.product)||'-';
+    document.getElementById('odPgAmt').textContent=fmt((j&&j.amount)||(d&&d.amt)||0)+'원';
+    panels('pgdone'); dropOrder(pid);
+    try{if(window.RATI_GA)RATI_GA('purchase',{transaction_id:pid,value:(j&&j.amount)||(d&&d.amt)||0,currency:'KRW',method:'card',tier:(d&&d.pkey)||''})}catch(e){}
+  }
+  var PEND_MSG={not_paid:'결제사 응답이 아직 "완료"가 아니에요 · 잠시 후 다시 확인해주세요.',amount_mismatch:'결제 금액이 상품 금액과 달라 자동 처리가 보류됐어요 · 문의 주시면 확인 후 처리해드려요.',no_secret:'서버 설정 점검 중이에요 · 결제 내역은 안전하게 남아 있어요.',network:'네트워크 응답이 없었어요 · 다시 확인을 눌러주세요.',no_endpoint:'주문 서버 주소를 찾지 못했어요 · 새로고침 후 다시 확인해주세요.',busy:'주문 서버가 잠시 바빠요 · 몇 초 뒤 다시 확인을 눌러주세요.',bad_id:'주문번호 형식이 올바르지 않아요 · 문의 주세요.',unknown_product:'상품 정보를 찾지 못했어요 · 문의 주세요.',error:'서버 처리 중 오류가 났어요 · 다시 확인을 눌러주세요.',lookup_failed:'결제사 조회에 실패했어요 · 다시 확인을 눌러주세요.'};
+  function pendText(reason){if(PEND_MSG[reason])return PEND_MSG[reason];if(/^lookup_/.test(reason||''))return '결제사 조회 응답이 비정상이에요('+reason.slice(7)+') · 다시 확인을 눌러주세요.';return reason?'사유: '+reason:''}
+  var lastPid=null,lastOrder=null;
+  function showPgPending(pid,reason){lastPid=pid;document.getElementById('odPendNo').textContent=pid;document.getElementById('odPendWhy').textContent=pendText(reason);panels('pend')}
+  function verifyPay(pid,d){
+    lastPid=pid;lastOrder=d;panels('wait');
+    if(!window.RATI_ORDER_ENDPOINT){showPgPending(pid,'no_endpoint');return}
+    var body={kind:'pay_verify',paymentId:pid,order:d||null,sid:window.RATI_SID||'',utm:window.RATI_UTM||'',page:(location.pathname.split('/').pop()||'index')};
+    var ctl=null,timer=null;try{ctl=new AbortController();timer=setTimeout(function(){ctl.abort()},40000)}catch(e){}
+    fetch(window.RATI_ORDER_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
+      .then(function(r){return r.json()})
+      .then(function(j){if(timer)clearTimeout(timer);if(ov.hidden)openStatus();if(j&&j.ok){showPgDone(pid,d,j)}else{showPgPending(pid,(j&&j.reason)||'unknown')}})
+      .catch(function(){if(timer)clearTimeout(timer);if(ov.hidden)openStatus();showPgPending(pid,'network')});
+  }
+  document.getElementById('odPendRetry').addEventListener('click',function(){if(lastPid)verifyPay(lastPid,lastOrder||loadOrder(lastPid))});
+  payBtn.addEventListener('click',function(){
+    if(!valid())return;
+    if(isFree()){finishPay();return}
+    try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'card'})}catch(e){}
+    if(!window.PortOne||!PortOne.requestPayment){er.textContent='결제 모듈을 불러오지 못했어요 · 새로고침 후 다시 시도하거나 계좌이체를 이용해주세요.';er.hidden=false;return}
+    var d=orderData(),pid=newPaymentId();
+    saveOrder(pid,d);
+    paying=true;syncPayUI();
+    PortOne.requestPayment({
+      storeId:PAYCFG.storeId,channelKey:PAYCFG.channelKey,paymentId:pid,
+      orderName:cur.n,totalAmount:cur.amt,currency:'CURRENCY_KRW',payMethod:'CARD',
+      customer:{fullName:d.payer,email:d.email},
+      redirectUrl:location.origin+location.pathname+'?pay_return=1'
+    }).then(function(res){
+      paying=false;syncPayUI();
+      if(!res){return}
+      if(res.code!==undefined){ /* 사용자 취소 포함 */
+        dropOrder(pid);
+        er.textContent=(res.message&&/취소/.test(res.message))?'결제를 취소했어요 · 준비되면 다시 눌러주세요.':'결제가 진행되지 않았어요 · '+(res.message||res.code);er.hidden=false;
+        try{if(window.RATI_GA)RATI_GA('payment_fail',{code:String(res.code),tier:curKey})}catch(e){}
+        return}
+      logCoupleSit(d);
+      verifyPay(res.paymentId||pid,d);
+    }).catch(function(e){paying=false;syncPayUI();dropOrder(pid);er.textContent='결제창을 열지 못했어요 · '+(e&&e.message?e.message:'잠시 후 다시 시도해주세요.');er.hidden=false;});
+  });
+  /* 모바일 리다이렉트 복귀 · 성공: ?pay_return=1&paymentId=… / 실패: &code=…&message=…
+     엔드포인트(RATI_ORDER_ENDPOINT)는 문서 뒤쪽에서 정의되므로 DOM 준비 후 실행 */
+  function payReturn(){
+    var p;try{p=new URLSearchParams(location.search)}catch(e){return}
+    if(p.get('pay_return')!=='1')return;
+    var pid=p.get('paymentId')||'',code=p.get('code'),msg=p.get('message')||p.get('pgMessage')||'';
+    try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
+    var d=pid?loadOrder(pid):null;
+    if(d&&PRODUCTS[d.pkey]){cur=PRODUCTS[d.pkey];curKey=d.pkey;}
+    if(code||!pid){ /* 실패·취소 → 주문창 복원(이메일·코드·상대코드·성격유형·관계) + 사유 */
+      try{if(d){em.value=d.email||'';var _e2=document.getElementById('odMail2');if(_e2)_e2.value=d.email||'';
+        var _cc=String(d.code||'').split('×');cd.value=(_cc[0]||'').replace('?','');var _mt=document.getElementById('odMate');if(_mt)_mt.value=_cc[1]||'';
+        var _m1=document.getElementById('odMyM'),_m2=document.getElementById('odThM');if(_m1)_m1.value=d.myM||'';if(_m2)_m2.value=d.thM||'';
+        if(d.mode){document.querySelectorAll('#odRelWrap .od-rel button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-rel')===d.mode)})}}}catch(e){}
+      if(pid)dropOrder(pid);
+      show(curKey);
+      er.textContent=(/취소/.test(msg)?'결제를 취소했어요 · 준비되면 다시 눌러주세요.':'결제가 진행되지 않았어요 · '+(msg||code||''));er.hidden=false;
+      return}
+    openStatus();
+    if(d)logCoupleSit(d);
+    verifyPay(pid,d);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',payReturn);else payReturn();
 })();
 </script>
 
