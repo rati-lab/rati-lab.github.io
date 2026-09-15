@@ -159,9 +159,11 @@ if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.ad
     $('rAx').innerHTML=code.split('').map(function(L){return '<div><b>'+L+'</b><span>'+POLE[L]+'</span></div>'}).join('');
     $('rWho').innerHTML=nick?'<b>'+esc(nick)+'</b>님의 축제 RATI':'나의 축제 RATI';
     show('sResult');
-    if(!sent){sent=true;track('event',{cat:'ulsan_fest',label:(code+' · '+(nick||'-')).slice(0,40)});
-      /* 사이트 참여 집계(총 참여 n명 · 유형 카운트)에 포함 — 정식 검사 완료와 같은 ?code= 핑 */
-      try{if(location.hostname==='ratilab.com')fetch(ENDPOINT+'?code='+code,{mode:'no-cors',cache:'no-store'})}catch(e){}}
+    if(!sent){sent=true;
+      /* 무료 검사와 같은 test_done 행으로 기록 → 응답 탭에 참가자 한 줄 + 참여 n명·유형 분포 집계에 반영.
+         문항수 4 · 정밀도 '약식(축제)' · 유입 ulsan_fest 로 실측 22문항과 구분된다. */
+      track('test_done',{code:code,n:Q.length,acc:'약식(축제)',answers:code+' 4택',
+        profile:{nick:nick||'',gender:'',age:'',mbti:''}});}
   }
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 
