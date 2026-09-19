@@ -541,7 +541,7 @@
           <a class="btn2 btn-match" href="javascript:void(0)" onclick="RATI_GUESS.match();return false">상대방과 나 궁합보기</a>
         </div>
         <div class="data-line">
-          <span>참여 <b data-count="4134">4,134</b>명</span>
+          <span>참여 <b data-count="4436">4,436</b>명</span>
           <span><b>22</b>문항</span><span><b>4</b>축</span><span><b>16</b>유형</span>
         </div>
       </div>
@@ -1103,19 +1103,9 @@
     }, {threshold:.12});
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
-    // count-up (실측 숫자만)
-    var co = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting) return;
-        var el = e.target, t0 = null;
-        function step(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/1100, 1);
-          var target = parseInt(el.dataset.count,10)||0; /* 매 프레임 재독 — 도중에 라이브 total 이 들어오면 새 목표로 수렴 */
-          el.textContent = Math.floor(target * (1-Math.pow(1-p,3))).toLocaleString('ko-KR');
-          if(p<1) requestAnimationFrame(step); else el.dataset.done = '1'; }
-        requestAnimationFrame(step); co.unobserve(el);
-      });
-    }, {threshold:.6});
-    document.querySelectorAll('[data-count]').forEach(function(el){ co.observe(el); });
+    // 참여 수 — 애니메이션 없이 data-count 값을 그대로 표시 (라이브 total 도착 시 즉시 갱신)
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var n = parseInt(el.dataset.count,10); if(n>0) el.textContent = n.toLocaleString('ko-KR'); });
     document.querySelectorAll('.dcell').forEach(function(c){ c.addEventListener('click', function(){
       if(window.openTypeModal) window.openTypeModal(c); }); });
 
@@ -4061,7 +4051,7 @@ var qrcode = function() {
       document.getElementById('tpLove').textContent=desc.love;
       document.getElementById('tpTip').textContent=desc.tip;
     } else { dEl.hidden=true; lEl.hidden=false; }
-    document.getElementById('tpPct').textContent=pct?('분포 '+pct+' · 표본 '+((window.__RATI_STAT&&window.__RATI_STAT.total)||window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR')):'분포 집계 중';
+    document.getElementById('tpPct').textContent=pct?('분포 '+pct+' · 표본 '+((window.RATI_STAT_DEN&&window.RATI_STAT_DEN())||window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR')):'분포 집계 중';
     document.getElementById('tpGline').textContent=g.l;
     ov.hidden=false;document.body.style.overflow='hidden';
     requestAnimationFrame(function(){ov.classList.add('on')});
@@ -4530,9 +4520,9 @@ window.RATI_TEST=(function(){
     })();
     var an=answeredN(),prec=precision(an);
     var today=new Date(),ds=today.getFullYear()+'.'+(today.getMonth()+1)+'.'+today.getDate();
-    // 분포·순위 (라이브 total · 폴백 = RATI_N_SNAPSHOT)
-    var ST=window.__RATI_STAT,statTotal=null,my,rank=1;
-    if(ST&&ST.counts&&ST.total){statTotal=ST.total;var mineC=ST.counts[res.code]||0;my=Math.round(mineC/ST.total*1000)/10;for(var k in ST.counts){if((ST.counts[k]||0)>mineC)rank++}}
+    // 분포·순위 (참여 표시 = 라이브 total · % 분모 = 완주 수 done(=counts 합) · 폴백 = RATI_N_SNAPSHOT)
+    var ST=window.__RATI_STAT,statTotal=null,statDen=null,my,rank=1;
+    if(ST&&ST.counts&&ST.total){statTotal=ST.total;statDen=window.RATI_STAT_DEN();var mineC=ST.counts[res.code]||0;my=Math.round(mineC/statDen*1000)/10;for(var k in ST.counts){if((ST.counts[k]||0)>mineC)rank++}}
     else{my=PCT16[res.code];for(var k2 in PCT16){if(PCT16[k2]>my)rank++}}
     // 종합 해석 · 상위 2극
     var arr=['rb','au','tk','io'].map(function(k){return {k:k,d:Math.abs(res.ax[k]-50),v:res.ax[k]}}).sort(function(a,b){return b.d-a.d});
@@ -4573,7 +4563,7 @@ window.RATI_TEST=(function(){
     +'</div>'
     /* 분포 */
     +'<div class="rp-page" style="text-align:center"><p style="font-size:13px;color:var(--slate)">지금까지 <b>'+(statTotal||window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR')+'명</b>이 검사했어요 <span class="mono" style="font-size:9px;color:var(--mut)">('+(statTotal?'실시간 집계':'집계 중')+')</span></p>'
-    +'<p style="font-size:15px;margin-top:8px">나와 같은 <b>'+t[0]+'</b>은 <b style="color:'+g.c+';font-size:22px">'+my+'%</b> · 16유형 중 '+rank+'번째 <span class="mono" style="font-size:9px;color:var(--mut)">표본 '+(statTotal||window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR')+'</span></p>'
+    +'<p style="font-size:15px;margin-top:8px">나와 같은 <b>'+t[0]+'</b>은 <b style="color:'+g.c+';font-size:22px">'+my+'%</b> · 16유형 중 '+rank+'번째 <span class="mono" style="font-size:9px;color:var(--mut)">표본 '+(statDen||window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR')+'</span></p>'
     +'<div style="height:8px;border-radius:99px;background:rgba(36,28,38,.07);margin-top:12px;overflow:hidden"><div style="width:'+Math.min(my*4,100)+'%;height:100%;background:'+g.c+';border-radius:99px"></div></div></div>'
     /* 종합 해석 */
     +'<div class="rp-page"><div class="rp-hd"><span>종합 해석 · SUMMARY</span></div><div class="rp-t">종합 해석</div>'
@@ -5220,9 +5210,9 @@ function g2Sections(c,g,my,mode,gres,gans){
       out+=g2Sections(c,g,my,mode,gres,gans);
       // 분포 속 위치 (유지)
       var ST=window.__RATI_STAT,pv,rk=1,smp;
-      if(ST&&ST.counts&&ST.total){pv=Math.round((ST.counts[c]||0)/ST.total*1000)/10;
+      if(ST&&ST.counts&&ST.total){var den=window.RATI_STAT_DEN();pv=Math.round((ST.counts[c]||0)/den*1000)/10;
         for(var k in ST.counts){if((ST.counts[k]||0)>(ST.counts[c]||0))rk++}
-        smp='표본 '+ST.total.toLocaleString();}
+        smp='표본 '+den.toLocaleString('ko-KR');}
       else{pv=H.pct[c];for(var k2 in H.pct){if(H.pct[k2]>pv)rk++}smp='표본 '+(window.RATI_N_SNAPSHOT||0).toLocaleString('ko-KR');}
       out+='<div class="rp-page"><div class="rp-hd"><span>분포 속 위치 · POSITION</span></div>'
       +'<p class="rp-p" style="text-align:center">'+TN[c]+'은 전체의 <b style="color:'+g[1]+';font-size:19px">'+pv+'%</b> · 16유형 중 '+rk+'번째 <span class="mono" style="font-size:9px;color:var(--mut)">'+smp+'</span></p>'
@@ -5627,7 +5617,7 @@ window.RATI_DOC=(function(){
   +'<div class="th-row"><b>상황판단형 문항 (SJT)</b><p>추상 동의척도 대신 실제 상황·행동 선택으로 측정 · 자기보고의 추상화 편향을 줄이고 완주율을 높입니다.</p></div>'
   +'<div class="th-row"><b>관찰자 보고</b><p>추측 검사의 근거 · 타인 행동 평가는 확립된 방법(Vazire 2010; Connelly & Ones 2010). 단, 관찰 가능한 행동에만 한정하고 확신도를 상시 표기합니다.</p></div>'
   +'<div class="th-row"><b>사회적 바람직성 통제</b><p>모든 선택지를 떳떳하게 고를 수 있는 톤으로 균질화 · 없어 보여서 회피되는 왜곡을 줄입니다.</p></div>'
-  +'<div class="th-row"><b>실측 코호트</b><p>누적 참여 4,134명(09.19) · 완주율 97% · “참여자 평균 대비”는 실측 분포 기준.</p></div>'
+  +'<div class="th-row"><b>실측 코호트</b><p>누적 참여 4,436명(09.19) · 검사 완주율 93% ·“참여자 평균 대비”는 실측 분포 기준.</p></div>'
   +'</section>'
   +'<section class="th-sec"><div class="th-sh"><span class="th-n">04</span><span class="th-k">한계 고지</span></div><h3 class="th-t">정직하게 말해두는 것</h3>'
   +'<div class="th-note"><ul>'
@@ -6178,9 +6168,9 @@ window.RATI_SHARE=(function(){
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script>
-/* 통계 백엔드 실연동 · 스프레드시트(Apps Script)가 {total, counts:{유형:n}} 반환 */
+/* 통계 백엔드 실연동 · 스프레드시트(Apps Script)가 {total(모든 설문 참여 합), done(22문항 완주 수=counts 합), counts:{유형:n}, parts, ts} 반환 */
 window.RATI_STAT_ENDPOINT = window.RATI_STAT_ENDPOINT || 'https://script.google.com/macros/s/AKfycbyHC6hr_7P6z-cwW4QLC33uHbPpnS7zDW-6LJ3dLTqsCP8rFKnTPX65GEu41erU-1WF/exec';
-window.RATI_N_SNAPSHOT = 4134; /* 참여 수 폴백 — 배포 시 라이브 total 로 갱신 */
+window.RATI_N_SNAPSHOT = 4436; /* 참여 수 폴백 — 배포 시 라이브 total 로 갱신 */
 window.RATI_ORDER_ENDPOINT=window.RATI_ORDER_ENDPOINT||window.RATI_STAT_ENDPOINT;
 window.RATI_REVIEW_ENDPOINT=window.RATI_REVIEW_ENDPOINT||window.RATI_STAT_ENDPOINT;
 window.RATI_SID=window.RATI_SID||(function(){try{var k='rati_sid',v=localStorage.getItem(k);if(!v){v=(Math.random().toString(36).slice(2,8))+Date.now().toString(36).slice(-4);localStorage.setItem(k,v);}return v;}catch(e){return 'sid'+Date.now();}})();
@@ -6198,6 +6188,13 @@ document.addEventListener('click',function(e){
   if(el=e.target.closest('.btn2')){RATI_TRACK('event',{cat:'button',label:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)})}
 },true);
 window.__RATI_STAT = null;
+/* 유형 분포 % 분모 = 완주 수: done → counts 합 → total 순 폴백 (total 은 참여 표시 전용) */
+window.RATI_STAT_DEN = function(){
+  var ST = window.__RATI_STAT; if(!ST || !ST.counts) return 0;
+  return (typeof ST.done === 'number' && ST.done > 0 ? ST.done : 0)
+    || Object.keys(ST.counts).reduce(function(s,k){ return s + (ST.counts[k]||0); }, 0)
+    || ST.total || 0;
+};
 (function(){
   if(!window.RATI_STAT_ENDPOINT) return;
   try{
@@ -6209,8 +6206,7 @@ window.__RATI_STAT = null;
         var el = document.querySelector('.data-line b[data-count]');
         if(el){
           el.setAttribute('data-count', j.total);
-          /* 애니메이션 중이면 step() 이 새 target 으로 수렴하므로 건드리지 않는다 */
-          if(el.dataset.done === '1') el.textContent = j.total.toLocaleString('ko-KR');
+          el.textContent = j.total.toLocaleString('ko-KR'); /* 애니메이션 없이 즉시 반영 */
         }
       }).catch(function(){});
   }catch(e){}
