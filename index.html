@@ -1267,11 +1267,18 @@
         </div>
         <p class="sy-fine mono" style="margin-top:9px">상대 유형 코드를 몰라도 됩니다 → <a href="javascript:void(0)" id="odGoGuess" style="color:var(--rosed);font-weight:700;text-decoration:underline">상대 추측 검사 (무료 22문항) 하고 오기 →</a> 검사를 마치면 코드가 여기에 자동으로 채워져요.</p>
       </div>
+      <!-- B3 · 입력형 궁합 주문의 관계 8문항(REL[모드]) — 결제 버튼 전에 반드시 통과 · 추측 검사 경로에서 이미 답했으면 숨김 -->
+      <div id="odRel" hidden></div>
       <style>
         .od-rel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
         .od-rel button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:11px 4px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--slate);transition:all .15s}
         .od-rel button.on{border-color:var(--rose);background:#FEF1F6;color:var(--rosed)}
         @media(max-width:560px){.od-rel{grid-template-columns:repeat(2,1fr)}}
+        #odRel .od-rel{grid-template-columns:repeat(2,1fr)}
+        #odRel .od-rel button{padding:10px 12px;text-align:left;font-weight:600;line-height:1.45;word-break:keep-all}
+        #odRel .od-q.miss .sy-fine{color:var(--rosed)}
+        /* 글라스 시스템(button:not(.text-action) !important)에 .on 이 덮여 선택 표시가 안 보이던 것 — 같은 색으로 특이성만 올림 */
+        #odRelWrap .od-rel button.on,#odRel .od-rel button.on{border-color:var(--rose)!important;background:#FEF1F6!important;color:var(--rosed)!important}
       </style>
       <div id="odMbtiWrap" hidden><div class="sy-row">
         <div><label class="sy-lb">나의 성격유형</label><input id="odMyM" type="text" maxlength="4" placeholder="예: ENFP" style="text-transform:uppercase"></div>
@@ -3715,9 +3722,12 @@ var qrcode = function() {
     var fromMatch=isMatch&&!!window.__MATCH_OPEN; /* 입력형 궁합에서 넘어옴 — 코드·관계·성격유형은 이미 골랐으니 결제 정보만 */
     mateW.hidden=!isMatch;
     var rlW=document.getElementById('odRelWrap');
-    if(rlW){rlW.hidden=!isMatch||fromMatch;
+    var needRel=fromMatch&&relNeed(); /* B3 · 입력형 경로는 관계 모드 + 8문항을 주문창에서 받는다 */
+    if(rlW){rlW.hidden=!isMatch||(fromMatch&&!needRel);
+      var _rh=rlW.querySelector('.sy-fine');if(_rh)_rh.hidden=fromMatch; /* 코드는 이미 골랐으니 '추측 검사 하고 오기' 안내는 숨김 */
       if(isMatch && window.RATI_GUESS_MODE && !rlW.querySelector('.od-rel .on')){
         rlW.querySelectorAll('.od-rel button').forEach(function(b){if(b.getAttribute('data-rel')===window.RATI_GUESS_MODE)b.classList.add('on')});}}
+    relMode='';relAns=[];relGA={};relRender();
     var mbW=document.getElementById('odMbtiWrap');
     if(mbW)mbW.hidden=!(key==='tier2')||fromMatch;
     if(!cd.value && window.RATI_LAST_CODE) cd.value=window.RATI_LAST_CODE;
@@ -3738,7 +3748,7 @@ var qrcode = function() {
   window.openOrderModal=function(k){show(k)};
   function hide(){if(paying||!pgWait.hidden)return; /* 결제·검증 중엔 닫지 않음 */
     ov.classList.remove('on');document.body.style.overflow='';
-    try{['odCode','odMate','odMyM','odThM'].forEach(function(id){var x=document.getElementById(id);if(x)x.value=''});var _ps=document.getElementById('odPairSum');if(_ps)_ps.hidden=true;window.__MATCH_OPEN=null;}catch(e){} /* 잔존값이 다음 주문(특히 심층)에 섞이지 않게 */
+    try{['odCode','odMate','odMyM','odThM'].forEach(function(id){var x=document.getElementById(id);if(x)x.value=''});var _ps=document.getElementById('odPairSum');if(_ps)_ps.hidden=true;window.__MATCH_OPEN=null;relMode='';relAns=[];if(relBox){relBox.hidden=true;relBox.innerHTML=''}}catch(e){} /* 잔존값이 다음 주문(특히 심층)에 섞이지 않게 */
     setTimeout(function(){ov.hidden=true;panels('form')},260)}
   function valid(){
     var e=em.value.trim();
@@ -3751,14 +3761,42 @@ var qrcode = function() {
     if(_mt && !mateW.hidden && _mv && !/^[RB][AU][TK][IO]$/.test(_mv)){er.textContent='상대 유형 코드 형식이 맞지 않아요 · 예: BATO. 모르면 비워두세요.';er.hidden=false;_mt.focus();return false}
     var rw=document.getElementById('odRelWrap');
     if(rw && !rw.hidden && !rw.querySelector('.od-rel .on')){er.textContent='두 사람 관계를 골라주세요 · 짝사랑·썸·연애·친구에 따라 리포트 관점이 완전히 달라져요.';er.hidden=false;return false}
+    if(relBox && !relBox.hidden && !relDone()){er.textContent='관계 문항 8개를 모두 골라주세요';er.hidden=false; /* B3 · 유료 궁합은 8문항 전부 필수 */
+      var _mi=-1;for(var _i=0;_i<8;_i++){if(typeof relAns[_i]!=='number'){_mi=_i;break}}
+      var _mq=relBox.querySelector('.od-q[data-i="'+_mi+'"]');relBox.querySelectorAll('.od-q').forEach(function(w){w.classList.remove('miss')});
+      if(_mq){_mq.classList.add('miss');try{_mq.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){_mq.scrollIntoView()}}
+      return false}
     if(!isFree() && !agree.checked){er.textContent='청약철회 안내를 확인하고 체크해주세요 · 발송 전엔 언제든 전액 환불됩니다.';er.hidden=false;return false}
     er.hidden=true;return true}
   document.querySelectorAll('[data-order]').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-order');if((k==='couple'||k==='tier2')&&window.RATI_GUESS&&RATI_GUESS.match){RATI_GUESS.match(k);}else{show(k);}})});
   (function(){var rw=document.getElementById('odRelWrap');if(!rw)return;
     rw.querySelectorAll('.od-rel button').forEach(function(b){b.addEventListener('click',function(){
-      rw.querySelectorAll('.od-rel button').forEach(function(x){x.classList.remove('on')});b.classList.add('on')})});
+      rw.querySelectorAll('.od-rel button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');relRender()})}); /* 모드가 바뀌면 8문항 세트 교체·답 초기화 */
     var gg=document.getElementById('odGoGuess');
     if(gg)gg.addEventListener('click',function(){hide();setTimeout(function(){if(window.RATI_GUESS)RATI_GUESS.open()},290)});})();
+  /* ── B3 · 관계 8문항(REL[모드]) 주문창 내장 — 입력형 궁합(__MATCH_OPEN)은 이 창만 거치므로 여기서 받으면 누락이 구조적으로 불가능.
+     문항·라벨은 RATI_GUESS.rel(모드명) 이 REL/RLBL 원본을 그대로 돌려준다(복제 금지). 추측 검사 경로에서 같은 모드로 이미 8답이 있으면 재사용(중복 질문 금지). */
+  var relBox=document.getElementById('odRel'),relAns=[],relQs=null,relLbl=null,relMode='',relGA={};
+  function relNeed(){return curKey!=='deep'&&!!window.__MATCH_OPEN&&!!(window.RATI_GUESS&&RATI_GUESS.rel)}
+  function relDone(){return !!relQs&&relQs.length===8&&relQs.every(function(q,i){return typeof relAns[i]==='number'})}
+  function relRender(){
+    if(!relBox)return;
+    var _rb=document.querySelector('#odRelWrap .od-rel .on'),m=(_rb&&_rb.getAttribute('data-rel'))||'';
+    var R=(relNeed()&&m)?RATI_GUESS.rel(m):null;
+    if(!R){relBox.hidden=true;relBox.innerHTML='';relQs=null;relMode='';relAns=[];return}
+    if(m!==relMode){relMode=m;relQs=R.qs;relLbl=R.lbl;relAns=R.ans?R.ans.slice():[];}
+    if(R.ans){relBox.hidden=true;relBox.innerHTML='';return} /* 추측 검사 경로에서 같은 모드로 이미 답함 → 재사용 */
+    var h='<label class="sy-lb" style="margin-top:14px">지금 두 사람 사이는 어떤가요? <i>*</i> <span class="sy-opt">관계 문항 8개 · 리포트에 반영</span></label>';
+    relQs.forEach(function(q,i){h+='<div class="od-q" data-i="'+i+'"><p class="sy-fine mono" style="margin:12px 0 0"><b>'+(i+1)+'</b>/8 · '+relLbl[i]+' — '+q[0]+'</p><div class="od-rel">';
+      q[1].forEach(function(o,k){h+='<button type="button" data-k="'+k+'"'+(relAns[i]===k?' class="on"':'')+'>'+o+'</button>'});h+='</div></div>'});
+    relBox.innerHTML=h;relBox.hidden=false;
+    relBox.querySelectorAll('.od-q').forEach(function(w){var i=parseInt(w.getAttribute('data-i'),10);w.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
+      w.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');w.classList.remove('miss');relAns[i]=parseInt(b.getAttribute('data-k'),10);
+      if(relDone()){er.hidden=true;if(!relGA.done){relGA.done=1;try{if(window.RATI_GA)RATI_GA('rel8_done',{tier:curKey})}catch(e){}}}})})});
+    if(!relGA.view){relGA.view=1;try{if(window.RATI_GA)RATI_GA('rel8_view',{tier:curKey})}catch(e){}}
+  }
+  /* couple_sit answers 항목 — RATI_COUPLE(SIT) 전송 형식과 동일한 {theme,q,pick} */
+  function relPicks(){if(!relDone())return [];return relQs.map(function(q,i){return {theme:relLbl[i],q:q[0],pick:q[1][relAns[i]]}})}
   document.getElementById('odClose').addEventListener('click',hide);
   document.getElementById('odDoneClose').addEventListener('click',hide);
   document.getElementById('odPgClose').addEventListener('click',hide);
@@ -3783,7 +3821,7 @@ var qrcode = function() {
   function coupleSit(d){
     try{var M=window.__MATCH_OPEN;if(!M||d.pkey==='deep')return null;
       var _sub=!!(M.sub&&d.thM&&d.thM===M.subVal&&d.thM===d.myM);
-      var _ans=[{theme:'코드',q:'내 RATI × 상대 RATI',pick:(d.code||'?')+' ('+M.src+')'},{theme:'성격유형',q:'내 성격유형 × 상대 성격유형',pick:(d.myM||'미입력')+' × '+(d.thM||'미입력')+(_sub?' (상대 미입력 → 내 성격유형 대입)':'')}];
+      var _ans=[{theme:'코드',q:'내 RATI × 상대 RATI',pick:(d.code||'?')+' ('+M.src+')'},{theme:'성격유형',q:'내 성격유형 × 상대 성격유형',pick:(d.myM||'미입력')+' × '+(d.thM||'미입력')+(_sub?' (상대 미입력 → 내 성격유형 대입)':'')}].concat(relPicks()); /* B3 · +관계 8문항 = 10개 */
       return {kind:'couple_sit',product:d.pkey,mode:d.mode||'연애',sid:window.RATI_SID,utm:window.RATI_UTM,answers:_ans,profile:d.profile};}catch(e){return null}
   }
   function logCoupleSit(d){
@@ -5473,7 +5511,10 @@ function g2Sections(c,g,my,mode,gres,gans){
   }
   function orderTier(){close();if(window.openOrderModal)window.openOrderModal(tier===1?'couple':(tier===2?'tier2':'tier3'))}
   document.addEventListener('keydown',function(e){var o=document.getElementById('gsOv');if(e.key==='Escape'&&o&&!o.hidden){var m1=document.getElementById('odOv');if(m1&&!m1.hidden)return;close()}});
-  return {open:open,close:close,order:order,orderPick:orderPick,proceed:proceed,orderTier:orderTier,resume:resume,match:match,saveImage:saveImage,setMy:function(v,after){if(!/^[RB][AU][TK][IO]$/.test(v||''))return;window.RATI_LAST_CODE=v;try{if(window.RATI_GA)RATI_GA('my_type_manual',{code:v})}catch(e){}if(after==='couple'){renderCouple()}else{renderTeaser()}}};
+  return {open:open,close:close,order:order,orderPick:orderPick,proceed:proceed,orderTier:orderTier,resume:resume,match:match,saveImage:saveImage,
+    /* B3 · 주문창(odRel)용 — 모드명(짝사랑·썸·연애·친구)으로 REL 8문항·라벨 원본을 돌려주고, 같은 모드로 이미 8답(rans)이 있으면 함께 준다 */
+    rel:function(n){var k='';MODES.forEach(function(m){if(m.n===n)k=m.k});if(!k||!REL[k])return null;var ok=!!(mode&&mode.n===n&&rans.length===8&&rans.every(function(v){return typeof v==='number'}));return {qs:REL[k],lbl:RLBL,ans:ok?rans.slice():null}},
+    setMy:function(v,after){if(!/^[RB][AU][TK][IO]$/.test(v||''))return;window.RATI_LAST_CODE=v;try{if(window.RATI_GA)RATI_GA('my_type_manual',{code:v})}catch(e){}if(after==='couple'){renderCouple()}else{renderTeaser()}}};
 })();
 </script>
 <style>
