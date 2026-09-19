@@ -1287,6 +1287,22 @@
         <button class="cta" type="button" id="odPay" style="padding:13px 20px;font-size:13.5px" disabled>카드로 결제하기</button>
         <button class="btn2" type="button" id="odTransferToggle">계좌이체로 결제</button>
       </div>
+      <!-- 간편결제 · 이니시스 테스트채널 · ?pgtest=1 게이트(심사용) — 일반 사용자에겐 절대 노출 안 됨(syncPayUI) · 로고 이미지 없이 텍스트만 -->
+      <div id="odEasy" hidden>
+        <style>
+          #odEasy .sy-fine{margin-top:14px;margin-bottom:0}
+          #odEasy .sy-btns{margin-top:8px}
+          #odEasy button[data-easy="KAKAOPAY"]{background:linear-gradient(rgba(254,229,0,.10),rgba(254,229,0,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
+          #odEasy button[data-easy="NAVERPAY"]{background:linear-gradient(rgba(3,199,90,.10),rgba(3,199,90,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
+          #odEasy button[data-easy="TOSSPAY"]{background:linear-gradient(rgba(0,100,255,.10),rgba(0,100,255,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
+        </style>
+        <p class="sy-fine mono">간편결제 · 테스트 (심사용 · 실제 결제 아님)</p>
+        <div class="sy-btns">
+          <button class="btn2" type="button" data-easy="KAKAOPAY" disabled>카카오페이</button>
+          <button class="btn2" type="button" data-easy="NAVERPAY" disabled>네이버페이</button>
+          <button class="btn2" type="button" data-easy="TOSSPAY" disabled>토스페이</button>
+        </div>
+      </div>
       <p class="sy-fine mono" id="odPayNote">신용·체크카드 결제 · KCP 결제창이 열려요. 모바일은 결제 후 이 페이지로 자동 복귀합니다.</p>
       <div id="odTransfer" hidden>
         <div class="od-info" style="margin-top:12px">
@@ -1323,6 +1339,7 @@
     <div id="odPgDone" hidden>
       <div class="sy-done-emo">💳</div>
       <h3>결제가 완료됐어요</h3>
+      <p class="sy-fine mono" id="odPgTestNote" style="text-align:center;margin-top:6px" hidden>테스트 결제예요 (심사용) · 리포트는 발송되지 않아요</p>
       <p class="sy-sub" style="text-align:center;margin-top:10px">24시간 안에<br><b id="odPgMail">이메일</b>로 리포트가 도착합니다.</p>
       <div class="od-orderno mono"><span>주문번호</span><b id="odPgNo">-</b><button class="btn2" type="button" id="odPgCopy">복사</button></div>
       <p class="sy-fine mono" style="margin-top:12px;text-align:center">상품 <b id="odPgProd">-</b> · 결제 <b id="odPgAmt">-</b> · 발송 전 전액 환불 가능<br>문의·환불: drkms104@naver.com (주문번호를 함께 적어주세요)</p>
@@ -3664,7 +3681,10 @@ var qrcode = function() {
   var PRODUCTS={deep:{n:'심층 리포트 (17쪽)',amt:0}/* 오픈 이벤트 0원 — 정가 9,900 (2026-08-13) */,couple:{n:'RATI × RATI',amt:1500}/* 특가 2026-08-14 민수 지시 · 원가 8,900 */,tier2:{n:'RATI+성격유형 × RATI+성격유형',amt:9900}};
   /* ⚠️ 금액은 Apps Script(portone_pay.gs)의 PRODUCTS_SERVER 와 반드시 동일 — 다르면 결제 검증이 amount_mismatch 로 막힌다(의도된 안전장치) */
   // 결제 설정 · storeId/channelKey 는 포트원 공개 식별값(비밀 아님) · transfer=false 면 계좌이체 보조 결제 숨김(카드사 등록 완료 후)
-  var PAYCFG={storeId:'store-d8ff884b-5c30-404a-af7f-2e2dd15ff83b',channelKey:'channel-key-30381a63-7fd0-48ac-8921-02f0b08a757b',transfer:true};
+  var PAYCFG={storeId:'store-d8ff884b-5c30-404a-af7f-2e2dd15ff83b',channelKey:'channel-key-30381a63-7fd0-48ac-8921-02f0b08a757b',transfer:true,
+    easyChannelKey:'channel-key-55e275a7-0950-4031-be7d-a962d80623f7',easyTest:true}; // 이니시스 테스트채널 · 심사용 · 실운영 전환 시 채널키 교체 + easyTest:false
+  /* 간편결제 심사용 게이트 · ?pgtest=1 로 켜고 ?pgtest=0 으로 끔 · 모바일 리다이렉트 복귀 뒤에도 유지되도록 localStorage */
+  var PGTEST=false; try{ var _q=new URLSearchParams(location.search); if(_q.get('pgtest')==='1'){localStorage.setItem('RATI_PGTEST','1')} if(_q.get('pgtest')==='0'){localStorage.removeItem('RATI_PGTEST')} PGTEST=localStorage.getItem('RATI_PGTEST')==='1'; }catch(e){}
   var cur=PRODUCTS.deep,curKey='deep';
   var frm=document.getElementById('odForm'),done=document.getElementById('odDone'),
       em=document.getElementById('odMail'),cd=document.getElementById('odCode'),
@@ -3682,6 +3702,8 @@ var qrcode = function() {
     payBtn.textContent=free?'무료로 신청하기':'카드로 결제하기 · '+fmt(cur.amt)+'원';
     payBtn.disabled=paying||(!free&&!agree.checked);
     var tossB=document.getElementById('odToss'); if(tossB)tossB.disabled=paying||!agree.checked;
+    var easyW=document.getElementById('odEasy'); if(easyW){easyW.hidden=!(PGTEST&&PAYCFG.easyTest!==undefined&&!free);
+      easyW.querySelectorAll('[data-easy]').forEach(function(b){b.disabled=paying||!agree.checked})}
     trToggle.disabled=paying;
     if(free){trBox.hidden=true;}
   }
@@ -3829,10 +3851,11 @@ var qrcode = function() {
     document.getElementById('odPgNo').textContent=(j&&j.orderNo)||pid;
     document.getElementById('odPgProd').textContent=(j&&j.product)||(d&&d.product)||'-';
     document.getElementById('odPgAmt').textContent=fmt((j&&j.amount)||(d&&d.amt)||0)+'원';
+    var _tn=document.getElementById('odPgTestNote'); if(_tn)_tn.hidden=!(j&&j.test===true); /* 이니시스 테스트채널 결제 — 서버가 test:true 로 응답 · 리포트 미발송 */
     panels('pgdone'); dropOrder(pid);
     try{if(window.RATI_GA)RATI_GA('purchase',{transaction_id:pid,value:(j&&j.amount)||(d&&d.amt)||0,currency:'KRW',method:'card',tier:(d&&d.pkey)||''})}catch(e){}
   }
-  var PEND_MSG={not_paid:'결제사 응답이 아직 "완료"가 아니에요 · 잠시 후 다시 확인해주세요.',amount_mismatch:'결제 금액이 상품 금액과 달라 자동 처리가 보류됐어요 · 문의 주시면 확인 후 처리해드려요.',no_secret:'서버 설정 점검 중이에요 · 결제 내역은 안전하게 남아 있어요.',network:'네트워크 응답이 없었어요 · 다시 확인을 눌러주세요.',no_endpoint:'주문 서버 주소를 찾지 못했어요 · 새로고침 후 다시 확인해주세요.',busy:'주문 서버가 잠시 바빠요 · 몇 초 뒤 다시 확인을 눌러주세요.',bad_id:'주문번호 형식이 올바르지 않아요 · 문의 주세요.',unknown_product:'상품 정보를 찾지 못했어요 · 문의 주세요.',error:'서버 처리 중 오류가 났어요 · 다시 확인을 눌러주세요.',lookup_failed:'결제사 조회에 실패했어요 · 다시 확인을 눌러주세요.'};
+  var PEND_MSG={not_paid:'결제사 응답이 아직 "완료"가 아니에요 · 잠시 후 다시 확인해주세요.',amount_mismatch:'결제 금액이 상품 금액과 달라 자동 처리가 보류됐어요 · 문의 주시면 확인 후 처리해드려요.',no_secret:'서버 설정 점검 중이에요 · 결제 내역은 안전하게 남아 있어요.',network:'네트워크 응답이 없었어요 · 다시 확인을 눌러주세요.',no_endpoint:'주문 서버 주소를 찾지 못했어요 · 새로고침 후 다시 확인해주세요.',busy:'주문 서버가 잠시 바빠요 · 몇 초 뒤 다시 확인을 눌러주세요.',bad_id:'주문번호 형식이 올바르지 않아요 · 문의 주세요.',unknown_product:'상품 정보를 찾지 못했어요 · 문의 주세요.',error:'서버 처리 중 오류가 났어요 · 다시 확인을 눌러주세요.',lookup_failed:'결제사 조회에 실패했어요 · 다시 확인을 눌러주세요.',test_channel_blocked:'테스트 채널 결제는 처리하지 않아요'};
   function pendText(reason){if(PEND_MSG[reason])return PEND_MSG[reason];if(/^lookup_/.test(reason||''))return '결제사 조회 응답이 비정상이에요('+reason.slice(7)+') · 다시 확인을 눌러주세요.';return reason?'사유: '+reason:''}
   var lastPid=null,lastOrder=null;
   function showPgPending(pid,reason){lastPid=pid;document.getElementById('odPendNo').textContent=pid;document.getElementById('odPendWhy').textContent=pendText(reason);panels('pend')}
@@ -3847,20 +3870,23 @@ var qrcode = function() {
       .catch(function(){if(timer)clearTimeout(timer);if(ov.hidden)openStatus();showPgPending(pid,'network')});
   }
   document.getElementById('odPendRetry').addEventListener('click',function(){if(lastPid)verifyPay(lastPid,lastOrder||loadOrder(lastPid))});
-  payBtn.addEventListener('click',function(){
+  /* 결제 공용 진입 · opts={channelKey,payMethod,ga,easyPay?,redirectQs?} — 카드·간편결제가 전처리(valid→orderData→paymentId→saveOrder→paying)와 후처리(취소·logCoupleSit·verifyPay)를 공유 */
+  function startPay(opts){
     if(!valid())return;
     if(isFree()){finishPay();return}
-    try{if(window.RATI_GA)RATI_GA('payment_method_click',{method:'card'})}catch(e){}
+    try{if(window.RATI_GA)RATI_GA('payment_method_click',opts.ga)}catch(e){}
     if(!window.PortOne||!PortOne.requestPayment){er.textContent='결제 모듈을 불러오지 못했어요 · 새로고침 후 다시 시도하거나 계좌이체를 이용해주세요.';er.hidden=false;return}
     var d=orderData(),pid=newPaymentId();
     saveOrder(pid,d);
     paying=true;syncPayUI();
-    PortOne.requestPayment({
-      storeId:PAYCFG.storeId,channelKey:PAYCFG.channelKey,paymentId:pid,
-      orderName:cur.n,totalAmount:cur.amt,currency:'CURRENCY_KRW',payMethod:'CARD',
+    var req={
+      storeId:PAYCFG.storeId,channelKey:opts.channelKey,paymentId:pid,
+      orderName:cur.n,totalAmount:cur.amt,currency:'CURRENCY_KRW',payMethod:opts.payMethod,
       customer:{fullName:d.payer,email:d.email},
-      redirectUrl:location.origin+location.pathname+'?pay_return=1'
-    }).then(function(res){
+      redirectUrl:location.origin+location.pathname+'?pay_return=1'+(opts.redirectQs||'')
+    };
+    if(opts.easyPay)req.easyPay=opts.easyPay;
+    PortOne.requestPayment(req).then(function(res){
       paying=false;syncPayUI();
       if(!res){return}
       if(res.code!==undefined){ /* 사용자 취소 포함 */
@@ -3871,7 +3897,13 @@ var qrcode = function() {
       logCoupleSit(d);
       verifyPay(res.paymentId||pid,d);
     }).catch(function(e){paying=false;syncPayUI();dropOrder(pid);er.textContent='결제창을 열지 못했어요 · '+(e&&e.message?e.message:'잠시 후 다시 시도해주세요.');er.hidden=false;});
-  });
+  }
+  payBtn.addEventListener('click',function(){startPay({channelKey:PAYCFG.channelKey,payMethod:'CARD',ga:{method:'card'}})});
+  /* 간편결제(카카오페이·네이버페이·토스페이) · 이니시스 테스트채널 · PGTEST 게이트 안에서만 노출 · 복귀 URL에 pgtest=1 을 실어 모바일 리다이렉트 뒤에도 게이트 유지 */
+  document.querySelectorAll('#odEasy [data-easy]').forEach(function(b){b.addEventListener('click',function(){
+    var provider=b.getAttribute('data-easy');
+    startPay({channelKey:PAYCFG.easyChannelKey,payMethod:'EASY_PAY',easyPay:{easyPayProvider:provider},redirectQs:'&pgtest=1',ga:{method:'easy_'+provider.toLowerCase(),test:1}});
+  })});
   /* 모바일 리다이렉트 복귀 · 성공: ?pay_return=1&paymentId=… / 실패: &code=…&message=…
      엔드포인트(RATI_ORDER_ENDPOINT)는 문서 뒤쪽에서 정의되므로 DOM 준비 후 실행 */
   function payReturn(){
