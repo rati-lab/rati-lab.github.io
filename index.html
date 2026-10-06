@@ -33,6 +33,8 @@
       var __ir=document.documentElement;__ir.classList.add('inapp-lite');
       if(/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|DaumApps/i.test(__iu))__ir.classList.add('inapp-heavy');
     }}catch(e){}
+  /* 심층 점검 중(PG 심사 · 2026-10-06 민수 결정) — 재오픈 시 아래 한 줄만 삭제. RATI_DEEP_CLOSED=프로모 팝업 정지·심층 문서 가드 / html.deep-closed=[data-deep-ev] 표시 요소 숨김(CSS는 .pl-step.pl-free 규칙 옆) */
+  window.RATI_DEEP_CLOSED=true;try{document.documentElement.classList.add('deep-closed');}catch(e){}
 </script>
 <style id="inapp-lite-css">
   /* 인앱 공통(네이버 포함): backdrop-filter만 솔리드로 대체 · 장식·애니메이션·스크롤 리빌은 그대로 */
@@ -82,6 +84,8 @@
   #gung .gt-h,#gung .gt-buy{display:none!important}
   /* 유료 리포트 문서: 유료 상품만 · 0원 항목(기본 결과·추측 티저)은 숨김 (사용자 요청 2026-08-04) */
   .pl-step.pl-free{display:none!important}
+  /* 심층 점검 중 — html.deep-closed(head 스크립트에서 부여)일 때 심층 무료 이벤트 표시 요소([data-deep-ev]) 일괄 숨김 · 헤더 2곳은 모바일 메뉴 !important 규칙보다 높은 특이성 필요 */
+  html.deep-closed [data-deep-ev],html.deep-closed #hd .hd-r .hd-link[data-deep-ev],html.deep-closed #dtOv .rt-bar .hd-r .hd-link[data-deep-ev]{display:none!important}
 </style>
 <style id="popup-doc-css">
   /* ── 헤더 팝업 문서 리디자인 (types.html 무드 통일) ── */
@@ -394,7 +398,7 @@
     <button class="hd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="hdNav" onclick="return RATI_NAV&&RATI_NAV.toggle()"><span></span><span></span><span></span></button>
     <nav class="hd-r" id="hdNav">
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 display:none 스타일만 제거 -->
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false" data-deep-ev><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — html.deep-closed일 때 data-deep-ev로 숨김 · 재오픈은 head 플래그 한 줄 삭제 -->
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
       <a class="hd-link" href="types.html">유형설명</a>
       <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
@@ -817,14 +821,14 @@
       <p style="text-align:center;margin-top:12px"><span class="mono" style="font-size:10px;letter-spacing:.8px;color:var(--slate);background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:99px;padding:7px 16px">런칭 기념가로 제공 중 · 카드 결제(KCP) · 계좌이체</span></p>
     </div>
     <div class="pline-grid">
-      <div class="pline rv">
+      <div class="pline rv" data-deep-ev><!-- 심층 점검 중: 그룹 ①(기본 결과=무료 숨김행 + 심층 0원)은 통째로 숨김 · 재오픈은 head 플래그 삭제 -->
         <div class="pl-hd"><span class="pl-k mono">① 나 혼자 — 나를 아는 리포트</span><h3>내 리포트</h3><p>내가 연애에서 왜 이러는지 — 17쪽으로 깊게 풀어줍니다.</p></div>
-        <div class="pl-step pl-free"><div class="pl-price">0원</div><div class="pl-body"><b>기본 결과 리포트</b><p>내 유형·그래프·멘헤라 지수까지 — 검사만 하면 전부 무료</p></div><a class="pbtn mono" href="#" onclick="return RATI_TEST.open()">검사 →</a></div>
+        <div class="pl-step pl-free"><div class="pl-price">무료</div><div class="pl-body"><b>기본 결과 리포트</b><p>내 유형·그래프·멘헤라 지수까지 — 검사만 하면 전부 무료</p></div><a class="pbtn mono" href="#" onclick="return RATI_TEST.open()">검사 →</a></div>
         <div class="pl-step hot"><div class="pl-price"><span class="pl-now">오픈 이벤트</span><span class="pl-off">FREE</span>0<s>9,900</s></div><div class="pl-body"><b>심층 테스트 <span class="mono pl-mini">32문항</span></b><p>4축 정밀 해부 · 반복 루프 · 실전 스크립트 12 — 결과는 17쪽 리포트·증서로 이메일 도착</p></div><button class="pbtn mono" type="button" onclick="RATI_DOC.open('deep');return false" aria-label="심층 테스트 무료 이벤트">무료 →</button></div>
       </div>
       <div class="pline rv">
         <div class="pl-hd"><span class="pl-k mono">② 둘이서 — 우리 사이를 보는 리포트</span><h3>우리 리포트 — RATI × RATI 조합 해설</h3><p>짝사랑 · 썸 · 연애 · 친구 — 관계를 고르면 두 사람을 겹쳐서 봐드립니다.</p></div>
-        <div class="pl-step pl-free"><div class="pl-price">0원</div><div class="pl-body"><b>추측 검사 + 티저</b><p>그 사람 행동만 보고 22문항 — 상대 유형과 우리 조합 이름·난이도까지 공짜</p></div><button class="pbtn mono" type="button" onclick="RATI_GUESS.open()">시작 →</button></div>
+        <div class="pl-step pl-free"><div class="pl-price">무료</div><div class="pl-body"><b>추측 검사 + 티저</b><p>그 사람 행동만 보고 22문항 — 상대 유형과 우리 조합 이름·난이도까지 공짜</p></div><button class="pbtn mono" type="button" onclick="RATI_GUESS.open()">시작 →</button></div>
         <div class="pl-step hot"><div class="pl-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−83%</span>1,500<s>8,900</s></div><div class="pl-body"><b>RATI × RATI</b><p>두 사람의 유형을 겹쳐 딱 우리 얘기로 · 예) 짝사랑 <span class="pl-mini mono">"쫓을수록 도망"</span> · 24시간 이내 도착</p></div><button class="pbtn mono" type="button" data-order="couple" aria-label="RATI×RATI 조합 리포트 1,500원 주문">주문 →</button></div>
         <div class="pl-step"><div class="pl-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−23%</span>9,900<s>12,900</s></div><div class="pl-body"><b>RATI+성격유형 × RATI+성격유형</b><p>두 사람의 성격유형까지 같이 읽습니다 — 왜 그렇게 말하고, 왜 그렇게 서운한지까지 · 24시간 이내 도착</p></div><button class="pbtn mono" type="button" data-order="tier2" aria-label="RATI+성격유형 리포트 9,900원 주문">주문 →</button></div>
       </div>
@@ -948,12 +952,12 @@
     <div class="f-note">본 검사는 재미와 자기이해를 위한 콘텐츠이고 임상 진단이 아니에요 · 만 14세 이상 대상 · 상대 유형은 관찰 추정 · 표기된 통계는 실측 기준.<br>
       MBTI®는 The Myers-Briggs Company의 등록상표이며, RATI는 이와 무관한 별개의 검사입니다.</div>
     <div class="f-legal">
-      <a class="f-dt f-mail" href="terms.html">이용약관</a>
+      <a class="f-dt f-mail" href="terms.html">이용약관 (10/13 개정 예정)</a>
       <details class="f-dt"><summary>개인정보처리방침</summary>
         <div class="f-dt-b">시행 2026-07-14 (최종 수정 2026-09-19) · <b>수집 항목</b> : ①사전예약: 이메일·희망 상품(선택) ②주문·결제: 입금자명·주문 이메일·선택 상품·입금 내역·카드/간편결제 승인 정보(결제사 거래번호·승인 금액 — 카드번호·계좌번호는 결제대행사만 처리하며 회사는 저장하지 않음) ③검사 응답: 닉네임·나이·성별·성격유형(본인 입력)·검사 응답과 결과 ④문의·사연·후기·문항 제안: 작성 텍스트와 답장용 이메일(선택) ⑤자동 수집: 접속 기록·기기/브라우저 정보·쿠키(Google Analytics, 통계 목적 — 브라우저에서 쿠키 거부 가능) · <b>이용 목적</b> : 리포트 제작·발송, 주문 처리·환불·문의 응대, 서비스 통계·개선 · <b>보유·파기</b> : 사전예약 이메일은 발송 후 지체 없이 파기 · 주문·결제 기록 5년, 문의·후기 기록 3년(전자상거래법) · 익명 통계는 목적 달성 시까지 · 접속 통계는 Google Analytics 보존 설정(최대 14개월) · <b>처리 위탁</b> : Google LLC(클라우드 저장·메일 발송·접속 통계) · (주)포트원·NHN KCP(주)·(주)KG이니시스(결제 처리·승인 확인) · Supabase, Inc.(주문 기록 사본 저장 — 서버 소재지 대한민국 서울) · Cloudflare, Inc.(결제 승인 알림 중계 — 주문번호·결제 상태만 통과, 저장 없음) · <b>국외 이전</b> : Google LLC·Cloudflare, Inc.(미국)는 서비스 이용 시 네트워크로 전송되어 국외에서 처리됨(항목·목적·기간은 위와 동일 · 거부 시 해당 기능 이용 제한) · 제3자 제공 없음 · <b>권리</b> : drkms104@naver.com으로 열람·정정·삭제·처리정지 요청 가능 · <b>보호책임자</b> : 김민수(대표) · 전문은 <a href="/privacy.html">privacy.html</a>.</div>
       </details>
       <details class="f-dt"><summary>환불규정</summary>
-        <div class="f-dt-b">대상: 심층·커플·세트(디지털 콘텐츠) · <b>발송 전</b>: 사유 없이 전액 환불 · <b>발송 후</b>: 열람 즉시 가치가 소비되는 콘텐츠 특성상 환불 불가 · <b>예외(환불/재발송)</b>: 입금 확인 후 24시간(영업일) 초과 미도착, 다른 유형 리포트 발송, 파일 손상 · <b>방법</b>: drkms104@naver.com으로 입금자명과 함께 요청, 3영업일 내 처리.</div>
+        <div class="f-dt-b"><b>제공 기간</b>: 결제일로부터 30일(리포트 이메일 발송·열람 링크 유효기간) · 대상: 심층·커플·세트(디지털 콘텐츠) · <b>발송 전</b>: 사유 없이 전액 환불 · <b>발송 후</b>: 열람 즉시 가치가 소비되는 콘텐츠 특성상 환불 불가 · <b>예외(환불/재발송)</b>: 입금 확인 후 24시간(영업일) 초과 미도착, 다른 유형 리포트 발송, 파일 손상 · <b>방법</b>: drkms104@naver.com으로 입금자명과 함께 요청, 3영업일 내 처리.</div>
       </details>
       <a class="f-dt f-mail" href="mailto:drkms104@naver.com">문의</a>
     </div>
@@ -1280,6 +1284,7 @@
       </div></div>
       <div class="od-info" id="odInfo">
         <p>· 결제 후 <b>24시간 이내</b> 이메일로 리포트 도착 · 발송 전엔 <b>전액 환불</b></p>
+        <p>· 리포트 제공(열람) 기간: <b>결제일로부터 30일</b></p>
         <p>· 카드 결제는 <b>NHN KCP 안전결제창</b>에서 진행되며 카드 정보는 저희에게 저장되지 않아요.</p>
       </div>
       <label class="od-agree" id="odAgreeWrap"><input type="checkbox" id="odAgree"><span>리포트가 이메일로 <b>발송(제공 개시)</b>된 뒤에는 디지털 콘텐츠 특성상 청약철회가 제한된다는 점을 확인했어요. 발송 전엔 전액 환불됩니다. <i>(전자상거래법 §17②)</i></span></label>
@@ -3984,7 +3989,7 @@ var qrcode = function() {
       <div class="tp-meta mono"><span id="tpPct">분포 집계 중</span><span id="tpGline"></span></div>
       <div class="sy-btns" style="justify-content:center;margin-top:20px">
         <a class="cta" href="#" onclick="return RATI_TEST.open()" style="padding:13px 24px;font-size:13.5px;text-decoration:none">무료 검사로 내 유형 확인</a>
-        <a class="btn2" href="javascript:void(0)" id="tpDeep" onclick="RATI_DOC.open('deep');return false" style="text-decoration:none">심층 테스트 · 지금 무료 🎉</a>
+        <a class="btn2" href="javascript:void(0)" id="tpDeep" onclick="RATI_DOC.open('deep');return false" style="text-decoration:none" data-deep-ev>심층 테스트 · 지금 무료 🎉</a>
       </div>
     </div>
   </div>
@@ -4622,7 +4627,7 @@ window.RATI_TEST=(function(){
     +'<li><b>07</b> 궁합 추천 3 · 경계 3 · 유지비 견적서</li>'
     +'<li><b>08</b> 실전 스크립트 12 · 하지 말 말 → 대신 이 말 → 원리</li>'
     +'<li><b>09</b> 이별·재회 가이드 + <b>10</b> 30일 처방전 + <b>13</b> 마지막 카드</li></ul>'
-    +'<div style="text-align:center;margin-top:20px"><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_DOC.open(\'deep\')">심층 테스트 무료로 받기 · <s style="opacity:.55;font-weight:600;font-size:12px;margin-right:3px">9,900</s>0원</button>'
+    +'<div style="text-align:center;margin-top:20px" data-deep-ev><button class="cta" style="padding:14px 28px;font-size:14.5px" onclick="RATI_DOC.open(\'deep\')">심층 테스트 무료로 받기 · <s style="opacity:.55;font-weight:600;font-size:12px;margin-right:3px">9,900</s>0원</button>'
     +'<p class="mono" style="font-size:10px;color:var(--mut);text-align:center;margin-top:11px;letter-spacing:.3px;line-height:1.7">오픈 이벤트 무료 · 17쪽 · 신규 32문항 · <b style="color:var(--slate)">결과는 이메일로 도착</b></p></div>'
     +'<p class="rp-p" style="font-size:11px;color:var(--mut);text-align:center;margin-top:10px">처방은 "고쳐라"가 아니라 "설계해라" · 정식판의 원칙이에요.</p></div>'
     +((window.RATI_GUESS_CODE||window.RATI_RETURN_TO==='match')?'<div class="rp-page" style="text-align:center;border:1.5px solid rgba(232,93,138,.45);background:#FEF4F8"><div class="rp-hd"><span>궁합으로 · NEXT</span></div><p style="font-size:14px;font-weight:800;word-break:keep-all">'+(window.RATI_GUESS_CODE?((window.RATI_GUESS_SRC==='stated'?'골라둔 상대':'추측해둔 상대')+'가 있네요 · '+((T[window.RATI_GUESS_CODE]||['상대'])[0])+' ('+window.RATI_GUESS_CODE+')'):'궁합 보던 중이었죠 · 내 유형이 나왔어요')+'</p><p style="font-size:12px;color:var(--slate);margin-top:8px">방금 나온 내 좌표('+res.code+')와 겹치면 조합 이름·난이도까지 바로 나와요.</p><div style="margin-top:14px"><button class="cta" style="padding:13px 26px;font-size:14px" onclick="RATI_TEST.close();setTimeout(function(){RATI_GUESS.resume()},250)">'+(window.RATI_GUESS_CODE?'이 상대와 궁합 이어가기 →':'궁합 이어서 보기 →')+'</button></div></div>':'')
@@ -5575,7 +5580,7 @@ function g2Sections(c,g,my,mode,gres,gans){
       <button class="hd-burger dt-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="dtNav" onclick="var b=this.closest('.rt-bar'),o=b.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기');return false"><span></span><span></span><span></span></button>
       <nav class="hd-r" id="dtNav">
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('tests');return false"><b>TEST (무료)</b></a>
-        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false"><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — 재오픈 시 display:none 스타일만 제거 -->
+        <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('deep');return false" data-deep-ev><b>심층 TEST (유료)</b> <em style="font-style:normal;font-size:10.5px;color:var(--rosed);font-weight:800">— 무료 이벤트 진행중!</em></a><!-- 심층 점검 중 — html.deep-closed일 때 data-deep-ev로 숨김 · 재오픈은 head 플래그 한 줄 삭제 -->
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('gung');return false">궁합 · 조합해설 (유료)</a>
         <a class="hd-link" href="types.html">유형설명</a>
         <a class="hd-link" href="javascript:void(0)" onclick="RATI_DOC.open('theory');return false">원리</a>
@@ -5639,7 +5644,7 @@ window.RATI_DOC=(function(){
   +'<div class="gtb" style="--dc:#E85D8A"><div class="gtb-main"><b class="gtb-name">RATI <span class="gtb-x">×</span> RATI</b><p class="gtb-desc">두 좌표 궁합 리포트(모드별) · 확인 후 24시간 이내</p></div><div class="gtb-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−83%</span>1,500<em>원</em><s>8,900</s></div><button class="pbtn mono" type="button" onclick="RATI_DOC.close();setTimeout(function(){RATI_GUESS.match(\'couple\')},80)">주문 →</button></div>'
   +'<div class="gtb" style="--dc:#7C4FD8"><div class="gtb-main"><b class="gtb-name">RATI+성격유형 <span class="gtb-x">×</span> RATI+성격유형</b><p class="gtb-desc">성격유형을 문장 레벨로 엮은 통합 합성 · 24시간 이내</p></div><div class="gtb-price"><span class="pl-now">지금 구매하면</span><span class="pl-off">−23%</span>9,900<em>원</em><s>12,900</s></div><button class="pbtn mono" type="button" onclick="RATI_DOC.close();setTimeout(function(){RATI_GUESS.match(\'tier2\')},80)">주문 →</button></div>'
   +'</div>'
-  +'<p class="rp-p" style="font-size:11px;color:var(--mut);margin-top:10px">내 유형만 깊게 · 심층 테스트는 지금 무료 이벤트 중이에요(17쪽 리포트 · 이메일 발송).</p></div>'
+  +'<p class="rp-p" style="font-size:11px;color:var(--mut);margin-top:10px" data-deep-ev>내 유형만 깊게 · 심층 테스트는 지금 무료 이벤트 중이에요(17쪽 리포트 · 이메일 발송).</p></div>'
   +'<details class="gung-acc" open><summary>어떻게 진행되나요?<span class="ga-i">＋</span></summary><div class="ga-body">'
   +'<ol class="ga-steps">'
   +'<li><b>1 · 두 사람 좌표 정하기</b><p><b>혼자</b>면 그 사람 행동 22문항으로 추정(무료), <b>둘이</b>면 각자 RATI 검사로 실제 코드를 넣습니다 · 코드를 이미 알면 바로 골라도 돼요.</p></li>'
@@ -6014,7 +6019,7 @@ window.RATI_ARCH=(function(){
 <script>
 /* 공유 루프 (기획/공유루프-스펙 P0) · 링크는 전부 OG 정상인 루트로 + utm으로 재유입 측정.
    카카오: SHARECFG.kakaoKey에 JS 키 넣고 도메인 등록하면 리치 카드 활성 (미설정 시 시스템 공유/링크복사 폴백) */
-/* 심층 재오픈(2026-08-13 민수 지시 ③④) — 점검 플래그·숨김 CSS 제거됨 */
+/* 심층 재오픈(2026-08-13 민수 지시 ③④) — 점검 플래그·숨김 CSS 제거됨 → 2026-10-06 PG 심사로 재점검: 플래그는 head 스크립트(RATI_DEEP_CLOSED)·숨김 CSS는 .pl-step.pl-free 규칙 옆 */
 window.RATI_KAKAO_KEY=window.RATI_KAKAO_KEY||'669a06a6cf4d194c2facd0bc20b05783'; /* 카카오 JavaScript 키 — 발급 시 여기 한 곳만 채우면 사이트 전체 카톡 직접 공유 활성 */
 (function(){ /* 키가 있으면 SDK 자동 로드 */
   if(!window.RATI_KAKAO_KEY)return;
