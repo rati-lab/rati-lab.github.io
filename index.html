@@ -3882,7 +3882,7 @@ var qrcode = function() {
       var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(ta)}
   });
   /* ── 카드 결제(포트원 V2 × KG이니시스) ──
-     브라우저: 결제창 → paymentId → Apps Script pay_verify (포트원 API로 금액·상태 재검증 후 preorders 기록)
+     브라우저: 결제창 → paymentId → 즉시 완료 화면 → Apps Script pay_verify 는 백그라운드(verifyInBackground)
      모바일은 결제 후 ?pay_return=1&paymentId=… 로 복귀 → 아래 payReturn() 이 이어받는다.
      금액은 클라이언트 값을 믿지 않는다 — 서버가 포트원 조회값과 PRODUCTS_SERVER 를 대조한다. */
   var PAY_KEY='rati_pay_';
@@ -3896,13 +3896,15 @@ var qrcode = function() {
   copyBtn(document.getElementById('odPendCopy'),function(){return document.getElementById('odPendNo').textContent});
   function openStatus(){ov.hidden=false;document.body.style.overflow='hidden';requestAnimationFrame(function(){ov.classList.add('on')})}
   function showPgDone(pid,d,j){
-    document.getElementById('odPgMail').textContent=(d&&d.email)||(j&&j.email)||'이메일';
+    /* 모바일 복귀에서 스토리지가 비어 d=null 일 수 있다 — paymentId 접두어(rati-<상품키>-…)로 상품·금액만 복원 */
+    var _g=(!d&&pid)?(PRODUCTS[String(pid).split('-')[1]]||null):null;
+    document.getElementById('odPgMail').textContent=(d&&d.email)||(j&&j.email)||'입력한 이메일';
     document.getElementById('odPgNo').textContent=(j&&j.orderNo)||pid;
-    document.getElementById('odPgProd').textContent=(j&&j.product)||(d&&d.product)||'-';
-    document.getElementById('odPgAmt').textContent=fmt((j&&j.amount)||(d&&d.amt)||0)+'원';
+    document.getElementById('odPgProd').textContent=(j&&j.product)||(d&&d.product)||(_g&&_g.n)||'-';
+    document.getElementById('odPgAmt').textContent=fmt((j&&j.amount)||(d&&d.amt)||(_g&&_g.amt)||0)+'원';
     var _tn=document.getElementById('odPgTestNote'); if(_tn)_tn.hidden=!(j&&j.test===true); /* 이니시스 테스트채널 결제 — 서버가 test:true 로 응답 · 리포트 미발송 */
     panels('pgdone'); dropOrder(pid);
-    try{if(window.RATI_GA)RATI_GA('purchase',{transaction_id:pid,value:(j&&j.amount)||(d&&d.amt)||0,currency:'KRW',method:'card',tier:(d&&d.pkey)||''})}catch(e){}
+    try{if(window.RATI_GA)RATI_GA('purchase',{transaction_id:pid,value:(j&&j.amount)||(d&&d.amt)||(_g&&_g.amt)||0,currency:'KRW',method:'card',tier:(d&&d.pkey)||''})}catch(e){}
   }
   var PEND_MSG={not_paid:'결제사 응답이 아직 "완료"가 아니에요 · 잠시 후 다시 확인해주세요.',amount_mismatch:'결제 금액이 상품 금액과 달라 자동 처리가 보류됐어요 · 문의 주시면 확인 후 처리해드려요.',no_secret:'서버 설정 점검 중이에요 · 결제 내역은 안전하게 남아 있어요.',network:'네트워크 응답이 없었어요 · 다시 확인을 눌러주세요.',no_endpoint:'주문 서버 주소를 찾지 못했어요 · 새로고침 후 다시 확인해주세요.',busy:'주문 서버가 잠시 바빠요 · 몇 초 뒤 다시 확인을 눌러주세요.',bad_id:'주문번호 형식이 올바르지 않아요 · 문의 주세요.',unknown_product:'상품 정보를 찾지 못했어요 · 문의 주세요.',error:'서버 처리 중 오류가 났어요 · 다시 확인을 눌러주세요.',lookup_failed:'결제사 조회에 실패했어요 · 다시 확인을 눌러주세요.',test_channel_blocked:'테스트 채널 결제는 처리하지 않아요'};
   function pendText(reason){if(PEND_MSG[reason])return PEND_MSG[reason];if(/^lookup_/.test(reason||''))return '결제사 조회 응답이 비정상이에요('+reason.slice(7)+') · 다시 확인을 눌러주세요.';return reason?'사유: '+reason:''}
@@ -3917,6 +3919,33 @@ var qrcode = function() {
       .then(function(r){return r.json()})
       .then(function(j){if(timer)clearTimeout(timer);if(ov.hidden)openStatus();if(j&&j.ok){showPgDone(pid,d,j)}else{showPgPending(pid,(j&&j.reason)||'unknown')}})
       .catch(function(){if(timer)clearTimeout(timer);if(ov.hidden)openStatus();showPgPending(pid,'network')});
+  }
+  /* 낙관적 완료 · 결제창이 성공으로 닫히면 화면은 바로 완료로 가고 서버 검증은 여기서 뒤따른다.
+     Apps Script 의 포트원 조회가 ~20초 걸려(실측 총 22초) 손님을 대기 화면에 묶어둘 이유가 없다 —
+     결제 기록은 포트원 웹훅으로도 서버에 남고, 리포트는 서버 검증을 통과한 주문에만 발송한다.
+     그래서 손님에게 알려야 하는(자동 처리가 멈춘) 사유만 보류 화면으로 전환하고, 일시적 오류는 조용히 넘긴다. */
+  var PEND_HARD={not_paid:1,amount_mismatch:1,unknown_product:1,bad_id:1};
+  function verifyInBackground(pid,d){
+    lastPid=pid;lastOrder=d; /* 보류 화면의 "다시 확인"(odPendRetry)이 그대로 동작하도록 */
+    if(!window.RATI_ORDER_ENDPOINT)return;
+    var body={kind:'pay_verify',paymentId:pid,order:d||null,sid:window.RATI_SID||'',utm:window.RATI_UTM||'',page:(location.pathname.split('/').pop()||'index')};
+    var ctl=null,timer=null;try{ctl=new AbortController();timer=setTimeout(function(){ctl.abort()},60000)}catch(e){}
+    fetch(window.RATI_ORDER_ENDPOINT,{method:'POST',keepalive:true,headers:{'Content-Type':'text/plain'},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
+      .then(function(r){return r.json()})
+      .then(function(j){
+        if(timer)clearTimeout(timer);
+        if(j&&j.ok){ /* 완료 화면이 떠 있으면 서버 확정값으로 조용히 갱신 — GA purchase 는 showPgDone 에서 한 번만 보낸다 */
+          if(!ov.hidden&&!pgDone.hidden){
+            if(j.orderNo)document.getElementById('odPgNo').textContent=j.orderNo;
+            if(j.product)document.getElementById('odPgProd').textContent=j.product;
+            if(j.amount)document.getElementById('odPgAmt').textContent=fmt(j.amount)+'원';
+            var _tn=document.getElementById('odPgTestNote'); if(_tn)_tn.hidden=!(j.test===true);
+          }
+          return}
+        if(j&&PEND_HARD[j.reason]&&!ov.hidden){showPgPending(pid,j.reason);return}
+        try{console.warn('[pay] 백그라운드 검증 미확정 · reason=',(j&&j.reason)||'unknown')}catch(e){}
+      })
+      .catch(function(e){if(timer)clearTimeout(timer);try{console.warn('[pay] 백그라운드 검증 요청 실패 ·',(e&&e.message)||e)}catch(e2){}});
   }
   document.getElementById('odPendRetry').addEventListener('click',function(){if(lastPid)verifyPay(lastPid,lastOrder||loadOrder(lastPid))});
   /* 결제 공용 진입 · opts={channelKey,payMethod,ga,easyPay?,redirectQs?} — 카드·간편결제가 전처리(valid→orderData→paymentId→saveOrder→paying)와 후처리(취소·logCoupleSit·verifyPay)를 공유 */
@@ -3944,7 +3973,10 @@ var qrcode = function() {
         try{if(window.RATI_GA)RATI_GA('payment_fail',{code:String(res.code),tier:curKey})}catch(e){}
         return}
       logCoupleSit(d);
-      verifyPay(res.paymentId||pid,d);
+      var _pid=res.paymentId||pid;
+      if(ov.hidden)openStatus();
+      showPgDone(_pid,d,null); /* 낙관적 완료 — 검증은 verifyInBackground 가 이어받는다 */
+      verifyInBackground(_pid,d);
     }).catch(function(e){paying=false;syncPayUI();dropOrder(pid);er.textContent='결제창을 열지 못했어요 · '+(e&&e.message?e.message:'잠시 후 다시 시도해주세요.');er.hidden=false;});
   }
   payBtn.addEventListener('click',function(){startPay({channelKey:PAYCFG.channelKey,payMethod:'CARD',ga:{method:'card'}})});
@@ -3958,6 +3990,7 @@ var qrcode = function() {
   function payReturn(){
     var p;try{p=new URLSearchParams(location.search)}catch(e){return}
     if(p.get('pay_return')!=='1')return;
+    window.__RATI_PAYRET=1; /* 결제 복귀 — 프로모 팝업이 결제 상태 화면 위에 겹치지 않게 (쿼리는 아래에서 지워진다) */
     var pid=p.get('paymentId')||'',code=p.get('code'),msg=p.get('message')||p.get('pgMessage')||'';
     try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
     var d=pid?loadOrder(pid):null;
@@ -3971,9 +4004,10 @@ var qrcode = function() {
       show(curKey);
       er.textContent=(/취소/.test(msg)?'결제를 취소했어요 · 준비되면 다시 눌러주세요.':'결제가 진행되지 않았어요 · '+(msg||code||''));er.hidden=false;
       return}
-    openStatus();
+    if(ov.hidden)openStatus();
     if(d)logCoupleSit(d);
-    verifyPay(pid,d);
+    showPgDone(pid,d,null); /* 낙관적 완료 — 검증은 verifyInBackground 가 이어받는다 */
+    verifyInBackground(pid,d);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',payReturn);else payReturn();
 })();
@@ -7486,16 +7520,21 @@ h1{font-size:52px;line-height:1.28}
 (function(){
   try{
     if(/[?&]doc=/.test(location.search))return;
+    if(window.__RATI_PAYRET||/[?&]pay_return=/.test(location.search))return; /* 결제 복귀 — 결제 상태 화면 위에 겹치지 않게 */
     var KEY='rati_promo_deep_hide',KEY2='rati_promo_couple_hide';
     var d=new Date(),ymd=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
     var hide1=false,hide2=false;
     try{hide1=localStorage.getItem(KEY)===ymd;hide2=localStorage.getItem(KEY2)===ymd;}catch(e){}
     if(window.RATI_DEEP_CLOSED)hide1=true; /* 심층 점검 중 — 심층 프로모만 정지 */
     var ov=document.getElementById('promoOv'),ov2=document.getElementById('promo2Ov');
+    /* 결제 상태 오버레이(#odOv · 완료·보류 패널)가 떠 있으면 프로모는 열지 않는다 — PC 결제 성공 포함 */
+    function payBusy(){var o=document.getElementById('odOv');return !!(window.__RATI_PAYRET||(o&&!o.hidden))}
     /* ── 2번 팝업: 궁합 리포트 할인 (심층 팝업이 닫힌 뒤 이어서 · 심층 CTA로 나간 경우는 이번엔 생략) ── */
     var shown2=false;
     function show2(){
-      if(!ov2||hide2||shown2)return;shown2=true;
+      if(!ov2||hide2||shown2)return;
+      if(payBusy())return;
+      shown2=true;
       ov2.hidden=false;requestAnimationFrame(function(){ov2.classList.add('on')});
       try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'couple_sale'})}catch(e){}
     }
@@ -7518,6 +7557,7 @@ h1{font-size:52px;line-height:1.28}
     if(hide1||!ov){setTimeout(show2,700);return;}
     function close(){ov.classList.remove('on');setTimeout(function(){ov.hidden=true},280)}
     setTimeout(function(){
+      if(payBusy())return;
       ov.hidden=false;
       requestAnimationFrame(function(){ov.classList.add('on')});
       try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'deep_free'})}catch(e){}
