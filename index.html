@@ -1296,21 +1296,29 @@
       </div>
       <label class="od-agree" id="odAgreeWrap"><input type="checkbox" id="odAgree"><span>리포트가 이메일로 <b>발송(제공 개시)</b>된 뒤에는 디지털 콘텐츠 특성상 청약철회가 제한된다는 점을 확인했어요. 발송 전엔 전액 환불됩니다. <i>(전자상거래법 §17②)</i></span></label>
       <div class="sy-err mono" id="odErr" hidden></div>
-      <!-- 간편결제 · 이니시스 승인 3종(카카오페이·토스페이·네이버페이) 2026-10-16 오픈 · 유료 주문창에서만 노출(syncPayUI) · 로고 이미지 없이 텍스트만 -->
+      <!-- 간편결제 · 이니시스 승인 3종(카카오페이·토스페이·네이버페이) 2026-10-16 오픈 · 유료 주문창에서만 노출(syncPayUI) · 2026-10-20 공식 로고 적용(카카오페이 '결제수단 로고' · 토스페이 Primary 로고 / 네이버페이는 로고 가이드 확인 전이라 텍스트) -->
       <div id="odEasy" hidden>
         <style>
           #odEasy{margin-bottom:10px}
           #odEasy .sy-fine{margin-top:14px;margin-bottom:0}
           #odEasy .sy-btns{margin-top:8px}
-          #odEasy button[data-easy="KAKAOPAY"]{background:linear-gradient(rgba(254,229,0,.10),rgba(254,229,0,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
-          #odEasy button[data-easy="NAVERPAY"]{background:linear-gradient(rgba(3,199,90,.10),rgba(3,199,90,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
-          #odEasy button[data-easy="TOSSPAY"]{background:linear-gradient(rgba(0,100,255,.10),rgba(0,100,255,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
+          #odEasy .sy-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+          @media (max-width:560px){#odEasy .sy-btns{grid-template-columns:1fr}}
+          #odEasy button[data-easy]{height:54px;min-height:0;padding-top:0!important;padding-bottom:0!important;gap:6px;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+          #odEasy button[data-easy] img{display:block;height:24px;width:auto;flex:0 0 auto}
+          #odEasy button[data-easy]{padding-left:10px!important;padding-right:10px!important;white-space:nowrap;justify-content:center}
+          @media (min-width:561px){#odEasy button[data-easy] img{height:22px}#odEasy button[data-easy] span{font-size:14px}}
+          #odEasy button[data-easy] .ez-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+          #odEasy button[data-easy="KAKAOPAY"]{background:#FFEB00!important;border:1px solid #FFEB00!important;color:#191919!important}
+          #odEasy button[data-easy="TOSSPAY"]{background:#fff!important;border:1px solid #E5E8EB!important;color:#191F28!important}
+          #odEasy button[data-easy="NAVERPAY"]{background:#fff!important;border:1px solid #E5E8EB!important;color:#191919!important}
+          #odEasy button[data-easy]:disabled{opacity:.45;cursor:not-allowed}
         </style>
         <p class="sy-fine mono">간편결제로 결제하기</p>
         <div class="sy-btns">
-          <button class="btn2" type="button" data-easy="KAKAOPAY" disabled>카카오페이</button>
-          <button class="btn2" type="button" data-easy="TOSSPAY" disabled>토스페이</button>
-          <button class="btn2" type="button" data-easy="NAVERPAY" disabled>네이버페이</button>
+          <button class="btn2" type="button" data-easy="KAKAOPAY" aria-label="카카오페이로 결제" disabled><img src="paylogo/kakaopay.png" alt="" width="58" height="24"><span>카카오페이</span></button>
+          <button class="btn2" type="button" data-easy="TOSSPAY" aria-label="토스페이로 결제" disabled><img src="paylogo/tosspay.png" alt="" width="101" height="24"><span class="ez-sr">토스페이</span></button>
+          <button class="btn2" type="button" data-easy="NAVERPAY" aria-label="네이버페이로 결제" disabled>네이버페이</button>
         </div>
       </div>
       <div class="sy-btns">
