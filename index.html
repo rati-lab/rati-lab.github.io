@@ -1296,13 +1296,10 @@
       </div>
       <label class="od-agree" id="odAgreeWrap"><input type="checkbox" id="odAgree"><span>리포트가 이메일로 <b>발송(제공 개시)</b>된 뒤에는 디지털 콘텐츠 특성상 청약철회가 제한된다는 점을 확인했어요. 발송 전엔 전액 환불됩니다. <i>(전자상거래법 §17②)</i></span></label>
       <div class="sy-err mono" id="odErr" hidden></div>
-      <div class="sy-btns">
-        <button class="cta" type="button" id="odPay" style="padding:13px 20px;font-size:13.5px" disabled>카드로 결제하기</button>
-        <button class="btn2" type="button" id="odTransferToggle">계좌이체로 결제</button>
-      </div>
       <!-- 간편결제 · 이니시스 승인 3종(카카오페이·토스페이·네이버페이) 2026-10-16 오픈 · 유료 주문창에서만 노출(syncPayUI) · 로고 이미지 없이 텍스트만 -->
       <div id="odEasy" hidden>
         <style>
+          #odEasy{margin-bottom:10px}
           #odEasy .sy-fine{margin-top:14px;margin-bottom:0}
           #odEasy .sy-btns{margin-top:8px}
           #odEasy button[data-easy="KAKAOPAY"]{background:linear-gradient(rgba(254,229,0,.10),rgba(254,229,0,.10)),linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important}
@@ -1316,7 +1313,11 @@
           <button class="btn2" type="button" data-easy="NAVERPAY" disabled>네이버페이</button>
         </div>
       </div>
-      <p class="sy-fine mono" id="odPayNote">카드 · 간편결제(카카오페이·토스페이·네이버페이) · KG이니시스 결제창이 열려요. 모바일은 결제 후 이 페이지로 자동 복귀합니다.</p>
+      <div class="sy-btns">
+        <button class="cta" type="button" id="odPay" style="padding:13px 20px;font-size:13.5px" disabled>카드로 결제하기</button>
+        <button class="btn2" type="button" id="odTransferToggle">계좌이체로 결제</button>
+      </div>
+      <p class="sy-fine mono" id="odPayNote">간편결제(카카오페이·토스페이·네이버페이) · 카드 · KG이니시스 결제창이 열려요. 모바일은 결제 후 이 페이지로 자동 복귀합니다.</p>
       <div id="odTransfer" hidden>
         <div class="od-info" style="margin-top:12px">
           <p>· 토스뱅크 <b>1000-4209-8680</b> (김민수) · 입금자명은 <b>이메일 앞부분</b>으로 해주세요. 예) rati123@naver.com → <b>rati123</b></p>
