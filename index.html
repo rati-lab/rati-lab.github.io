@@ -1388,6 +1388,7 @@
   .od-agree{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-size:11.5px;line-height:1.6;color:var(--slate);word-break:keep-all}
   .od-agree input{margin-top:3px;width:16px;height:16px;flex:0 0 auto;accent-color:var(--rosed);cursor:pointer}
   .od-agree b{color:var(--rosed)} .od-agree i{font-style:normal;color:var(--mut)}
+  #odOv #odAgreeWrap[hidden],#odOv #odTransferToggle[hidden]{display:none!important} /* hidden 속성이 display:flex 에 덮이던 문제 — 0원 주문창에서 계좌이체 버튼·청약철회 동의 숨김 (2026-11-22) */
   .od-orderno{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px;padding:12px 14px;background:#FCEDF3;border:1px solid #F2A6C2;border-radius:12px;font-size:12px}
   .od-orderno span{color:var(--mut)} .od-orderno b{font-size:14px;letter-spacing:.3px;color:var(--rosed);word-break:break-all}
   .od-orderno .btn2{width:auto;flex:0 0 auto;padding:6px 12px;font-size:11px}
