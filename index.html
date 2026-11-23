@@ -543,6 +543,16 @@
         <div class="hero-cta hero-cta-b">
           <a class="btn2 btn-match" href="javascript:void(0)" onclick="RATI_GUESS.match();return false">상대방과 나 궁합보기</a>
           <a class="btn2 btn-match" href="javascript:void(0)" onclick="RATI_GUESS.match('couple');return false">궁합 리포트 무료로 받기</a><!-- 2026-11-22 민수: 궁합 무료 이벤트 — 입력형 궁합(couple 선택) 열기 -->
+          <a class="btn2 btn-popup" href="/popup/?utm_source=home_hero" style="background:linear-gradient(145deg,rgba(58,152,163,.97),rgba(40,128,139,.96) 56%,rgba(28,104,115,.97))!important;color:#fff!important;border:1px solid rgba(196,235,240,.9)!important;box-shadow:0 12px 26px -13px rgba(28,104,115,.6),inset 0 1.5px 0 rgba(255,255,255,.45)!important">성수 팝업 사전 신청 (무료)</a><!-- 2026-11-23 민수: 오프라인 팝업 사전 신청 입구 — /popup/ 로 이동 · 청록 + 깜빡임 -->
+          <style>/* 2026-11-23 민수: 팝업 사전 신청 버튼 깜빡임 — 1.2초 주기로 밝아졌다 돌아오고 테두리 고리가 퍼진다 · '움직임 줄이기' 설정과 인앱 강라이트(html.inapp-heavy)에서는 멈춘 청록 버튼으로 보임 */
+          .btn-popup{position:relative;animation:popupBlink 1.2s ease-in-out infinite}
+          .btn-popup::after{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border-radius:99px;border:2px solid rgba(40,128,139,.85);opacity:0;pointer-events:none;animation:popupRing 1.2s ease-out infinite}
+          .btn-popup:hover,.btn-popup:hover::after{animation-play-state:paused}
+          @keyframes popupBlink{0%,100%{filter:brightness(1) drop-shadow(0 0 0 rgba(58,152,163,0))}50%{filter:brightness(1.22) drop-shadow(0 0 12px rgba(58,152,163,.85))}}
+          @keyframes popupRing{0%{top:-3px;right:-3px;bottom:-3px;left:-3px;opacity:.9}80%,100%{top:-14px;right:-14px;bottom:-14px;left:-14px;opacity:0}}
+          @media (prefers-reduced-motion:reduce){.btn-popup,.btn-popup::after{animation:none}}
+          html.inapp-heavy .btn-popup::after{animation:none}
+          </style>
         </div>
         <div class="data-line">
           <span>참여 <b data-count="4436">4,436</b>명</span>
@@ -7445,6 +7455,22 @@ h1{font-size:52px;line-height:1.28}
     </div>
   </div>
 </div>
+<!-- PROMO 3 : 성수 팝업 사전 신청 (맨 먼저 뜨는 팝업 · 닫으면 궁합 → 심층 순으로 이어짐 · 독립 '오늘 하루 보지 않기') — 2026-11-23 민수 -->
+<div id="promo3Ov" hidden>
+  <div class="promo-card" role="dialog" aria-modal="true" aria-label="성수 팝업 사전 신청 안내">
+    <button class="promo-x text-action" type="button" aria-label="닫기">✕</button>
+    <img class="promo-poster" src="hero_scene.webp" alt="RATI 캐릭터들이 모여 있는 모습" loading="lazy" onerror="this.remove()">
+    <div class="promo-bd">
+      <p class="promo-k mono">POP-UP · SEONGSU</p>
+      <h3 class="promo-t">RATI 성수 팝업<br><em>사전 신청 받아요</em></h3>
+      <p class="promo-s">연인이 함께 참여하는 오프라인 체험 · 일정 미정</p>
+      <p class="promo-zero"><b>9,000원 할인</b></p>
+      <p class="promo-mail">🎟️ 사전 신청 <b>선착순 50쌍</b></p>
+      <button class="promo-cta cta" type="button">사전 신청하러 가기 →</button>
+      <button class="promo-today text-action" type="button">오늘 하루 보지 않기</button>
+    </div>
+  </div>
+</div>
 <style id="promo-css">
   #promoOv,#promo2Ov{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(36,28,38,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
   #promoOv.on,#promo2Ov.on{opacity:1}
@@ -7490,6 +7516,22 @@ h1{font-size:52px;line-height:1.28}
   /* 궁합 포스터는 캐릭터가 양끝에 있어 좌우 크롭 없이 전폭 표시(캔버스는 좌우 배경 확장본) — 배지·캐릭터 겹침 방지 */
   @media (min-height:760px){#promo2Ov .promo-poster{aspect-ratio:1210/494;max-height:150px}}
   @media (max-height:700px){#promo2Ov .promo-badge{width:44px;height:44px;font-size:12.5px}}
+  /* ── 3번 팝업(성수 팝업 사전 신청 · 맨 먼저 뜸) 전용: 청록 테마로 궁합(보라)·심층(분홍)과 구분 — 2026-11-23 민수 ──
+     바탕 규칙(#promoOv,#promo2Ov …)을 그대로 따라 쓰되 기존 선택자는 건드리지 않으려고 여기에 따로 적는다 */
+  #promo3Ov{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(36,28,38,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
+  #promo3Ov.on{opacity:1}
+  #promo3Ov[hidden]{display:none}
+  #promo3Ov.on .promo-card{transform:none}
+  #promo3Ov .promo-card{background:linear-gradient(180deg,#B9E0E4 0%,#D2ECEE 8%,#ECF7F8 30%,#F9FDFD 60%)!important;border:1px solid rgba(40,128,139,.3)!important}
+  #promo3Ov .promo-k{color:#28808B}
+  #promo3Ov .promo-t em{color:#28808B}
+  #promo3Ov .promo-zero b{color:#1C6873;text-decoration-color:rgba(40,128,139,.45)}
+  #promo3Ov .promo-mail{border-color:rgba(40,128,139,.4)}#promo3Ov .promo-mail b{color:#28808B}
+  #promo3Ov .promo-cta{background:linear-gradient(145deg,rgba(58,152,163,.97),rgba(40,128,139,.96) 56%,rgba(28,104,115,.97))!important;color:#fff!important;border:1px solid rgba(196,235,240,.9)!important;box-shadow:0 12px 26px -13px rgba(28,104,115,.6),inset 0 1.5px 0 rgba(255,255,255,.45)!important}
+  /* 단체 캐릭터 그림(투명 배경)은 좌우가 잘리지 않게 통째로 넣는다 — 낮은 화면용 압축 규칙은 바탕 규칙 그대로 적용됨 */
+  #promo3Ov .promo-poster{object-fit:contain;object-position:center bottom}
+  @media (min-height:760px){#promo3Ov .promo-poster{aspect-ratio:1584/672;max-height:160px}}
+  @media (max-height:700px){#promo3Ov{padding:12px}}
   /* 궁합 문서 티어가: 취소선 원가 보조 표기 */
   .gtb-price s{font-size:.62em;color:#A79AA2;font-weight:600;margin-right:5px}
 
@@ -7566,15 +7608,42 @@ h1{font-size:52px;line-height:1.28}
       });
       ov.addEventListener('click',function(e){if(e.target===ov)closeDeep()});
     }
-    /* ── 1번 팝업: 궁합 무료 ── */
-    if(hideCouple||!ov2){setTimeout(showDeep,700);return;}
     function close2(){ov2.classList.remove('on');setTimeout(function(){ov2.hidden=true},280)}
-    setTimeout(function(){
-      if(payBusy())return;
-      ov2.hidden=false;
-      requestAnimationFrame(function(){ov2.classList.add('on')});
-      try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'couple_free'})}catch(e){}
-    },700);
+    /* 기존 흐름의 시작(궁합 무료 → 닫으면 심층 무료). 2026-11-23부터 사전 신청 팝업이 닫힌 뒤(또는 오늘 숨김이면 바로) 호출된다 */
+    function startRest(delay){
+      if(hideCouple||!ov2){setTimeout(showDeep,delay);return;}
+      setTimeout(function(){
+        if(payBusy())return;
+        ov2.hidden=false;
+        requestAnimationFrame(function(){ov2.classList.add('on')});
+        try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'couple_free'})}catch(e){}
+      },delay);
+    }
+    /* ── 맨 먼저: 성수 팝업 사전 신청 (2026-11-23 민수) — 닫기·오늘 숨김·바깥 누름이면 기존 흐름으로 이어지고, 신청 버튼이면 /popup/ 로 이동 ── */
+    var KEY3='rati_promo_popup_hide',hidePop=false,ov3=document.getElementById('promo3Ov');
+    try{hidePop=localStorage.getItem(KEY3)===ymd;}catch(e){}
+    if(ov3&&!hidePop){
+      var close3=function(){ov3.classList.remove('on');setTimeout(function(){ov3.hidden=true},280)};
+      setTimeout(function(){
+        if(payBusy())return;
+        ov3.hidden=false;
+        requestAnimationFrame(function(){ov3.classList.add('on')});
+        try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'popup_prereg'})}catch(e){}
+      },700);
+      ov3.querySelector('.promo-x').addEventListener('click',function(){close3();startRest(420)});
+      ov3.querySelector('.promo-today').addEventListener('click',function(){
+        try{localStorage.setItem(KEY3,ymd)}catch(e){}
+        try{if(window.RATI_GA)RATI_GA('promo_hide_today',{promo:'popup_prereg'})}catch(e){}
+        close3();startRest(420);
+      });
+      ov3.querySelector('.promo-cta').addEventListener('click',function(){
+        try{if(window.RATI_GA)RATI_GA('promo_click',{promo:'popup_prereg'})}catch(e){}
+        location.href='/popup/?utm_source=home_promo';
+      });
+      ov3.addEventListener('click',function(e){if(e.target===ov3){close3();startRest(420)}});
+    }else{startRest(700);}
+    /* ── 궁합 무료 팝업의 버튼 동작 (여는 시점은 위 startRest) ── */
+    if(!ov2)return;
     ov2.querySelector('.promo-x').addEventListener('click',function(){close2();setTimeout(showDeep,420)});
     ov2.querySelector('.promo-today').addEventListener('click',function(){
       try{localStorage.setItem(KEY2,ymd)}catch(e){}
