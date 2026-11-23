@@ -7581,6 +7581,7 @@ h1{font-size:52px;line-height:1.28}
     var hideDeep=false,hideCouple=false;
     try{hideDeep=localStorage.getItem(KEY)===ymd;hideCouple=localStorage.getItem(KEY2)===ymd;}catch(e){}
     if(window.RATI_DEEP_CLOSED)hideDeep=true; /* 심층 점검 중 — 심층 프로모만 정지 */
+    hideDeep=true; /* 2026-11-23 민수: 접속 팝업은 '성수 팝업 사전 신청'과 '궁합 무료' 두 개만 띄운다 — 심층 무료 팝업은 끔. 아래 심층 팝업 코드와 #promoOv 마크업은 그대로 두었고, 이 한 줄만 지우면 예전처럼 궁합 뒤에 이어서 뜬다 */
     var ov=document.getElementById('promoOv'),ov2=document.getElementById('promo2Ov');
     /* 결제 상태 오버레이(#odOv · 완료·보류 패널)가 떠 있으면 프로모는 열지 않는다 — PC 결제 성공 포함 */
     function payBusy(){var o=document.getElementById('odOv');return !!(window.__RATI_PAYRET||(o&&!o.hidden))}
@@ -7609,7 +7610,7 @@ h1{font-size:52px;line-height:1.28}
       ov.addEventListener('click',function(e){if(e.target===ov)closeDeep()});
     }
     function close2(){ov2.classList.remove('on');setTimeout(function(){ov2.hidden=true},280)}
-    /* 기존 흐름의 시작(궁합 무료 → 닫으면 심층 무료). 2026-11-23부터 사전 신청 팝업이 닫힌 뒤(또는 오늘 숨김이면 바로) 호출된다 */
+    /* 궁합 무료 팝업을 연다. 2026-11-23부터 사전 신청 팝업이 닫힌 뒤(또는 오늘 숨김이면 바로) 호출된다. 심층 무료 팝업은 위 hideDeep=true 로 꺼져 있어 showDeep 은 아무 일도 하지 않는다 */
     function startRest(delay){
       if(hideCouple||!ov2){setTimeout(showDeep,delay);return;}
       setTimeout(function(){
@@ -7619,7 +7620,7 @@ h1{font-size:52px;line-height:1.28}
         try{if(window.RATI_GA)RATI_GA('promo_view',{promo:'couple_free'})}catch(e){}
       },delay);
     }
-    /* ── 맨 먼저: 성수 팝업 사전 신청 (2026-11-23 민수) — 닫기·오늘 숨김·바깥 누름이면 기존 흐름으로 이어지고, 신청 버튼이면 /popup/ 로 이동 ── */
+    /* ── 맨 먼저: 성수 팝업 사전 신청 (2026-11-23 민수) — 닫기·오늘 숨김·바깥 누름이면 궁합 무료 팝업으로 이어지고, 신청 버튼이면 /popup/ 로 이동 ── */
     var KEY3='rati_promo_popup_hide',hidePop=false,ov3=document.getElementById('promo3Ov');
     try{hidePop=localStorage.getItem(KEY3)===ymd;}catch(e){}
     if(ov3&&!hidePop){
